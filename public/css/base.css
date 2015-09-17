@@ -1,13 +1,3 @@
-h1 {
-	text-align: center;
-	color: white;
-}
-
-h3 {
-	text-align: center;
-	color: white;
-}
-
 footer {
 	position:fixed;
 	text-align: right;
@@ -20,4 +10,6 @@ footer {
 
 body {
 	background-image:url("../img/stolen.jpg");
+	text-align: center;
+	color: white;
 }
