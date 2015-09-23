@@ -15,3 +15,8 @@ body {
 	text-align: center;
 	color: white;
 }
+
+h1.home-h1 {
+	line-height: 200px;
+	height: 125px;
+}
