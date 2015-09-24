@@ -1,7 +1,7 @@
 footer {
 	position:fixed;
 	text-align: right;
-	color: white;
+	color: gray;
    	bottom:0px;
    	height:25px;
    	width:100%;
@@ -24,4 +24,9 @@ h1.home-h1 {
 h1.about-h1 {
 	line-height: 200px;
 	height: 125px;
+}
+
+.active{
+	background: black;
+	color: white;
 }
