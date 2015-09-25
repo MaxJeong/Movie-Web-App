@@ -14,6 +14,8 @@ splat.Header = Backbone.View.extend({
 	return this;    // support method chaining
     },
 
+
+    //gives selected look for button or bar
     selectMenuItem: function(menuItem){
     	$('.active').removeClass('active');
     	$(menuItem).addClass('active');

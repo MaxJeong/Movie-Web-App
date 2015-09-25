@@ -21,17 +21,21 @@ splat.AppRouter = Backbone.Router.extend({
         $('.header').html(this.headerView.render().el);
     },
 
+
+    //load home view, and select the nav bar
     home: function() {
 	// If the Home view doesn't exist, instantiate one
         if (!this.homeView) {
             this.homeView = new splat.Home();
         };
 	// insert the rendered Home view element into the document DOM
-        this.headerView.selectMenuItem('#navbar');
+        this.headerView.selectMenuItem('.home-menu');
         $('#content').html(this.homeView.render().el);
     },
 
+    //load about and select about button
     about: function(){
+        //check if already created
         if (!this.aboutView) {
             this.aboutView = new splat.About();
         };

@@ -11,17 +11,22 @@ footer {
 body {
 	background-image:url("../img/stolen.jpg");
     background-size: 100%;
-    background-repeat: no-repeat;
+    /*font-size: 36px;*/
+    /*background-repeat: no-repeat;*/
+    font-family: Verdana, Geneva, Helvetica;
 	text-align: center;
 	color: white;
+	text-shadow: 1px 1px black;
 }
 
 h1.home-h1 {
+	/*font-size: 36px;*/
 	line-height: 200px;
 	height: 125px;
 }
 
 h1.about-h1 {
+	
 	line-height: 200px;
 	height: 125px;
 }
