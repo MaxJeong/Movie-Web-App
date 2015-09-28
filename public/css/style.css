@@ -35,7 +35,6 @@ h1.home-h1 {
 }
 
 h1.about-h1 {
-
 	line-height: 200px;
 	height: 125px;
 }
@@ -43,4 +42,9 @@ h1.about-h1 {
 .active{
 	background: black;
 	color: white;
+}
+
+.btn-default {
+	color: white;
+	background: rgba(245, 245, 245, 0.3);
 }
