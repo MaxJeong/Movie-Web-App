@@ -6,4 +6,3 @@ splat.Movies = Backbone.Collection.extend({
     // console.log
     localStorage: new Backbone.LocalStorage('splat')
 });
-splat.Movies = new splat.Movies();
