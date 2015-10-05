@@ -11,30 +11,38 @@ splat.MovieThumb = Backbone.View.extend({
     render: function () {
 	// set the view element ($el) HTML content using its template
 	// console.log(this);
-	console.log(this.template);
-	console.log(splat.model);
+	// console.log(this.template);
+	// console.log(splat.model);
 	// console.log(splat.Movies.model);
 	// console.log(splat.Movies);
 	// console.log(splat.Movie);
 	// console.log(this.model);
 	// console.log(this.model.toJSON());
 	// console.log(this.template(this.model.toJSON()));
-	
-	this.movieThumbLoad = $.get('tpl/MovieThumb.html');
-	this.movieThumbLoad.done(function(markup) {
+	// var template = _.template("<h2>Hello <%= name %></h2>");
+
+	 
+	var movieThumbLoad = $.get('tpl/MovieThumb.html');
+
+	var self = this;
+	movieThumbLoad.done(function(markup) {
 	  // Now "markup" contains the response to the $.get() request.
 	  // Turn this markup into a function using Underscore's
 	  // template() // function.
 	  // Finally apply the moviesTemplate shown below to your
 	  // movies collection and the template function you just created.
 
-	  return _.template(markup);
-	});
-	console.log(this.movieThumbLoad);
-	// console.log(splat.Movies.model);
-	// console.log(this);
+	  self.template = _.template(markup);
+
+	  console.log(markup, movieThumbLoad ,self.model.toJSON(),self.template);
+	  
+	  console.log( self.template(self.model.toJSON()) );
+	  console.log( self.template() );
+
+	// console.log(self);
 	
-	this.$el.html(this.template(this.movieThumbLoad));
+	   self.$el.html( self.template(self.model.toJSON()));
+	});
 	// this.$el.html(this.template());
 	return this;    // support method chaining
     }
