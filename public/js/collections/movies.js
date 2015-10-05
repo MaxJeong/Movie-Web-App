@@ -3,5 +3,7 @@ splat.Movies = Backbone.Collection.extend({
     model: splat.Movie,
 
     // save movie models in localStorage under "splat" namespace
+    // console.log
     localStorage: new Backbone.LocalStorage('splat')
 });
+splat.Movies = new splat.Movies();

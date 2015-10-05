@@ -47,10 +47,10 @@ splat.AppRouter = Backbone.Router.extend({
 
     movies: function(){
         if (!this.moviesView) {
-            this.moviesView = new splat.Movies();
+            this.moviesView = new splat.MovieThumb();
         };
 
-        this.moviesView.selectMenuItem('.movies-menu');
+        this.headerView.selectMenuItem('.browse-menu');
         $('#content').html(this.moviesView.render().el);
     }
 
