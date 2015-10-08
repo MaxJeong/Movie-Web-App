@@ -76,7 +76,7 @@ splat.AppRouter = Backbone.Router.extend({
         if (!this.detailsView) {
             this.detailsView = new splat.Details();
         };
-        this.detailsView.selectMenuItem('.details-menu');
+        this.headerView.selectMenuItem('.details-menu');
         $('#content').html(this.detailsView.render().el);
     }
 
