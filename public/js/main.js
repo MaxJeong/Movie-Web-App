@@ -2,7 +2,7 @@
 "use strict";
 
 // declare splat-app namespace if it doesn't already exist
-var splat =  splat || {};
+var splat = splat || {};
 
 // Define Backbone router
 splat.AppRouter = Backbone.Router.extend({
@@ -11,7 +11,8 @@ splat.AppRouter = Backbone.Router.extend({
     routes: {
         "": "home",
         "about": "about",
-        "movies": "movies"
+        "movies": "movies",
+        "movies/add": "details"
     },
 
     // When an instance of an AppRouter is declared, create a Header view
@@ -36,7 +37,7 @@ splat.AppRouter = Backbone.Router.extend({
     },
 
     //load about and select about button
-    about: function(){
+    about: function() {
         //check if already created
         if (!this.aboutView) {
             this.aboutView = new splat.About();
@@ -47,7 +48,7 @@ splat.AppRouter = Backbone.Router.extend({
         $('#content').html(this.aboutView.render().el);
     },
     // loads movie collection view
-    movies: function(){
+    movies: function() {
         // var my_model = new splat.Movie();
 
         //consider moving to init function for speed
@@ -69,6 +70,14 @@ splat.AppRouter = Backbone.Router.extend({
         //highlights item in headerView
         this.headerView.selectMenuItem('.browse-menu');
         $('#content').html(this.moviesView.render().el);
+    },
+
+    details: function() {
+        if (!this.detailsView) {
+            this.detailsView = new splat.Details();
+        };
+        this.detailsView.selectMenuItem('.details-menu');
+        $('#content').html(this.detailsView.render().el);
     }
 
 });
@@ -76,7 +85,7 @@ splat.AppRouter = Backbone.Router.extend({
 // Load HTML templates for Home, Header, About views, and when
 // template loading is complete, instantiate a Backbone router
 // with history.
-splat.utils.loadTemplates(['Home', 'Header', 'About'], function() {
+splat.utils.loadTemplates(['Home', 'Header', 'About', 'Details'], function() {
     splat.app = new splat.AppRouter();
     Backbone.history.start();
 });

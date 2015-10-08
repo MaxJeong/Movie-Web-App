@@ -5,19 +5,13 @@
 var splat = splat || {};
 
 // note View-name (Home) matches name of template file Home.html
-splat.Header = Backbone.View.extend({
+splat.Details = Backbone.View.extend({
 
     // render the View
     render: function () {
 	// set the view element ($el) HTML content using its template
 	this.$el.html(this.template());
 	return this;    // support method chaining
-    },
-
-    //gives selected look for button or bar
-    selectMenuItem: function(menuItem){
-    	$('.active').removeClass('active');
-    	$(menuItem).addClass('active');
     }
 
 });

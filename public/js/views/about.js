@@ -2,7 +2,7 @@
 "use strict";
 
 // declare splat-app namespace if it doesn't already exist
-var splat =  splat || {};
+var splat = splat || {};
 
 // note View-name (Home) matches name of template file Home.html
 splat.About = Backbone.View.extend({
