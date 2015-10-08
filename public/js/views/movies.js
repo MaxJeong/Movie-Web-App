@@ -8,17 +8,18 @@ var splat =  splat || {};
 splat.MovieThumb = Backbone.View.extend({
 
     // render the View
-    render: function (collection) {
+    render: function () {
 	// set the view element ($el) HTML content using its template
 
 	// var template = _.template("<h2>TESTING <%= name %></h2>");
-	console.log(this.collection);
-	this.collection.each(function(model){
-		console.log(model.toJSON());
-	})
-
-	this.model = new splat.Movie();
+	// console.log(this.collection);
+	// this.collection.each(function(model){
+	// 	console.log(model.toJSON());
+	// })
+	
+	//loads template(needed for non name matching templates)
 	var movieThumbLoad = $.get('tpl/MovieThumb.html');
+	//will need to get access to splat from inside anon. function
 	var self = this;
 
 	movieThumbLoad.done(function(markup) {
@@ -28,18 +29,21 @@ splat.MovieThumb = Backbone.View.extend({
 	  // Finally apply the moviesTemplate shown below to your
 	  // movies collection and the template function you just created.
 
+	  //change into easy to work with form
 	  self.template = _.template(markup);
 
 	  // console.log(markup, movieThumbLoad );
 	  // console.log(self.model.toJSON(),self.template);
-	  var display = ''
-	  console.log( self.template(self.model.toJSON()) );
+	  //to store the result to display
+	  self.display = ''
+	  // console.log( self.template(self.model.toJSON()) );
 	  self.collection.each(function(model){
-	  		display = display + self.template( model.toJSON());
+	  		//add the movie model html to display
+	  		self.display = self.display + self.template( model.toJSON());
 	  });
 
-
-	   self.$el.html( display);
+	   //actually display it
+	   self.$el.html( self.display);
 	});
 
 	// this.$el.html( template() );
