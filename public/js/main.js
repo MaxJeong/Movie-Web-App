@@ -46,8 +46,10 @@ splat.AppRouter = Backbone.Router.extend({
     },
 
     movies: function(){
-        var my_model = new splat.Movie();
+        // var my_model = new splat.Movie();
         var my_collection = new splat.Movies();
+        // console.log(my_model);
+        console.log(my_collection);
         //
         if (!this.moviesView) {
             this.moviesView = new splat.MovieThumb({collection:my_collection});

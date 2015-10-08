@@ -3,7 +3,9 @@ splat.Movie = Backbone.Model.extend({
     idAttribute: "_id",
 
     defaults: {
-	title: ""
+	title: "default",
+	trailer: "mpv/default.mp4",
+	poster: "img/default.png"
 	// other model attributes
     }
 });

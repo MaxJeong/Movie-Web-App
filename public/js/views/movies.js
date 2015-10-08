@@ -8,23 +8,15 @@ var splat =  splat || {};
 splat.MovieThumb = Backbone.View.extend({
 
     // render the View
-    render: function () {
+    render: function (collection) {
 	// set the view element ($el) HTML content using its template
-	// console.log(this);
-	// console.log(this.template);
-	// console.log(splat.model);
-	// console.log(splat.Movies.model);
-	// console.log(splat.Movies);
-	// console.log(splat.Movie);
-	// console.log(this.model);
-	// console.log(this.model.toJSON());
-	// console.log(this.template(this.model.toJSON()));
-	// var template = _.template("<h2>Hello <%= name %></h2>");
 
-	 
+	// var template = _.template("<h2>TESTING <%= name %></h2>");
+
+	this.model = new splat.Movie();
 	var movieThumbLoad = $.get('tpl/MovieThumb.html');
-
 	var self = this;
+
 	movieThumbLoad.done(function(markup) {
 	  // Now "markup" contains the response to the $.get() request.
 	  // Turn this markup into a function using Underscore's
@@ -34,16 +26,18 @@ splat.MovieThumb = Backbone.View.extend({
 
 	  self.template = _.template(markup);
 
-	  console.log(markup, movieThumbLoad ,self.model.toJSON(),self.template);
-	  
+	  console.log(markup, movieThumbLoad );
+	  console.log(self.model.toJSON(),self.template);
 	  console.log( self.template(self.model.toJSON()) );
-	  console.log( self.template() );
+
+
+
 
 	// console.log(self);
-	
 	   self.$el.html( self.template(self.model.toJSON()));
 	});
-	// this.$el.html(this.template());
+
+	// this.$el.html( template() );
 	return this;    // support method chaining
     }
 
