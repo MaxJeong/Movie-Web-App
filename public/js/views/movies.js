@@ -12,6 +12,10 @@ splat.MovieThumb = Backbone.View.extend({
 	// set the view element ($el) HTML content using its template
 
 	// var template = _.template("<h2>TESTING <%= name %></h2>");
+	console.log(this.collection);
+	this.collection.each(function(model){
+		console.log(model.toJSON());
+	})
 
 	this.model = new splat.Movie();
 	var movieThumbLoad = $.get('tpl/MovieThumb.html');
@@ -26,15 +30,16 @@ splat.MovieThumb = Backbone.View.extend({
 
 	  self.template = _.template(markup);
 
-	  console.log(markup, movieThumbLoad );
-	  console.log(self.model.toJSON(),self.template);
+	  // console.log(markup, movieThumbLoad );
+	  // console.log(self.model.toJSON(),self.template);
+	  var display = ''
 	  console.log( self.template(self.model.toJSON()) );
+	  self.collection.each(function(model){
+	  		display = display + self.template( model.toJSON());
+	  });
 
 
-
-
-	// console.log(self);
-	   self.$el.html( self.template(self.model.toJSON()));
+	   self.$el.html( display);
 	});
 
 	// this.$el.html( template() );
