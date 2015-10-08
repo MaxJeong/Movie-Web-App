@@ -4,8 +4,18 @@ splat.Movie = Backbone.Model.extend({
 
     defaults: {
 	title: "default",
+	release: null,
+	director: "",
+	starring: [],
+	rating: "",
+	duration: null,
+	genre: [],
+	synopsis: "",
+	freshTotal: 0.0,
+	freshVotes: 0.0,
 	trailer: "mpv/default.mp4",
-	poster: "img/default.png"
+	poster: "img/default.png",
+	date: new Date()
 	// other model attributes
     }
 });

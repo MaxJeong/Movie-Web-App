@@ -12,7 +12,8 @@ splat.AppRouter = Backbone.Router.extend({
         "": "home",
         "about": "about",
         "movies": "movies",
-        "movies/add": "details"
+        "movies/add": "details",
+        "movies/:id":"edit"
     },
 
     // When an instance of an AppRouter is declared, create a Header view
@@ -21,6 +22,7 @@ splat.AppRouter = Backbone.Router.extend({
         this.headerView = new splat.Header();  
 	// insert the rendered Header view element into the document DOM
         $('.header').html(this.headerView.render().el);
+
     },
 
     //load home view, and select the nav bar
@@ -51,16 +53,16 @@ splat.AppRouter = Backbone.Router.extend({
     movies: function() {
         // var my_model = new splat.Movie();
 
-        //consider moving to init function for speed
         var my_collection = new splat.Movies();
+       
+        my_collection.fetch();
 
         //generating test models for use
-        var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
-        names.map(function(name){
-            var testModel = new splat.Movie({title:name});
-            my_collection.create(testModel);
-        });
-
+        // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
+        // names.map(function(name){
+        //     var testModel = new splat.Movie({title:name});
+        //     my_collection.create(testModel);
+        // });
         // console.log(my_model);
         // console.log(my_collection);
         //
@@ -76,9 +78,14 @@ splat.AppRouter = Backbone.Router.extend({
         if (!this.detailsView) {
             this.detailsView = new splat.Details();
         };
-        this.detailsView.selectMenuItem('.details-menu');
+        this.headerView.selectMenuItem('.details-menu');
         $('#content').html(this.detailsView.render().el);
+    },
+
+    edit:function(id){
+
     }
+
 
 });
 
