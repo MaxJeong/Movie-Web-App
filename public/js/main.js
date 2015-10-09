@@ -61,16 +61,15 @@ splat.AppRouter = Backbone.Router.extend({
             var my_collection = splat.collection;
         }
        
-
         //generating test models for use
-        // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
-        // names.map(function(name){
-        //     var testModel = new splat.Movie({title:name});
-        //     my_collection.create(testModel);
-        // });
-        // console.log(my_model);
-        // console.log(my_collection);
-        //
+        //var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
+        //names.map(function(name){
+        //    var testModel = new splat.Movie({title:name});
+        //    my_collection.create(testModel);
+        //});
+        //console.log(my_model);
+        //console.log(my_collection);
+        
         if (!this.moviesView) {
             this.moviesView = new splat.MovieThumb({collection:my_collection});
         };

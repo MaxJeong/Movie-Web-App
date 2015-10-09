@@ -19,11 +19,27 @@ splat.Details = Backbone.View.extend({
 		// console.log('trying to save');
 		// console.log(splat.collection);
 		
+		var newMovie = new splat.Movie();
 
-		$("input[type*='text']").each(function(item){
-			console.log($(this).attr('name'));
-			// console.log(item.attr('name'));
+		$("input[type='text']").each(function(item){
+
+			//console.log($(this).attr('name'));
+			//console.log(item.attr('name'));
+			var title = $(this).attr('name');
+			var val = $(this).val();
+			newMovie[title] = val;
+			// console.log(title,val);
+			// var newMovie = new splat.Movie({})
 		});
+		console.log(newMovie);
+		//splat.collection.add(newMovie);
+		splat.collection.create(newMovie, { 
+            wait : true, 
+            success : function () {
+                console.log(arguments);
+            }
+        });
+			
 	},
 
 	//delete model in collection, prompt user to double check,
