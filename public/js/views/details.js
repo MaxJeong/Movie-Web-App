@@ -20,7 +20,7 @@ splat.Details = Backbone.View.extend({
 		// console.log(splat.collection);
 		
 
-		$("input[type*='text']").each(function(item){
+		$("input[type*='text']").each(function(index){
 			console.log($(this).attr('name'));
 			// console.log(item.attr('name'));
 		});
