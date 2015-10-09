@@ -22,7 +22,8 @@ splat.AppRouter = Backbone.Router.extend({
         this.headerView = new splat.Header();  
 	// insert the rendered Header view element into the document DOM
         $('.header').html(this.headerView.render().el);
-
+        splat.collection = new splat.Movies();
+        splat.collection.fetch();
     },
 
     //load home view, and select the nav bar
@@ -52,10 +53,14 @@ splat.AppRouter = Backbone.Router.extend({
     // loads movie collection view
     movies: function() {
         // var my_model = new splat.Movie();
-
-        var my_collection = new splat.Movies();
+        if (!splat.collection){
+            var my_collection = new splat.Movies();
+            my_collection.fetch();
+            console.log("failed to load from global instance of collection");
+        }else{
+            var my_collection = splat.collection;
+        }
        
-        my_collection.fetch();
 
         //generating test models for use
         // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
@@ -75,6 +80,7 @@ splat.AppRouter = Backbone.Router.extend({
     },
 
     details: function() {
+        console.log(splat.collection);
         if (!this.detailsView) {
             this.detailsView = new splat.Details();
         };
@@ -83,7 +89,8 @@ splat.AppRouter = Backbone.Router.extend({
     },
 
     edit:function(id){
-
+        this.details();
+        console.log(splat.collection);
     }
 
 
