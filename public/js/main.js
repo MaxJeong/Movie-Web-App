@@ -13,7 +13,7 @@ splat.AppRouter = Backbone.Router.extend({
         "about": "about",
         "movies": "movies",
         "movies/add": "details",
-        "movies/:id":"edit"
+        "movies/:id": "edit"
     },
 
     // When an instance of an AppRouter is declared, create a Header view
