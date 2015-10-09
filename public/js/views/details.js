@@ -18,26 +18,44 @@ splat.Details = Backbone.View.extend({
 	save:function(event){
 		// console.log('trying to save');
 		// console.log(splat.collection);
-		
-		var newMovie = new splat.Movie();
 
+
+		var my_collection = splat.collection;
+		this.newMovie = new splat.Movie();
+
+		//this is evaluated to the items in the for loop
+		//so rename to self for now.
+		var self = this;
+
+		//get all the inputs with text type
 		$("input[type='text']").each(function(item){
-
-			//console.log($(this).attr('name'));
-			//console.log(item.attr('name'));
-			var title = $(this).attr('name');
+			
+			var name = $(this).attr('name');
 			var val = $(this).val();
-			newMovie[title] = val;
+			
+			var input = {};
+			//javascript will interpet keys litteraly,so 
+			//get around it by below notation
+			//lol spelling
+			input[name] = val;
+
+			// set takes in dictionary,thus why we created input
+			self.newMovie.set(input);
 			// console.log(title,val);
 			// var newMovie = new splat.Movie({})
-
 		});
-		console.log(newMovie);
+		// console.log(newMovie);
+		console.log(my_collection);
 		//splat.collection.add(newMovie);
-		splat.collection.create(newMovie, { 
+		my_collection.create(this.newMovie, { 
             wait : true, 
-            success : function () {
-                console.log(arguments);
+            success : function (model,response) {
+                console.log('success',model);
+                //consider navigating to movie page
+                splat.app.navigate('#', {replace:true, trigger:true});
+            },
+            fail: function(model, response){
+				console.log('fail',model);
             }
         });
 			
