@@ -65,8 +65,6 @@ splat.utils = {
             notify.addClass(alert);
             notify.show();
             notify.fadeOut(5000);
-            notify.show();
-            notify.css('visibility','hidden');
             
             console.log('notification set');
         }else{
