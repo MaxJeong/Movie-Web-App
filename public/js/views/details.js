@@ -121,6 +121,7 @@ splat.Details = Backbone.View.extend({
 	//updates local model
 	update:function(event){
 		var item = $(event.currentTarget);
+		splat.utils.showNotice('info','Remember to click Save Changes Button');
 		if(this.validate(item)){
 			var name = item.attr('name');
 			var val = item.val();
