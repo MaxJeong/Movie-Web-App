@@ -64,7 +64,7 @@ splat.Details = Backbone.View.extend({
                 splat.app.navigate('#', {replace:true, trigger:true});
             },
             fail: function(model, response){
-            	splat.utils.showNotice('danger','operation complete');
+            	splat.utils.showNotice('danger','could not save');
 				console.log('fail',model);
             }
      
@@ -76,10 +76,12 @@ splat.Details = Backbone.View.extend({
             success : function (model,response) {
                 console.log('success',model);
                 //consider navigating to movie page
+                splat.utils.showNotice('success','operation complete');
                 splat.app.navigate('#', {replace:true, trigger:true});
             },
             fail: function(model, response){
 				console.log('fail',model);
+				splat.utils.showNotice('danger','could not save');
             }
         	});
 		}
@@ -95,18 +97,20 @@ splat.Details = Backbone.View.extend({
 		if(!this.newMovie){
 			//if it doesn't exist already
 			//return
+			splat.app.navigate('#', {replace:true, trigger:true});
 		}else{
 			var my_collection = splat.collection;
 			this.newMovie.destroy({
 				wait:true,
 				success : function (model,response) {
                 console.log('deleted',model);
-                utils.showNotice('success');
+                splat.utils.showNotice('success','operation complete');
                 //consider navigating to movie page
                 splat.app.navigate('#', {replace:true, trigger:true});
             },
             fail: function(model, response){
 				console.log('failed to delete',model);
+				splat.utils.showNotice('danger','could not delete');
             }
 
 			});
