@@ -14,6 +14,7 @@ splat.Details = Backbone.View.extend({
 		"focusout input":"update"
 	},
 
+	
 
 	//updates the model in the collection, if there isn't one, create it
 	save:function(event){
@@ -22,12 +23,7 @@ splat.Details = Backbone.View.extend({
 
 
 		var my_collection = splat.collection;
-		if (!this.newMovie){
-			this.newMovie = new splat.Movie();
-			this.isNew = true;
-		}else{
-
-		}
+		
 
 		//this is evaluated to the items in the for loop
 		//so rename to self for now.
@@ -62,15 +58,18 @@ splat.Details = Backbone.View.extend({
 			my_collection.create(this.newMovie, { 
             wait : true, 
             success : function (model,response) {
-                console.log('success',model);
+                // console.log('success',model);
+                splat.utils.showNotice('success','operation complete');
                 //consider navigating to movie page
                 splat.app.navigate('#', {replace:true, trigger:true});
             },
             fail: function(model, response){
+            	splat.utils.showNotice('danger','operation complete');
 				console.log('fail',model);
             }
-        });
-		}else{
+     
+		}       );
+	}else{
 			console.log('saving!');
 			this.newMovie.save(null,{ 
             wait : true, 
@@ -102,6 +101,7 @@ splat.Details = Backbone.View.extend({
 				wait:true,
 				success : function (model,response) {
                 console.log('deleted',model);
+                utils.showNotice('success');
                 //consider navigating to movie page
                 splat.app.navigate('#', {replace:true, trigger:true});
             },
@@ -141,6 +141,28 @@ splat.Details = Backbone.View.extend({
     render: function () {
 	// set the view element ($el) HTML content using its template
 	this.$el.html(this.template());
+
+	this.notify={ 
+            wait : true, 
+            success : function (model,response) {
+                // console.log('success',model);
+                splat.utils.showNotice('success','operation complete');
+                //consider navigating to movie page
+                splat.app.navigate('#', {replace:true, trigger:true});
+            },
+            fail: function(model, response){
+            	splat.utils.showNotice('danger','operation complete');
+				console.log('fail',model);
+            }
+    };
+	//initalize model
+	if (!this.newMovie){
+		this.newMovie = new splat.Movie();
+		this.isNew = true;
+	}
+
+	
+
 	return this;    // support method chaining
     }
 

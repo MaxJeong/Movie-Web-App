@@ -11,7 +11,6 @@ footer {
 body {
 	background-image: url("../img/stolen.jpg");
     background-size: 100%;
-    padding-top: 100px;
     /*background-repeat: no-repeat;*/
     font-family: Verdana, Geneva, Helvetica;
 	
@@ -21,8 +20,19 @@ body {
 
 #content{
 
+    padding-top: 100px;
 	font-size: 12px;
 	text-align: center;
+}
+
+#notification{
+	display: none;
+	padding-top: 100px;
+	/*height: 100px;*/
+	/*background-color: white;*/
+	text-align: center;
+	vertical-align: middle;
+	/*position: relative;*/
 }
 
 .home-menu{

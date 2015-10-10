@@ -50,7 +50,27 @@ splat.utils = {
         $.when.apply(null, deferreds).done(callback);
     },
 
-    showNotice:function(){
+    showNotice:function(alertType, message){
+        var legal = ['danger','success','info'];
+
+
+        var notify = $("#notification");
+
+        console.log(notify);
+        if ($.inArray(alertType,legal) && message){
+            var alert = 'alert-'+alertType;
+            console.log(alert);
+            notify.html(message);
+            notify.removeClass();
+            notify.addClass(alert);
+            notify.show();
+            notify.fadeOut(5000);
+            
+            console.log('notification set');
+        }else{
+            console.log('improper status');
+        }
+
 
     },
     hideNotice:function(){
