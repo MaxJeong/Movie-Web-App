@@ -18,10 +18,11 @@ splat.AppRouter = Backbone.Router.extend({
 
     // When an instance of an AppRouter is declared, create a Header view
     initialize: function() {
-	// instantiate a Header view
+        // instantiate a Header view
         this.headerView = new splat.Header();  
-	// insert the rendered Header view element into the document DOM
+        // insert the rendered Header view element into the document DOM
         $('.header').html(this.headerView.render().el);
+        //create collection and retreive values
         splat.collection = new splat.Movies();
         splat.collection.fetch();
     },
@@ -58,6 +59,7 @@ splat.AppRouter = Backbone.Router.extend({
             my_collection.fetch();
             console.log("failed to load from global instance of collection");
         }else{
+            //only using to old code,fyi
             var my_collection = splat.collection;
         }
        
@@ -79,28 +81,37 @@ splat.AppRouter = Backbone.Router.extend({
         $('#content').html(this.moviesView.render().el);
     },
 
+    //load up a movie details page
     details: function() {
         console.log(splat.collection);
         if (!this.detailsView) {
             this.detailsView = new splat.Details();
         };
+        //events detach after first use,need to reattch
+        this.detailsView.delegateEvents();
+
         this.headerView.selectMenuItem('.details-menu');
         $('#content').html(this.detailsView.render().el);
     },
 
+    //like the details page, but for already existing movies
     edit:function(id){
+        //edit is same as details,but with filled in values
         this.details();
-        this.detailsView.delegateEvents();
         // console.log(id);
         var k;
         var select;
         var current = splat.collection.get(id);
         for (k in current.attributes){
             // console.log(current.attributes[k]);
+
+            //select input fields based on model
             select = "input[name='"+ k+ "']";
+            //insert values into field
             $(select).val(current.attributes[k]);
 
         }
+        //keep a reference to model in detailsView
         this.detailsView.newMovie = current;
         
     }

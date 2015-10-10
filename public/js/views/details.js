@@ -10,8 +10,8 @@ splat.Details = Backbone.View.extend({
 	events:{
 		//add event to check if user leaves without saving
 		"click #moviesave ": "save",
-		"click #moviedel ": "delete"
-
+		"click #moviedel ": "delete",
+		"focusout input":"update"
 	},
 
 
@@ -72,7 +72,7 @@ splat.Details = Backbone.View.extend({
         });
 		}else{
 			console.log('saving!');
-			this.newMovie.save(this.newMovie, { 
+			this.newMovie.save(null,{ 
             wait : true, 
             success : function (model,response) {
                 console.log('success',model);
@@ -84,7 +84,8 @@ splat.Details = Backbone.View.extend({
             }
         	});
 		}
-		
+		this.newMovie = null;
+		this.isNew = null;
 			
 	},
 
@@ -100,12 +101,12 @@ splat.Details = Backbone.View.extend({
 			this.newMovie.destroy({
 				wait:true,
 				success : function (model,response) {
-                console.log('deleted');
+                console.log('deleted',model);
                 //consider navigating to movie page
                 splat.app.navigate('#', {replace:true, trigger:true});
             },
             fail: function(model, response){
-				console.log('failed to delete');
+				console.log('failed to delete',model);
             }
 
 			});
@@ -113,8 +114,28 @@ splat.Details = Backbone.View.extend({
 
 	},
 
-	//validator, validates fields,may require multiple functions,
+	//updates local model
+	update:function(event){
+		var item = $(event.currentTarget);
+		if(this.validate(item)){
+			var name = item.attr('name');
+			var val = item.val();
+			var input = {};
+			input[name] = val;
+			this.newMovie.set(input);
+			console.log(this.newMovie);
+		}else{
+			//error handling for part 3
+		}
+		// console.log(item);
 
+	},
+
+	//validator, validates fields,may require multiple functions,
+	validate:function(item){
+		//placeholder
+		return true;
+	},
 
     // render the View
     render: function () {
