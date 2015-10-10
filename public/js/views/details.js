@@ -14,6 +14,7 @@ splat.Details = Backbone.View.extend({
 
 	},
 
+
 	//updates the model in the collection, if there isn't one, create it
 	save:function(event){
 		// console.log('trying to save');
@@ -21,7 +22,12 @@ splat.Details = Backbone.View.extend({
 
 
 		var my_collection = splat.collection;
-		this.newMovie = new splat.Movie();
+		if (!this.newMovie){
+			this.newMovie = new splat.Movie();
+			this.isNew = true;
+		}else{
+
+		}
 
 		//this is evaluated to the items in the for loop
 		//so rename to self for now.
@@ -44,10 +50,16 @@ splat.Details = Backbone.View.extend({
 			// console.log(title,val);
 			// var newMovie = new splat.Movie({})
 		});
-		// console.log(newMovie);
-		console.log(my_collection);
+		console.log(this.newMovie);
+		// console.log(my_collection);
 		//splat.collection.add(newMovie);
-		my_collection.create(this.newMovie, { 
+
+		
+		console.log(this.newMovie.attributes);
+		if(this.isNew){
+			//thus we create
+			console.log('creating!');
+			my_collection.create(this.newMovie, { 
             wait : true, 
             success : function (model,response) {
                 console.log('success',model);
@@ -58,12 +70,46 @@ splat.Details = Backbone.View.extend({
 				console.log('fail',model);
             }
         });
+		}else{
+			console.log('saving!');
+			this.newMovie.save(this.newMovie, { 
+            wait : true, 
+            success : function (model,response) {
+                console.log('success',model);
+                //consider navigating to movie page
+                splat.app.navigate('#', {replace:true, trigger:true});
+            },
+            fail: function(model, response){
+				console.log('fail',model);
+            }
+        	});
+		}
+		
 			
 	},
 
 	//delete model in collection, prompt user to double check,
 	//return to browse view when done
 	delete:function(event){
+		//check if model is associated with this view
+		if(!this.newMovie){
+			//if it doesn't exist already
+			//return
+		}else{
+			var my_collection = splat.collection;
+			this.newMovie.destroy({
+				wait:true,
+				success : function (model,response) {
+                console.log('deleted');
+                //consider navigating to movie page
+                splat.app.navigate('#', {replace:true, trigger:true});
+            },
+            fail: function(model, response){
+				console.log('failed to delete');
+            }
+
+			});
+		}
 
 	},
 

@@ -15,7 +15,7 @@ splat.Movie = Backbone.Model.extend({
 	freshVotes: 0.0,
 	trailer: "mpv/default.mp4",
 	poster: "img/default.png",
-	date: new Date()
+	date: new Date(),
 	// other model attributes
     }
 });

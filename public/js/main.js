@@ -90,7 +90,19 @@ splat.AppRouter = Backbone.Router.extend({
 
     edit:function(id){
         this.details();
-        console.log(splat.collection);
+        this.detailsView.delegateEvents();
+        // console.log(id);
+        var k;
+        var select;
+        var current = splat.collection.get(id);
+        for (k in current.attributes){
+            // console.log(current.attributes[k]);
+            select = "input[name='"+ k+ "']";
+            $(select).val(current.attributes[k]);
+
+        }
+        this.detailsView.newMovie = current;
+        
     }
 
 

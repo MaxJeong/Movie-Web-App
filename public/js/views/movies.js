@@ -46,6 +46,8 @@ splat.MovieThumb = Backbone.View.extend({
 	   self.$el.html( self.display);
 	});
 
+
+
 	// this.$el.html( template() );
 	return this;    // support method chaining
     }
