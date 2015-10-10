@@ -229,7 +229,35 @@ invoke callback function.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
         <span class="nx">$</span><span class="p">.</span><span class="nx">when</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">deferreds</span><span class="p">).</span><span class="nx">done</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">showNotice</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">alertType</span><span class="p">,</span> <span class="nx">message</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">legal</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;danger&#39;</span><span class="p">,</span><span class="s1">&#39;success&#39;</span><span class="p">,</span><span class="s1">&#39;info&#39;</span><span class="p">];</span>
+
+
+        <span class="kd">var</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#notification&quot;</span><span class="p">);</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notify</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">alertType</span><span class="p">,</span><span class="nx">legal</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">message</span><span class="p">){</span>
+            <span class="kd">var</span> <span class="nx">alert</span> <span class="o">=</span> <span class="s1">&#39;alert-&#39;</span><span class="o">+</span><span class="nx">alertType</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">alert</span><span class="p">);</span>
+            <span class="nx">notify</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+            <span class="nx">notify</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">();</span>
+            <span class="nx">notify</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">alert</span><span class="p">);</span>
+            <span class="nx">notify</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+            <span class="nx">notify</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+            
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;notification set&#39;</span><span class="p">);</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;improper status&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+
+    <span class="p">},</span>
+    <span class="nx">hideNotice</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
+
+    <span class="p">},</span>
+
 <span class="p">};</span>
 </pre></div>
         </td>
