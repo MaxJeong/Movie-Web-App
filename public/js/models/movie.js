@@ -3,7 +3,7 @@ splat.Movie = Backbone.Model.extend({
     idAttribute: "_id",
 
     defaults: {
-	title: "default",
+	title: "",
 	release: null,
 	director: "",
 	starring: [],
@@ -17,5 +17,6 @@ splat.Movie = Backbone.Model.extend({
 	poster: "img/default.png",
 	date: new Date(),
 	// other model attributes
-    }
+    },
+
 });
