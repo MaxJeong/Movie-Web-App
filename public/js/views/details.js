@@ -121,8 +121,14 @@ splat.Details = Backbone.View.extend({
 	//updates local model
 	update:function(event){
 		var item = $(event.currentTarget);
+		
+
+		splat.utils.hideValidationNotice(item);
+		console.log('in update');
+
 		splat.utils.showNotice('info','Remember to click Save Changes Button');
 		if(this.newMovie.validate(item)){
+			console.log('IS VALID');
 			var name = item.attr('name');
 			var val = item.val();
 			var input = {};
@@ -130,7 +136,13 @@ splat.Details = Backbone.View.extend({
 			this.newMovie.set(input);
 			console.log(this.newMovie);
 		}else{
-			alert('opps')
+			console.log('IS NOTs VALID');
+			var name = item.attr('name');
+			var msg;
+			if (name==name){
+				msg = "Title must have blah blah"
+			}
+			splat.utils.showValidationNotice(item,msg);
 			//error handling for part 3
 		}
 		// console.log(item);

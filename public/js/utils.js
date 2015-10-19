@@ -77,4 +77,25 @@ splat.utils = {
 
     },
 
+    //item is jquery object, msg is string
+    showValidationNotice:function(item,msg){
+        //item append, dive with 'msg'
+        // console.log(item);
+        var name = item.attr('name') + 'valid';
+        var super_msg = $.parseHTML("<div id = "+name +" class= 'error' >:" +msg+"</div>");
+        item.parent().append(super_msg);
+
+        //give div red text 
+        //give div id?
+
+    },
+    hideValidationNotice:function(item){
+        //remove div with id?
+        var name = '#' + item.attr('name') + 'valid';
+        //remove  
+        // console.log('name',name);
+        // console.log('jquery',$(name));
+        $(name).remove();
+    },
+
 };
