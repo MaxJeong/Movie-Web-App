@@ -122,7 +122,7 @@ splat.Details = Backbone.View.extend({
 	update:function(event){
 		var item = $(event.currentTarget);
 		splat.utils.showNotice('info','Remember to click Save Changes Button');
-		if(this.validate(item)){
+		if(this.newMovie.validate(item)){
 			var name = item.attr('name');
 			var val = item.val();
 			var input = {};
@@ -135,62 +135,6 @@ splat.Details = Backbone.View.extend({
 		}
 		// console.log(item);
 
-	},
-
-	//validator, validates fields,may require multiple functions,
-	validate:function(item){
-		if (item.attr('name') == 'title') {
-			//replace regex
-			if ((item.val()).match(/[a-z]/i)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'released') {
-			if ((item.val()).match(/[1910-2016]/)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'director') {
-			//replace regex
-			if ((item.val()).match(/[a-z]/i)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'starring') {
-			//replace regex
-			if ((item.val()).match(/[a-z]/i)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'genre') {
-			//replace regex
-			if ((item.val()).match(/[a-z]/i)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'rating') {
-			if ((item.val()).match('G|PG|PG-13|R|NC-17')) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'duration') {
-			if ((item.val()).match(/[0-999]/)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'synopsis') {
-			if ((item.val()).match(/\w/g)) {
-				return true;
-			}
-		}
-		else if (item.attr('name') == 'trailer') {
-			if ((item.val()).substring(0, 11) == 'http://www.' &&
-				((item.val()).substring(((item.val()).length)-4, 
-					(item.val()).length)).match('.com|.org')) {
-				return true;
-			}
-		}
-		return false;
 	},
 
     // render the View
