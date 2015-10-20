@@ -127,20 +127,45 @@ splat.Details = Backbone.View.extend({
 		console.log('in update');
 
 		splat.utils.showNotice('info','Remember to click Save Changes Button');
-		if(this.newMovie.validate(item)){
-			console.log('IS VALID');
+		if (this.newMovie.validate(item)) {
+			//console.log('IS VALID');
 			var name = item.attr('name');
 			var val = item.val();
 			var input = {};
 			input[name] = val;
 			this.newMovie.set(input);
 			console.log(this.newMovie);
-		}else{
-			console.log('IS NOTs VALID');
+		}
+		else {
+			//console.log('IS NOTs VALID');
 			var name = item.attr('name');
 			var msg;
-			if (name==name){
-				msg = "Title must have blah blah"
+			if (name == 'title') {
+				msg = "Only 1 or more letters-digits-spaces allowed"
+			}
+			else if (name == 'released') {
+				msg = "Released must be between 1910 and 2016"
+			}
+			else if (name == 'director') {
+				msg = "You must enter a director's name"
+			}
+			else if (name == 'rating') {
+				msg = "You must enter either G, PG, PG-13, R, or NC-17"
+			}
+			else if (name == 'starring') {
+				msg = "You must enter starring with one or more comma seperated sequences of whitespace-seperated words"
+			}
+			else if (name == 'duration') {
+				msg = "Duration must be between 0-999"
+			}
+			else if (name == 'genre') {
+				msg = "You must enter genre with one or more comma seperated sequences of whitespace-seperated words"
+			}
+			else if (name == 'synopsis') {
+				msg = "Must contain some text"
+			}
+			else if (name == 'trailer') {
+				msg = "Must be in proper URL format (e.g. http://www.example.com)"
 			}
 			splat.utils.showValidationNotice(item,msg);
 			//error handling for part 3

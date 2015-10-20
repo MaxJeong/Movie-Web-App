@@ -53,7 +53,6 @@ splat.utils = {
     showNotice:function(alertType, message){
         var legal = ['danger','success','info'];
 
-
         var notify = $("#notification");
 
         console.log(notify);
@@ -71,8 +70,8 @@ splat.utils = {
             console.log('improper status');
         }
 
-
     },
+    
     hideNotice:function(){
 
     },
@@ -80,21 +79,20 @@ splat.utils = {
     //item is jquery object, msg is string
     showValidationNotice:function(item,msg){
         //item append, dive with 'msg'
-        // console.log(item);
+        console.log(item);
         var name = item.attr('name') + 'valid';
-        var super_msg = $.parseHTML("<div id = "+name +" class= 'error' >:" +msg+"</div>");
+        var super_msg = $.parseHTML("<div id = "+name +" class= 'error' >" +msg+"</div>");
+        $(item.parent()).addClass('color-change');
+        $(item).addClass('border-change');
         item.parent().append(super_msg);
-
-        //give div red text 
-        //give div id?
-
     },
+
     hideValidationNotice:function(item){
-        //remove div with id?
         var name = '#' + item.attr('name') + 'valid';
-        //remove  
         // console.log('name',name);
         // console.log('jquery',$(name));
+        $(item.parent()).removeClass('color-change');
+        $(item).removeClass('border-change');
         $(name).remove();
     },
 

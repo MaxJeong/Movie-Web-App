@@ -26,7 +26,7 @@ splat.Movie = Backbone.Model.extend({
 			}
 		}
 		else if (item.attr('name') == 'released') {
-			if ((item.val()).match(/[1910-2016]/)) {
+			if ((item.val()) >= 1910 && (item.val()) <= 2016) {
 				return true;
 			}
 		}
@@ -46,12 +46,14 @@ splat.Movie = Backbone.Model.extend({
 			}
 		}
 		else if (item.attr('name') == 'rating') {
-			if ((item.val()).match('G|PG|PG-13|R|NC-17')) {
+			if (item.val() == 'G' || item.val() == 'PG'
+				|| item.val() == 'PG-13' || item.val() == 'R'
+				|| item.val() == 'NC-17') {
 				return true;
 			}
 		}
 		else if (item.attr('name') == 'duration') {
-			if ((item.val()).match(/[0-999]/)) {
+			if ((item.val()) >= 0 && (item.val()) <= 999) {
 				return true;
 			}
 		}
@@ -61,9 +63,10 @@ splat.Movie = Backbone.Model.extend({
 			}
 		}
 		else if (item.attr('name') == 'trailer') {
-			if ((item.val()).substring(0, 11) == 'http://www.' &&
+			if (((item.val()).substring(0, 11) == 'http://www.' &&
 				((item.val()).substring(((item.val()).length)-4, 
-					(item.val()).length)).match('.com|.org')) {
+					(item.val()).length)).match('.com|.org'))
+					|| (item.val()) == '') {
 				return true;
 			}
 		}
