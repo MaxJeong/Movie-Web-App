@@ -11,7 +11,16 @@ splat.Details = Backbone.View.extend({
 		//add event to check if user leaves without saving
 		"click #moviesave ": "save",
 		"click #moviedel ": "delete",
-		"focusout input":"update"
+		"focusout input":"update",
+		// "ondragover #movieimg":"drop",
+		// "drop #movieimg":"drop",
+		// 'mousedown body': 'drop',
+		// 'dragstart body': 'drop',
+		// 'dragend body': 'drop',
+		// // Handle drop
+		// 'dragenter body': 'drop',
+		// 'dragleave body': 'drop',
+		'drop body': 'drop'
 	},
 
 	
@@ -173,6 +182,23 @@ splat.Details = Backbone.View.extend({
 		// console.log(item);
 
 	},
+
+	 allowDrop:function(ev) {
+    ev.preventDefault();
+    console.log('in allowDrop');
+},
+
+	drag: function(ev)  {
+    ev.dataTransfer.setData("text", ev.target.id);
+    console.log('in drag');
+},
+
+	drop: function(ev) {
+	console.log('in Drop');
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+},
 
     // render the View
     render: function () {
