@@ -79,11 +79,14 @@ splat.utils = {
     //item is jquery object, msg is string
     showValidationNotice:function(item,msg){
         //item append, dive with 'msg'
+        console.log(item.parent());
         console.log(item);
         var name = item.attr('name') + 'valid';
         var super_msg = $.parseHTML("<div id = "+name +" class= 'error' >" +msg+"</div>");
         $(item.parent()).addClass('color-change');
         $(item).addClass('border-change');
+        console.log(item.parent());
+        console.log(item);
         item.parent().append(super_msg);
     },
 

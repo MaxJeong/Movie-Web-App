@@ -1,33 +1,49 @@
+<!--
+<style>
+#movieimg
+{width:350px;height:150px;padding;10px;border;1px solid #aaaaaa;}
+</style>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>
+-->
+
 <div class="row">
     <div class="col-xs-6">  <!-- col 1 -->
         <div id="movieform" class = "input-append ">
         	<div class="editActions">
-    				<input type="button" id="moviesave"
-		   			class="btn btn-primary save"
-		   			name="save" value="Save Changes"/>
-	    			<input type="button" id="moviedel"
-		   			class="btn btn-danger delete"
-		   			name="delete" value="Delete Movie"/>
+    			<input type="button" id="moviesave"
+		   		class="btn btn-primary save"
+		   		name="save" value="Save Changes"/>
+	    		<input type="button" id="moviedel"
+		   		class="btn btn-danger delete"
+		   		name="delete" value="Delete Movie"/>
 			</div>
 
 			<div class="form-horizontal">
-
-
 	   			<div class="form-group">
 	       			<label for="title" class="col-sm-3 control-label">Title</label>
 	       			<input type="text" style="color: black" class="col-sm-9"
 	                placeholder="e.g. Day of the Jackal"
 	                name="title" value=""/>
-	                <!-- style="border:1px solid #ff0000" -->
-	       			<!-- <span class="help-block"></span> -->
 	   			</div>
 	   			<div class="form-group">
 	   				<label for="released" class="col-sm-3 control-label">Released</label>
 	       			<input type="text" style="color: black" class="col-sm-9"
 	       			placeholder="e.g. 1969"
 	       			name="released" value=""/>
-
-
 	   			</div>
 	   			<div class="form-group">
 	   				<label for="director" class="col-sm-3 control-label">Director</label>
@@ -77,6 +93,9 @@
 
     <div class="col-xs-6">  <!-- col 2 -->
         <div id="movieimg">
+        	 <img src="./img/default.png" alt="Default Poster" height="150" width="350"> 
+        	 <input type="file" class="btn btn-primary save"
+		   			name="chosenimg" value="Choose File"/>
         </div>
     </div>   <!-- end column 2 -->
 </div> <!-- row -->
