@@ -19,7 +19,10 @@ splat.Movie = Backbone.Model.extend({
 	// other model attributes
     },
 
-    validate:function(item){
+    // validate is a function in javascript, don't overwrite it
+    validateCheck:function(item){
+    	console.log(item.title);
+
 		if (item.attr('name') == 'title') {
 			if ((item.val()).match(/[a-z0-9]+[\,\.\!\?\-\'\*]*/i)) {
 				return true;

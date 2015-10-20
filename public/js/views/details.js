@@ -122,12 +122,12 @@ splat.Details = Backbone.View.extend({
 	update:function(event){
 		var item = $(event.currentTarget);
 		
-
+		console.log(item.attr('id'));
 		splat.utils.hideValidationNotice(item);
 		console.log('in update');
 
 		splat.utils.showNotice('info','Remember to click Save Changes Button');
-		if (this.newMovie.validate(item)) {
+		if (this.newMovie.validateCheck(item)) {
 			//console.log('IS VALID');
 			var name = item.attr('name');
 			var val = item.val();
