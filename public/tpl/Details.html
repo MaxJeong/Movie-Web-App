@@ -1,25 +1,3 @@
-<!--
-<style>
-#movieimg
-{width:350px;height:150px;padding;10px;border;1px solid #aaaaaa;}
-</style>
-<script>
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-}
-</script>
--->
-
 <div class="row">
     <div class="col-xs-6">  <!-- col 1 -->
         <div id="movieform" class = "input-append ">
@@ -92,10 +70,14 @@ function drop(ev) {
     </div>  <!-- end column 1 -->
 
     <div class="col-xs-6">  <!-- col 2 -->
-        <div id="movieimg">
-        	 <img src="./img/default.png" alt="Default Poster" height="150" width="350"> 
-        	 <input type="file" class="btn btn-primary save"
-		   			name="chosenimg" value="Choose File"/>
-        </div>
+    	<div class="dropzone">
+			<div id="draggable" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+				Drag me
+    			<!-- <img src="./img/default.png" alt="Default Poster" height="150" width="350"> -->
+			</div>
+		</div>
+		<div class="dropzone">
+		</div>
+        <input type="file" id="imagesave" class="btn btn-primary save" name="chosenimg" value="Choose File"/>
     </div>   <!-- end column 2 -->
 </div> <!-- row -->

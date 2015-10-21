@@ -11,29 +11,28 @@ splat.Details = Backbone.View.extend({
 		//add event to check if user leaves without saving
 		"click #moviesave ": "save",
 		"click #moviedel ": "delete",
+		// "click #imagesave": "replace",
 		"focusout input":"update",
-		// "ondragover #movieimg":"drop",
-		// "drop #movieimg":"drop",
-		// 'mousedown body': 'drop',
-		// 'dragstart body': 'drop',
-		// 'dragend body': 'drop',
-		// // Handle drop
-		// 'dragenter body': 'drop',
-		// 'dragleave body': 'drop',
-		'drop body': 'drop'
+		//"ondragover #dropzone":"drop",
+		"dragover #dropzone":"drop",
+		"drop #dropzone":"drop",
+		'mousedown': 'drop',
+		'dragstart': 'drop',
+		'dragend': 'drop',
+		// Handle drop
+		'dragenter': 'drop',
+		'dragleave': 'drop',
+		'dragover': 'drop',
+		'drop': 'drop'
 	},
-
-	
 
 	//updates the model in the collection, if there isn't one, create it
 	save:function(event){
 		// console.log('trying to save');
 		// console.log(splat.collection);
 
-
 		var my_collection = splat.collection;
 		
-
 		//this is evaluated to the items in the for loop
 		//so rename to self for now.
 		var self = this;
@@ -47,7 +46,6 @@ splat.Details = Backbone.View.extend({
 			var input = {};
 			//javascript will interpet keys litteraly,so 
 			//get around it by below notation
-			//lol spelling
 			input[name] = val;
 
 			// set takes in dictionary,thus why we created input
@@ -59,7 +57,6 @@ splat.Details = Backbone.View.extend({
 		// console.log(my_collection);
 		//splat.collection.add(newMovie);
 
-		
 		console.log(this.newMovie.attributes);
 		if(this.isNew){
 			//thus we create
@@ -77,8 +74,8 @@ splat.Details = Backbone.View.extend({
 				console.log('fail',model);
             }
      
-		}       );
-	}else{
+		});
+		}else{
 			console.log('saving!');
 			this.newMovie.save(null,{ 
             wait : true, 
@@ -131,6 +128,7 @@ splat.Details = Backbone.View.extend({
 	update:function(event){
 		var item = $(event.currentTarget);
 		
+		console.log(item);
 		console.log(item.attr('id'));
 		splat.utils.hideValidationNotice(item);
 		console.log(item.attr('name'));
@@ -183,22 +181,22 @@ splat.Details = Backbone.View.extend({
 
 	},
 
-	 allowDrop:function(ev) {
-    ev.preventDefault();
-    console.log('in allowDrop');
-},
+	// allowDrop:function(ev) {
+ //    ev.preventDefault();
+ //    console.log('in allowDrop');
+	// },
 
-	drag: function(ev)  {
-    ev.dataTransfer.setData("text", ev.target.id);
-    console.log('in drag');
-},
+	// drag: function(ev)  {
+ //    ev.dataTransfer.setData("text", ev.target.id);
+ //    console.log('in drag');
+	// },
 
-	drop: function(ev) {
-	console.log('in Drop');
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-},
+	// drop: function(ev) {
+	// console.log('in Drop');
+ //    ev.preventDefault();
+ //    var data = ev.dataTransfer.getData("text");
+ //    ev.target.appendChild(document.getElementById(data));
+	// },
 
     // render the View
     render: function () {
@@ -224,9 +222,62 @@ splat.Details = Backbone.View.extend({
 		this.isNew = true;
 	}
 
-	
-
 	return this;    // support method chaining
+    },
+
+    drop: function() {
+    	var dragged;
+
+	  	/* events fired on the draggable target */
+	  	document.addEventListener("drag", function( event ) {
+
+	  	}, false);
+
+	  	document.addEventListener("dragstart", function( event ) {
+	      // store a ref. on the dragged elem
+	      dragged = event.target;
+	      // make it half transparent
+	      event.target.style.opacity = .5;
+	  	}, false);
+
+	  	document.addEventListener("dragend", function( event ) {
+	      // reset the transparency
+	      event.target.style.opacity = "";
+	  	}, false);
+
+	  	/* events fired on the drop targets */
+	  	document.addEventListener("dragover", function( event ) {
+	      // prevent default to allow drop
+	      event.preventDefault();
+	  	}, false);
+
+	  	document.addEventListener("dragenter", function( event ) {
+	      // highlight potential drop target when the draggable element enters it
+	      if ( event.target.className == "dropzone" ) {
+	          event.target.style.background = "grey";
+	      }
+
+	  	}, false);
+
+	  	document.addEventListener("dragleave", function( event ) {
+	      // reset background of potential drop target when the draggable element leaves it
+	      if ( event.target.className == "dropzone" ) {
+	          event.target.style.background = "";
+	      }
+
+	  	}, false);
+
+	  	document.addEventListener("drop", function( event ) {
+	      // prevent default action (open as link for some elements)
+	      event.preventDefault();
+	      // move dragged elem to the selected drop target
+	      if ( event.target.className == "dropzone" ) {
+	          event.target.style.background = "";
+	          dragged.parentNode.removeChild( dragged );
+	          event.target.appendChild( dragged );
+	      }
+    
+  		}, false);
     }
 
 });

@@ -19,7 +19,6 @@ splat.Movie = Backbone.Model.extend({
 	// other model attributes
     },
 
-
     validateCheck:function(item){
     	console.log(item.attr('name'));
 		if (item.attr('name') == 'title') {
@@ -65,9 +64,7 @@ splat.Movie = Backbone.Model.extend({
 			}
 		}
 		else if (item.attr('name') == 'chosenimg') {
-			
-				return true;
-			
+			return true;
 		}
 		else if (item.attr('name') == 'trailer') {
 			if (((item.val()).substring(0, 11) == 'http://www.' &&
