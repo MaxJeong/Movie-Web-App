@@ -452,7 +452,7 @@ console.log(my_collection);</p>
 <p>select input fields based on model</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-            <span class="nx">select</span> <span class="o">=</span> <span class="s2">&quot;input[name=&#39;&quot;</span><span class="o">+</span> <span class="nx">k</span><span class="o">+</span> <span class="s2">&quot;&#39;]&quot;</span><span class="p">;</span>
+            <span class="nx">select</span> <span class="o">=</span> <span class="s2">&quot;input[name=&#39;&quot;</span><span class="o">+</span> <span class="nx">k</span><span class="o">+</span> <span class="s2">&quot;&#39;][type=&#39;text&#39;]&quot;</span><span class="p">;</span>
 
 </pre></div>
         </td>
@@ -465,9 +465,11 @@ console.log(my_collection);</p>
 <p>insert values into field</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-            <span class="nx">$</span><span class="p">(</span><span class="nx">select</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>
-
+            <span class="nx">$</span><span class="p">(</span><span class="nx">select</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>            
         <span class="p">}</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#displayimg&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">,</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">poster</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">poster</span><span class="p">);</span>
+
 
 </pre></div>
         </td>
@@ -481,6 +483,7 @@ console.log(my_collection);</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
         <span class="k">this</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">.</span><span class="nx">newMovie</span> <span class="o">=</span> <span class="nx">current</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">.</span><span class="nx">isNew</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
         
     <span class="p">}</span>
 

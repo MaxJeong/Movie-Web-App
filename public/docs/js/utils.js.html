@@ -234,7 +234,6 @@ invoke callback function.</p>
     <span class="nx">showNotice</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">alertType</span><span class="p">,</span> <span class="nx">message</span><span class="p">){</span>
         <span class="kd">var</span> <span class="nx">legal</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;danger&#39;</span><span class="p">,</span><span class="s1">&#39;success&#39;</span><span class="p">,</span><span class="s1">&#39;info&#39;</span><span class="p">];</span>
 
-
         <span class="kd">var</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#notification&quot;</span><span class="p">);</span>
 
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notify</span><span class="p">);</span>
@@ -252,10 +251,66 @@ invoke callback function.</p>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;improper status&#39;</span><span class="p">);</span>
         <span class="p">}</span>
 
-
     <span class="p">},</span>
+    
     <span class="nx">hideNotice</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
 
+    <span class="p">},</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>item is jquery object, msg is string</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">showValidationNotice</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="nx">msg</span><span class="p">){</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>item append, dive with 'msg'</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">parent</span><span class="p">());</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;valid&#39;</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">super_msg</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">parseHTML</span><span class="p">(</span><span class="s2">&quot;&lt;div id = &quot;</span><span class="o">+</span><span class="nx">name</span> <span class="o">+</span><span class="s2">&quot; class= &#39;error&#39; &gt;&quot;</span> <span class="o">+</span><span class="nx">msg</span><span class="o">+</span><span class="s2">&quot;&lt;/div&gt;&quot;</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">parent</span><span class="p">()).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;color-change&#39;</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;border-change&#39;</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">parent</span><span class="p">());</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="nx">item</span><span class="p">.</span><span class="nx">parent</span><span class="p">().</span><span class="nx">append</span><span class="p">(</span><span class="nx">super_msg</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="nx">hideValidationNotice</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;valid&#39;</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>console.log('name',name);
+console.log('jquery',$(name));</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">parent</span><span class="p">()).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;color-change&#39;</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;border-change&#39;</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">name</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
     <span class="p">},</span>
 
 <span class="p">};</span>
