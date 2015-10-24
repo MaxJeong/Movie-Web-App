@@ -102,9 +102,9 @@ h1.about-h1 {
 }
 
 .dropzone {
-    width: 350px;
-    height: 150px;
-    background-image: url("../img/default.png");
+    /*width: 350px;
+    height: 150px;*/
+    /*background-image: url("../img/default.png");*/
     margin-bottom: 10px;
     padding: 10px;
 }

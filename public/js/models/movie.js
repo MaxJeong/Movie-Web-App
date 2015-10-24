@@ -64,7 +64,10 @@ splat.Movie = Backbone.Model.extend({
 			}
 		}
 		else if (item.attr('name') == 'chosenimg') {
-			return true;
+			if( true){
+
+				return true;
+			}
 		}
 		else if (item.attr('name') == 'trailer') {
 			if (((item.val()).substring(0, 11) == 'http://www.' &&

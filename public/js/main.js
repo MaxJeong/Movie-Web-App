@@ -106,13 +106,16 @@ splat.AppRouter = Backbone.Router.extend({
             // console.log(current.attributes[k]);
 
             //select input fields based on model
-            select = "input[name='"+ k+ "']";
+            select = "input[name='"+ k+ "'][type='text']";
             //insert values into field
-            $(select).val(current.attributes[k]);
-
+            $(select).val(current.attributes[k]);            
         }
+        $('#displayimg').attr('src',current.attributes.poster);
+        console.log(current.attributes.poster);
+
         //keep a reference to model in detailsView
         this.detailsView.newMovie = current;
+        this.detailsView.isNew = false;
         
     }
 

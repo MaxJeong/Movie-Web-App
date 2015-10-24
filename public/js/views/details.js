@@ -11,19 +11,11 @@ splat.Details = Backbone.View.extend({
 		//add event to check if user leaves without saving
 		"click #moviesave ": "save",
 		"click #moviedel ": "delete",
+		"change #imgsave": "selectImage",
 		// "click #imagesave": "replace",
-		"focusout input":"update",
-		//"ondragover #dropzone":"drop",
-		"dragover #dropzone":"drop",
-		"drop #dropzone":"drop",
-		'mousedown': 'drop',
-		'dragstart': 'drop',
-		'dragend': 'drop',
-		// Handle drop
-		'dragenter': 'drop',
-		'dragleave': 'drop',
-		'dragover': 'drop',
-		'drop': 'drop'
+		'focusout input[type="text"]':"update",
+		'dragover #img_pic': 'dragoverHandler',
+		"drop #img_pic":"dropHandler"
 	},
 
 	//updates the model in the collection, if there isn't one, create it
@@ -38,7 +30,7 @@ splat.Details = Backbone.View.extend({
 		var self = this;
 
 		//get all the inputs with text type
-		$("input[type='text']").each(function(item){
+		$('input[type="text"]').each(function(item){
 			
 			var name = $(this).attr('name');
 			var val = $(this).val();
@@ -60,6 +52,9 @@ splat.Details = Backbone.View.extend({
 		console.log(this.newMovie.attributes);
 		if(this.isNew){
 			//thus we create
+			console.log(this);
+			console.log(this.newMovie);
+			console.log(self.newMovie);
 			console.log('creating!');
 			my_collection.create(this.newMovie, { 
             wait : true, 
@@ -181,22 +176,6 @@ splat.Details = Backbone.View.extend({
 
 	},
 
-	// allowDrop:function(ev) {
- //    ev.preventDefault();
- //    console.log('in allowDrop');
-	// },
-
-	// drag: function(ev)  {
- //    ev.dataTransfer.setData("text", ev.target.id);
- //    console.log('in drag');
-	// },
-
-	// drop: function(ev) {
-	// console.log('in Drop');
- //    ev.preventDefault();
- //    var data = ev.dataTransfer.getData("text");
- //    ev.target.appendChild(document.getElementById(data));
-	// },
 
     // render the View
     render: function () {
@@ -225,59 +204,104 @@ splat.Details = Backbone.View.extend({
 	return this;    // support method chaining
     },
 
-    drop: function() {
-    	var dragged;
+    // Read pictureFile from filesystem, resulting in
+	// DataURL (base64 representation of image data). 
+	// Use as model poster attrib. and image src attrib.
+	imageRead: function(pictureFile, type) {
+		var self = this;
+		var reader = new FileReader();
+		// callback for when read operation is finished
+		// console.log('in imageRead');
+		// console.log(pictureFile,type);
+		reader.onload = function(event) {
+			//insert image on load here
 
-	  	/* events fired on the draggable target */
-	  	document.addEventListener("drag", function( event ) {
+			// // image.src = sourceImg; 
 
-	  	}, false);
+			var targetImgElt = $('.dropzone')[0];
+			// // reader.result is image data in base64 format
+			// // targetImgElt.src = reader.result;
 
-	  	document.addEventListener("dragstart", function( event ) {
-	      // store a ref. on the dragged elem
-	      dragged = event.target;
-	      // make it half transparent
-	      event.target.style.opacity = .5;
-	  	}, false);
+			
+			targetImgElt.src = self.resize(event.target.result);
+			console.log(targetImgElt.src);
+			// // console.log(targetImgElt);
+			// // self.newMovie.set('poster', reader.result);
+			self.newMovie.set('poster', targetImgElt.src);
+			// // console.log(self.newMovie);
+			// console.log(reader.result);
+			$('#displayimg').attr('src',targetImgElt.src);
+			
+		};
+		reader.readAsDataURL(pictureFile); // read image file
+	},
+    // image upload done in save-handler, to avoid 
+	// multiple-upload cost if user reselects image
+    selectImage: function(event) {
+		// set object attribute for image uploader
+		// console.log('in selectImage');
+		// console.log(event);
+		this.pictureFile = event.target.files[0];
+		// if the file type is image, read it
+		// console.log('selectImage',this.pictureFile.type);
+		if ( this.pictureFile.type.match(/image\/((jpeg)|(png)|(gif)|(jpg))/) ) {
+			this.imageRead(this.pictureFile, 
+			this.pictureFile.type);
+		}else{
+			splat.utils.showNotice('danger',"This picture type is not supported");
+		}
+		// else display error notification
+	},
 
-	  	document.addEventListener("dragend", function( event ) {
-	      // reset the transparency
-	      event.target.style.opacity = "";
-	  	}, false);
+    dropHandler: function(event){
+    	event.stopPropagation();
+    	event.preventDefault();
+    	var ev = event.originalEvent;
+    	this.pictureFile = ev.dataTransfer.files[0];
+    	console.log(event.originalEvent);
+    	console.log(this.pictureFile);
+    	if ( this.pictureFile.type.match(/image\/((jpeg)|(png)|(gif)|(jpg))/) ) {
+			// Read image file and display in img tag
+			this.imageRead(this.pictureFile, 
+			this.pictureFile.type);
+		}else{
+			splat.utils.showNotice('danger',"This picture type is not supported");
+		}
+			// else display notification error
+    },
 
-	  	/* events fired on the drop targets */
-	  	document.addEventListener("dragover", function( event ) {
-	      // prevent default to allow drop
-	      event.preventDefault();
-	  	}, false);
+    dragoverHandler: function(event) {
 
-	  	document.addEventListener("dragenter", function( event ) {
-	      // highlight potential drop target when the draggable element enters it
-	      if ( event.target.className == "dropzone" ) {
-	          event.target.style.background = "grey";
-	      }
-
-	  	}, false);
-
-	  	document.addEventListener("dragleave", function( event ) {
-	      // reset background of potential drop target when the draggable element leaves it
-	      if ( event.target.className == "dropzone" ) {
-	          event.target.style.background = "";
-	      }
-
-	  	}, false);
-
-	  	document.addEventListener("drop", function( event ) {
-	      // prevent default action (open as link for some elements)
-	      event.preventDefault();
-	      // move dragged elem to the selected drop target
-	      if ( event.target.className == "dropzone" ) {
-	          event.target.style.background = "";
-	          dragged.parentNode.removeChild( dragged );
-	          event.target.appendChild( dragged );
-	      }
-    
-  		}, false);
-    }
+    	event.stopPropagation();
+    	event.preventDefault();
+    	console.log('dragging!',event);
+    	event.originalEvent.dataTransfer.dropEffect = 'copy';
+    },
+    // Resize sourceImg, returning result as a DataURL value. Type, 
+	// quality are optional params for image-type and quality setting
+	resize: function(sourceImg, type, quality) {
+		console.log('in resize!');
+		var self = this;
+		var type = type || "image/jpeg"; // default MIME image type
+		var quality = quality || "0.95"; // tradeoff quality vs size
+		var image = new Image(), MAX_HEIGHT = 300, MAX_WIDTH = 450;
+		image.src = sourceImg;
+		console.log(image.height);
+		console.log(image.width);
+		// image.height = image.height // ADD CODE to scale height
+		// image.width = image.width // ADD CODE to scale width
+		if(image.height > MAX_HEIGHT) {
+			image.width = MAX_WIDTH;
+			image.height = MAX_HEIGHT;
+		}
+		console.log(image.height);
+		console.log(image.width);
+		var canvas = document.createElement("canvas"); 
+		canvas.width = image.width; // scale canvas to match image
+		canvas.height = image.height;
+		var ctx = canvas.getContext("2d"); // get 2D rendering context
+		ctx.drawImage(image,0,0, image.width, image.height); // render
+		return canvas.toDataURL(type, quality);
+	}
 
 });
