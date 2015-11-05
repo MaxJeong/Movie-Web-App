@@ -17,7 +17,7 @@ exports.api = function(req, res){
 };
 
 // retrieve an individual movie model, using it's id as a DB key
-exports.getMovie = function(req, res){
+exports.getMovie = function(req, res) {
     MovieModel.findById(req.params.id, function(err, movie) {
         if (err) {
             res.status(500).send("Sorry, unable to retrieve movie at this time (" 
@@ -29,6 +29,21 @@ exports.getMovie = function(req, res){
         }
     });
 };
+
+exports.getMovies = function(req, res) {
+    MovieModel.find(function(error, movies) {
+        if (!error) {
+            res.status(200).send(movies);
+        } else {
+            res.status(404).send("Sorry, no movies found " + 
+                error.message);
+        }
+    });
+};
+
+exports.addMovie = function(req, res) {
+    
+}
 
 // NOTE, you would use this module only if you chose to implement
 // image upload using Blobs with the HTML5 API.  If instead your
@@ -68,8 +83,18 @@ mongoose.connect('mongodb://' +config.dbuser+ ':' +config.dbpass+
 // Schemas
 var MovieSchema = new mongoose.Schema({
     title: { type: String, required: true },
+    released: { type: Number, required: true },
     director: { type: String, required: true },
-    // ADD CODE for other Movie attributes
+    starring: { type: [String], required: true },
+    rating: { type: String, required: true },
+    duration: { type: Number, required: true },
+    genre: { type: [String], required: true },
+    synopsis: { type: String, required: true },
+    freshTotal: { type: Number, required: true },
+    freshVotes: { type: Number, required: true },
+    trailer: { type: String },
+    poster: { type: String, required: true },
+    dated: { type: Date, required: true }
 });
 
 // Constraints

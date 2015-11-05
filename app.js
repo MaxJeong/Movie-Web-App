@@ -70,11 +70,11 @@ app.get('/', splat.api);
 
 // Retrieve a single movie by its id attribute
 app.get('/movies/:id', splat.getMovie);
+app.get('/movies', splat.getMovies);
+app.post('/movies', splat.addMovie);
 
 // ADD CODE to support other routes listed on assignment handout
 /*
-app.get('/movies', splat.getMovies);
-app.post('/movies', splat.addMovie);
 app.put('/movies/:id', splat.editMovie);
 app.delete('/movies/:id', splat.deleteMovie);
 */
