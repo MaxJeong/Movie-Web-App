@@ -4,20 +4,19 @@ splat.Movie = Backbone.Model.extend({
     url: "http://mathlab.utsc.utoronto.ca:41302/movies/:id",
 
     defaults: {
-	title: "",
-	release: null,
-	director: "",
-	starring: [],
-	rating: "",
-	duration: null,
-	genre: [],
-	synopsis: "",
-	freshTotal: 0.0,
-	freshVotes: 0.0,
-	trailer: "mpv/default.mp4",
-	poster: "img/default.png",
-	date: new Date(),
-	// other model attributes
+		title: "",
+		release: null,
+		director: "",
+		starring: [],
+		rating: "",
+		duration: null,
+		genre: [],
+		synopsis: "",
+		freshTotal: 0.0,
+		freshVotes: 0.0,
+		trailer: "mpv/default.mp4",
+		poster: "img/default.png",
+		date: new Date(),
     },
 
     validateCheck:function(item){

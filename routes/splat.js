@@ -13,7 +13,7 @@ var fs = require('fs'),
 
 // heartbeat response for server API
 exports.api = function(req, res){
-  res.status(200).send('<h3>Eatz API is running!</h3>');
+    res.status(200).send('<h3>Eatz API is running!</h3>');
 };
 
 // retrieve an individual movie model, using it's id as a DB key
@@ -42,8 +42,15 @@ exports.getMovies = function(req, res) {
 };
 
 exports.addMovie = function(req, res) {
-    
-}
+    MovieModel.findById(req.params.id, function(err, movie) {
+        if (!error) {
+            res.status(200).insert(movie);
+        } else {
+            res.status(404).send("Sorry, cannot add movie " +
+                error.message);
+        }
+    });
+};
 
 // NOTE, you would use this module only if you chose to implement
 // image upload using Blobs with the HTML5 API.  If instead your
