@@ -72,6 +72,7 @@ app.get('/', splat.api);
 app.get('/movies/:id', splat.getMovie);
 app.get('/movies', splat.getMovies);
 app.post('/movies', splat.addMovie);
+console.log("in app.js");
 
 // ADD CODE to support other routes listed on assignment handout
 /*

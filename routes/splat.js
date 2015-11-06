@@ -1,5 +1,5 @@
 "use strict";
-
+console.log("in splat");
 var fs = require('fs'),
     // path is "../" since splat.js is in routes/ sub-dir
     config = require(__dirname + '/../config'),  // port#, other params
@@ -31,6 +31,17 @@ exports.getMovie = function(req, res) {
 };
 
 exports.getMovies = function(req, res) {
+    var m = new MovieModel(req.body.title);
+    m.save(function(err) {
+  console.log(err);
+
+  console.log('User saved successfully!');
+});
+    console.log('Hello!');
+    console.log(m);
+    // console.log(req);
+    // console.log(res);
+    
     MovieModel.find(function(error, movies) {
         if (!error) {
             res.status(200).send(movies);
@@ -44,7 +55,12 @@ exports.getMovies = function(req, res) {
 exports.addMovie = function(req, res) {
 //  var m = new MovieModel(req.body);
     var m = new MovieModel(req.body.title);
-    m.save();
+    m.save(function(err) {
+  if (err) throw err;
+
+  console.log('User saved successfully!');
+});
+    console.log('Hello!');
     // m.findById(req.params.id, function(err, movie) {
     //     if (!error) {
     //         res.status(200).send(movie);
@@ -55,6 +71,7 @@ exports.addMovie = function(req, res) {
     // });
 };
 
+console.log(exports.addMovie);
 // NOTE, you would use this module only if you chose to implement
 // image upload using Blobs with the HTML5 API.  If instead your
 // server saves images directly from your model's poster value,
@@ -92,19 +109,19 @@ mongoose.connect('mongodb://' +config.dbuser+ ':' +config.dbpass+
 
 // Schemas
 var MovieSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    released: { type: Number, required: true },
-    director: { type: String, required: true },
-    starring: { type: [String], required: true },
-    rating: { type: String, required: true },
-    duration: { type: Number, required: true },
-    genre: { type: [String], required: true },
-    synopsis: { type: String, required: true },
-    freshTotal: { type: Number, required: true },
-    freshVotes: { type: Number, required: true },
+    title: { type: String, required: false },
+    released: { type: Number, required: false },
+    director: { type: String, required: false },
+    starring: { type: [String], required: false },
+    rating: { type: String, required: false },
+    duration: { type: Number, required: false },
+    genre: { type: [String], required: false },
+    synopsis: { type: String, required: false },
+    freshTotal: { type: Number, required: false },
+    freshVotes: { type: Number, required: false },
     trailer: { type: String },
-    poster: { type: String, required: true },
-    dated: { type: Date, required: true }
+    poster: { type: String, required: false },
+    dated: { type: Date, required: false }
 });
 
 // Constraints
