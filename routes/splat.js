@@ -42,14 +42,17 @@ exports.getMovies = function(req, res) {
 };
 
 exports.addMovie = function(req, res) {
-    MovieModel.findById(req.params.id, function(err, movie) {
-        if (!error) {
-            res.status(200).insert(movie);
-        } else {
-            res.status(404).send("Sorry, cannot add movie " +
-                error.message);
-        }
-    });
+//  var m = new MovieModel(req.body);
+    var m = new MovieModel(req.body.title);
+    m.save();
+    // m.findById(req.params.id, function(err, movie) {
+    //     if (!error) {
+    //         res.status(200).send(movie);
+    //     } else {
+    //         res.status(404).send("Sorry, cannot add movie " +
+    //             error.message);
+    //     }
+    // });
 };
 
 // NOTE, you would use this module only if you chose to implement
