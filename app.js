@@ -77,7 +77,7 @@ console.log("in app.js",splat.editMovie);
 // ADD CODE to support other routes listed on assignment handout
 
 app.put('/movies/:id', splat.editMovie);
-// app.delete('/movies/:id', splat.deleteMovie);
+app.delete('/movies/:id', splat.deleteMovie);
 
 
 // location of app's static content ... may need to ADD CODE

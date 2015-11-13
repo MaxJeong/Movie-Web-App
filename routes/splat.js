@@ -12,7 +12,7 @@ var fs = require('fs'),
 // to modules that "require" this file (in particular app.js)
 
 // heartbeat response for server API
-exports.api = function(req, res){
+exports.api = function(req, res) {
     res.status(200).send('<h3>Eatz API is running!</h3>');
 };
 
@@ -66,7 +66,7 @@ exports.addMovie = function(req, res) {
     // });
 };
 
-exports.editMovie = function(req,res){
+exports.editMovie = function(req,res) {
     console.log('in editMovie');
     console.log(req.params);
     // console.log(res.body);
@@ -85,6 +85,23 @@ exports.editMovie = function(req,res){
         }
     });
     
+};
+
+exports.deleteMovie = function(req,res) {
+    MovieModel.findById(req.params.id, function(err, movie) {
+        console.log(m);
+        console.log(movie);
+        var m = new MovieModel(movie);
+        if (err) {
+            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+                +err.message+ ")" );
+        } else if (!movie) {
+            res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
+        } else {
+            m.remove();
+            // res.status(200).send(movie);
+        }
+    });
 };
 
 console.log(exports.editMovie);
@@ -142,7 +159,7 @@ var MovieSchema = new mongoose.Schema({
 
 // Constraints
 // each title:director pair must be unique; duplicates are dropped
-//MovieSchema.index(...);  // ADD CODE
+MovieSchema.index({title: 0, director: 2}, {unique: true, dropDups: true});
 
 // Models
 var MovieModel = mongoose.model('Movie', MovieSchema);
