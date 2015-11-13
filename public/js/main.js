@@ -18,13 +18,13 @@ splat.AppRouter = Backbone.Router.extend({
 
     // When an instance of an AppRouter is declared, create a Header view
     initialize: function() {
+        splat.collection = new splat.Movies();
+        splat.collection.fetch();
         // instantiate a Header view
         this.headerView = new splat.Header();  
         // insert the rendered Header view element into the document DOM
         $('.header').html(this.headerView.render().el);
         //create collection and retreive values
-        splat.collection = new splat.Movies();
-        splat.collection.fetch();
     },
 
     //load home view, and select the nav bar
@@ -74,7 +74,7 @@ splat.AppRouter = Backbone.Router.extend({
         
         if (!this.moviesView) {
             //why is it nessary to supply the collection to the constructor
-            this.moviesView = new splat.MovieThumb({collection:my_collection});
+            this.moviesView = new splat.MovieThumb({collection:splat.collection});
         };
         //highlights item in headerView
         this.headerView.selectMenuItem('.browse-menu');
@@ -83,7 +83,7 @@ splat.AppRouter = Backbone.Router.extend({
 
     //load up a movie details page
     details: function() {
-        console.log(splat.collection);
+        // console.log(splat.collection);
         if (!this.detailsView) {
             this.detailsView = new splat.Details();
         };
@@ -97,11 +97,16 @@ splat.AppRouter = Backbone.Router.extend({
     //like the details page, but for already existing movies
     edit:function(id){
         //edit is same as details,but with filled in values
-        this.details();
         // console.log(id);
+        this.details();
         var k;
         var select;
         var current = splat.collection.get(id);
+        // console.log(splat);
+        // console.log(splat.collection);
+        // console.log(current);
+
+        
         for (k in current.attributes){
             // console.log(current.attributes[k]);
 
@@ -111,9 +116,9 @@ splat.AppRouter = Backbone.Router.extend({
             $(select).val(current.attributes[k]);            
         }
         $('#displayimg').attr('src',current.attributes.poster);
-        console.log(current.attributes.poster);
+        // console.log(current.attributes.poster);
 
-        //keep a reference to model in detailsView
+        // //keep a reference to model in detailsView
         this.detailsView.newMovie = current;
         this.detailsView.isNew = false;
         

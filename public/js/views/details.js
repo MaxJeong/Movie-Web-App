@@ -71,6 +71,9 @@ splat.Details = Backbone.View.extend({
      
 		});
 		}else{
+			console.log(this);
+			console.log(this.newMovie.attributes);
+			console.log(self.newMovie);
 			console.log('saving!');
 			this.newMovie.save(null,{ 
             wait : true, 
@@ -86,8 +89,8 @@ splat.Details = Backbone.View.extend({
             }
         	});
 		}
-		this.newMovie = null;
-		this.isNew = null;
+		// this.newMovie = null;
+		// this.isNew = null;
 			
 	},
 
@@ -123,10 +126,10 @@ splat.Details = Backbone.View.extend({
 	update:function(event){
 		var item = $(event.currentTarget);
 		
-		console.log(item);
-		console.log(item.attr('id'));
+		// console.log(item);
+		// console.log(item.attr('id'));
 		splat.utils.hideValidationNotice(item);
-		console.log(item.attr('name'));
+		// console.log(item.attr('name'));
 
 		splat.utils.showNotice('info','Remember to click Save Changes Button');
 		if (this.newMovie.validateCheck(item)) {

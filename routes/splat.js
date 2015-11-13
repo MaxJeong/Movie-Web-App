@@ -23,22 +23,16 @@ exports.getMovie = function(req, res) {
             res.status(500).send("Sorry, unable to retrieve movie at this time (" 
                 +err.message+ ")" );
         } else if (!movie) {
-            res.status(404).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
+            res.status(402).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
             res.status(200).send(movie);
         }
     });
 };
 
+//get all movies 
 exports.getMovies = function(req, res) {
-    var m = new MovieModel(req.body.title);
-    m.save(function(err) {
-  console.log(err);
-
-  console.log('User saved successfully!');
-});
-    console.log('Hello!');
-    console.log(m);
+    // console.log('Hello!');
     // console.log(req);
     // console.log(res);
     
@@ -46,21 +40,22 @@ exports.getMovies = function(req, res) {
         if (!error) {
             res.status(200).send(movies);
         } else {
-            res.status(404).send("Sorry, no movies found " + 
+            res.status(401).send("Sorry, no movies found " + 
                 error.message);
         }
     });
 };
 
+//add single move
 exports.addMovie = function(req, res) {
-//  var m = new MovieModel(req.body);
-    var m = new MovieModel(req.body.title);
-    m.save(function(err) {
-  if (err) throw err;
+    var m = new MovieModel(req.body);
+    console.log('in addMovie');
+    console.log(req.body);
 
-  console.log('User saved successfully!');
-});
-    console.log('Hello!');
+    //likely need a callback function here
+    m.save();
+    
+    // console.log(splat);
     // m.findById(req.params.id, function(err, movie) {
     //     if (!error) {
     //         res.status(200).send(movie);
@@ -71,7 +66,28 @@ exports.addMovie = function(req, res) {
     // });
 };
 
-console.log(exports.addMovie);
+exports.editMovie = function(req,res){
+    console.log('in editMovie');
+    console.log(req.params);
+    // console.log(res.body);
+    MovieModel.findById(req.params.id, function(err, movie) {
+        var m = new MovieModel(movie);
+        console.log(m,movie);
+
+        if (err) {
+            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+                +err.message+ ")" );
+        } else if (!movie) {
+            res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
+        } else {
+            m.save();
+            // res.status(200).send(movie);
+        }
+    });
+    
+};
+
+console.log(exports.editMovie);
 // NOTE, you would use this module only if you chose to implement
 // image upload using Blobs with the HTML5 API.  If instead your
 // server saves images directly from your model's poster value,
