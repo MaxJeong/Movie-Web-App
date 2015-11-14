@@ -46,24 +46,34 @@ exports.getMovies = function(req, res) {
     });
 };
 
-//add single move
+//add single movie
 exports.addMovie = function(req, res) {
     var m = new MovieModel(req.body);
+    var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
+    var name = m.id;
+    var image_path = path + name + '.jpeg';
+    var image = fs.open(image_path, 'w', function(err, fd) {
+        if (err) {
+            res.status(500).send("Sorry, unable to save image at this time (" 
+                +err.message+ ")" );
+        } else {
+            var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+            fs.writeFile(image_path, base64Data, 'base64', function(err) {
+                console.log(err);
+                m.poster = 'img/uploads/' + name + '.jpeg';
+                m.save();
+                fs.close(fd);
+            });
+            // res.status(200).send(movie);
+        }
+    });
+
     console.log('in addMovie');
     console.log(req.body);
 
     //likely need a callback function here
-    m.save();
+    //m.save();
     
-    // console.log(splat);
-    // m.findById(req.params.id, function(err, movie) {
-    //     if (!error) {
-    //         res.status(200).send(movie);
-    //     } else {
-    //         res.status(404).send("Sorry, cannot add movie " +
-    //             error.message);
-    //     }
-    // });
 };
 
 exports.editMovie = function(req,res) {
@@ -80,7 +90,24 @@ exports.editMovie = function(req,res) {
         } else if (!movie) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
-            m.save();
+            var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
+            var name = m.id;
+            var image_path = path + name + '.jpeg';
+            var image = fs.open(image_path, 'w', function(err, fd) {
+                if (err) {
+                    res.status(500).send("Sorry, unable to save image at this time (" 
+                        +err.message+ ")" );
+                } else if (image) {
+                    fs.unlink(image_path);
+                } 
+                var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+                    fs.writeFile(image_path, base64Data, 'base64', function(err) {
+                        console.log(err);
+                        m.poster = 'img/uploads/' + name + '.jpeg';
+                        m.save();
+                        fs.close(fd);
+                });
+            });
             // res.status(200).send(movie);
         }
     });
@@ -98,6 +125,19 @@ exports.deleteMovie = function(req,res) {
         } else if (!movie) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
+            var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
+            var name = m.id;
+            var image_path = path + name + '.jpeg';
+            var image = fs.open(image_path, 'w', function(err, fd) {
+                if (err) {
+                    res.status(500).send("Sorry, unable to remove image at this time (" 
+                        +err.message+ ")" );
+                } else if (image) {
+                    fs.unlink(image_path);
+                    fs.close(fd);
+                } 
+            });
+
             m.remove();
             // res.status(200).send(movie);
         }
