@@ -13,13 +13,16 @@ splat.AppRouter = Backbone.Router.extend({
         "about": "about",
         "movies": "movies",
         "movies/add": "details",
-        "movies/:id": "edit"
+        "movies/:id": "edit",
+        "movies/:id/reviews": "review"
     },
 
     // When an instance of an AppRouter is declared, create a Header view
     initialize: function() {
         splat.collection = new splat.Movies();
         splat.collection.fetch();
+        splat.reviews = new splat.Reviews();
+        splat.reviews.fetch();
         // instantiate a Header view
         this.headerView = new splat.Header();  
         // insert the rendered Header view element into the document DOM
@@ -122,7 +125,30 @@ splat.AppRouter = Backbone.Router.extend({
         this.detailsView.newMovie = current;
         this.detailsView.isNew = false;
         
+    },
+
+
+    review:function(id){
+
+        // console.log(splat.collection);
+        if (!this.reviewView) {
+            this.reviewView = new splat.ReviewThumb();
+        };
+
+        //generating test models for use
+        // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
+        // names.map(function(name){
+        //    var testModel = new splat.Movie({title:name});
+        //    my_collection.create(testModel);
+        // });
+        //console.log(my_model);
+        //console.log(my_collection);
+        
+
+        this.headerView.selectMenuItem('.details-menu');
+        $('#content').html(this.reviewView.render().el);
     }
+
 
 
 });
