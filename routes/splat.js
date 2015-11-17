@@ -61,7 +61,19 @@ exports.addMovie = function(req, res) {
             fs.writeFile(image_path, base64Data, 'base64', function(err) {
                 console.log(err);
                 m.poster = 'img/uploads/' + name + '.jpeg';
-                m.save();
+                m.save(null,{ 
+                    wait : true, 
+                    success : function (model, response) {
+                        console.log('success',model);
+                        //consider navigating to movie page
+                        splat.utils.showNotice('success','operation complete');
+                        splat.app.navigate('#', {replace:true, trigger:true});
+                    },
+                    fail: function(model, response) {
+                        console.log('fail',model);
+                        splat.utils.showNotice('danger','could not save');
+                    }
+                });
                 fs.close(fd);
             });
             // res.status(200).send(movie);
@@ -99,14 +111,23 @@ exports.editMovie = function(req,res) {
                         +err.message+ ")" );
                 } else if (image) {
                     fs.unlink(image_path);
-                } 
-                var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+                    var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
                     fs.writeFile(image_path, base64Data, 'base64', function(err) {
-                        console.log(err);
-                        m.poster = 'img/uploads/' + name + '.jpeg';
+                        //console.log(err);
+                        m.set('poster', 'img/uploads/' + name + '.jpeg');
                         m.save();
-                        fs.close(fd);
-                });
+                    });
+                } 
+                
+                // m.save(function(err, movie) {
+                //     if (err) {
+                //         res.status(500).send("Sorry, unable to save movie at this time");
+                //     } else {
+                //         res.status(200).send(movie);
+                //     }
+                // });
+                // fs.close(fd);
+                
             });
             // res.status(200).send(movie);
         }
