@@ -34,9 +34,12 @@ exports.getReviewsNoID = function(req, res) {
 };
 
 exports.getReviews = function(req, res) {
-    
+    var review = new ReviewModel({reviewName:'addison'});
+    review.movieId = req.params.id;
+    review.save();
+
     console.log("in reviews");
-    ReviewModel.findById( req.params.id ,function(err, review) {
+    ReviewModel.find( {movieId:req.params.id} ,function(err, review) {
         console.log(review);
         if (err) {
             res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
