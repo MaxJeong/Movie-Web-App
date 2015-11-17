@@ -15,8 +15,13 @@ var fs = require('fs'),
 exports.api = function(req, res) {
     res.status(200).send('<h3>Eatz API is running!</h3>');
 };
-exports.getReviews = function(req, res) {
-    ReviewModel.findById( function(err, review) {
+
+//gets all reviews
+exports.getReviewsNoID = function(req, res) {
+
+    console.log("in reviews");
+    ReviewModel.find( function(err, review) {
+        console.log(review);
         if (err) {
             res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
                 +err.message+ ")" );
@@ -27,6 +32,23 @@ exports.getReviews = function(req, res) {
         }
     });
 };
+
+exports.getReviews = function(req, res) {
+    
+    console.log("in reviews");
+    ReviewModel.findById( req.params.id ,function(err, review) {
+        console.log(review);
+        if (err) {
+            res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
+                +err.message+ ")" );
+        } else if (!review) {
+            res.status(402).send("Sorry, that review doesn't exist;");
+        } else {
+            res.status(200).send(review);
+        }
+    });
+};
+
 
 // retrieve an individual movie model, using it's id as a DB key
 exports.getMovie = function(req, res) {
