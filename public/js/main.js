@@ -127,24 +127,20 @@ splat.AppRouter = Backbone.Router.extend({
         
     },
 
-
     review:function(id){
-
         // console.log(splat.collection);
         if (!this.reviewView) {
             this.reviewView = new splat.ReviewThumb();
         };
 
-        //generating test models for use
         // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
         // names.map(function(name){
-        //    var testModel = new splat.Movie({title:name});
-        //    my_collection.create(testModel);
+        //     var testModel = new splat.Reviews({reviewName:name});
+        //     splat.reviews.create(testModel);
         // });
         //console.log(my_model);
         //console.log(my_collection);
         
-
         this.headerView.selectMenuItem('.details-menu');
         $('#content').html(this.reviewView.render().el);
     }

@@ -7,6 +7,12 @@ var splat = splat || {};
 // note View-name (Home) matches name of template file Home.html
 splat.ReviewThumb = Backbone.View.extend({
 
+	// ReviewsView object listens to reviews
+	// collection for “sync” events, calling
+	// showScore() when event occurs
+	//this.listenTo(this.reviews, "sync", this.showScore);
+	//this.listenTo(this.reviews, "sync", this.renderReviews);
+
     // render the View
     render: function () {
 	// set the view element ($el) HTML content using its template
@@ -23,30 +29,35 @@ splat.ReviewThumb = Backbone.View.extend({
 	var self = this;
 
 	reviewThumbLoad.done(function(markup) {
-	  // Now "markup" contains the response to the $.get() request.
-	  // Turn this markup into a function using Underscore's
-	  // template() // function.
-	  // Finally apply the reviewsTemplate shown below to your
-	  // reviews collection and the template function you just created.
+	  	// Now "markup" contains the response to the $.get() request.
+	  	// Turn this markup into a function using Underscore's
+	  	// template() // function.
+	  	// Finally apply the reviewsTemplate shown below to your
+		// reviews collection and the template function you just created.
+	  	var reviewForm = $.get('tpl/Reviewer.html');
 
-	  //change into easy to work with form
-	  self.template = _.template(markup);
+	  	//change into easy to work with form
+	  	self.template = _.template(markup);
 
-	  // console.log(markup, reviewThumbLoad );
-	  // console.log(self.model.toJSON(),self.template);
-	  //to store the result to display
-	  self.display = ''
-	  // console.log( self.template(self.model.toJSON()) );
-	  splat.reviews.each(function(model){
-	  		//add the review model html to display
-	  		self.display = self.display + self.template( model.toJSON());
-	  });
+	  	// console.log(markup, reviewThumbLoad );
+	  	// console.log(self.model.toJSON(),self.template);
+	  	//to store the result to display
+	  	self.display = '';
+	  	reviewForm.done(function(markup) {
+	  		self.display = _.template(markup);
+	  		self.display = self.display();
+	  		console.log(markup);
+	  		console.log(self.display);
+		  	splat.reviews.each(function(model){
+		  		//add the review model html to display
+		  		self.display = self.display + self.template( model.toJSON());
+		  	});
+		   	self.$el.html( self.display);
+	  	});
+	  	// console.log( self.template(self.model.toJSON()) );
 
-	   //actually display it
-	   self.$el.html( self.display);
+	   	//actually display it
 	});
-
-
 
 	// this.$el.html( template() );
 	return this;    // support method chaining
