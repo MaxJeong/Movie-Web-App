@@ -72,9 +72,13 @@ app.get('/', splat.api);
 app.get('/movies/:id', splat.getMovie);
 app.get('/movies/', splat.getMovies);
 app.post('/movies/', splat.addMovie);
-console.log("in app.js",splat.editMovie);
+// console.log("in app.js",splat.editMovie);
 
 app.get('/movies/:id/reviews', splat.getReviews);
+// app.get('/movies/movieId/reviews', splat.getReviews);
+// app.get('/:movieId/reviews', splat.getReviews);
+// app.get('/movieId/reviews', splat.getReviews);
+// app.get('movieId/reviews/', splat.getReviews);
 app.get('/reviews', splat.getReviewsNoID);
 
 // ADD CODE to support other routes listed on assignment handout

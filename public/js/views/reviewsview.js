@@ -48,6 +48,7 @@ splat.ReviewThumb = Backbone.View.extend({
 	  		self.display = self.display();
 	  		console.log(markup);
 	  		console.log(self.display);
+	  		console.log(splat.reviews);
 		  	splat.reviews.each(function(model){
 		  		//add the review model html to display
 		  		self.display = self.display + self.template( model.toJSON());

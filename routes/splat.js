@@ -19,7 +19,7 @@ exports.api = function(req, res) {
 //gets all reviews
 exports.getReviewsNoID = function(req, res) {
 
-    console.log("in reviews");
+    console.log("in reviewsNOID");
     ReviewModel.find( function(err, review) {
         console.log(review);
         if (err) {
@@ -34,13 +34,16 @@ exports.getReviewsNoID = function(req, res) {
 };
 
 exports.getReviews = function(req, res) {
-    var review = new ReviewModel({reviewName:'addison'});
-    review.movieId = req.params.id;
-    review.save();
+    // var review = new ReviewModel({reviewName:'addison'});
+    // review.movieId = req.params.id;
+    // review.save();
+
 
     console.log("in reviews");
+    console.log('looking for',req);
+
     ReviewModel.find( {movieId:req.params.id} ,function(err, review) {
-        console.log(review);
+        
         if (err) {
             res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
                 +err.message+ ")" );
@@ -202,7 +205,7 @@ exports.deleteMovie = function(req,res) {
     });
 };
 
-console.log(exports.editMovie);
+// console.log(exports.editMovie);
 // NOTE, you would use this module only if you chose to implement
 // image upload using Blobs with the HTML5 API.  If instead your
 // server saves images directly from your model's poster value,
