@@ -15,6 +15,18 @@ var fs = require('fs'),
 exports.api = function(req, res) {
     res.status(200).send('<h3>Eatz API is running!</h3>');
 };
+exports.getReviews = function(req, res) {
+    ReviewModel.findById( function(err, review) {
+        if (err) {
+            res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
+                +err.message+ ")" );
+        } else if (!review) {
+            res.status(402).send("Sorry, that review doesn't exist;");
+        } else {
+            res.status(200).send(review);
+        }
+    });
+};
 
 // retrieve an individual movie model, using it's id as a DB key
 exports.getMovie = function(req, res) {
@@ -218,9 +230,19 @@ var MovieSchema = new mongoose.Schema({
     dated: { type: Date, required: false }
 });
 
+var ReviewSchema = new mongoose.Schema({
+    freshness: { type: Number, required: false },
+    reviewText: { type: String, required: false },
+    reviewName: { type: String, required: false },
+    reviewAffil: { type: String, required: false },
+    movieId: { type: String, required: false }
+    
+});
+
 // Constraints
 // each title:director pair must be unique; duplicates are dropped
 MovieSchema.index({title: 0, director: 2}, {unique: true, dropDups: true});
 
 // Models
 var MovieModel = mongoose.model('Movie', MovieSchema);
+var ReviewModel = mongoose.model('Review',ReviewSchema);
