@@ -26,7 +26,7 @@ exports.getReviewsNoID = function(req, res) {
             res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
                 +err.message+ ")" );
         } else if (!review) {
-            res.status(402).send("Sorry, that review doesn't exist;");
+            res.status(402).send("Sorry, that review doesn't exist");
         } else {
             res.status(200).send(review);
         }
@@ -48,7 +48,7 @@ exports.getReviews = function(req, res) {
             res.status(500).send("Sorry, unable to retrieve reviews at this time (" 
                 +err.message+ ")" );
         } else if (!review) {
-            res.status(402).send("Sorry, that review doesn't exist;");
+            res.status(402).send("Sorry, that review doesn't exist");
         } else {
             res.status(200).send(review);
         }
@@ -89,39 +89,62 @@ exports.getMovies = function(req, res) {
 //add single movie
 exports.addMovie = function(req, res) {
     var m = new MovieModel(req.body);
-    var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
-    var name = m.id;
-    var image_path = path + name + '.jpeg';
-    var image = fs.open(image_path, 'w', function(err, fd) {
-        if (err) {
-            res.status(500).send("Sorry, unable to save image at this time (" 
-                +err.message+ ")" );
-        } else {
-            var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
-            fs.writeFile(image_path, base64Data, 'base64', function(err) {
-                console.log(err);
-                m.poster = 'img/uploads/' + name + '.jpeg';
-                m.save(null,{ 
-                    wait : true, 
-                    success : function (model, response) {
-                        console.log('success',model);
-                        //consider navigating to movie page
-                        splat.utils.showNotice('success','operation complete');
-                        splat.app.navigate('#', {replace:true, trigger:true});
-                    },
-                    fail: function(model, response) {
-                        console.log('fail',model);
-                        splat.utils.showNotice('danger','could not save');
-                    }
+    if (m.poster != "img/default.png") {
+        var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/';
+        var name = m.id;
+        var image_path = path + name + '.jpeg';
+        var image = fs.open(image_path, 'w', function(err, fd) {
+            if (err) {
+                res.status(500).send("Sorry, unable to save image at this time (" 
+                    +err.message+ ")" );
+            } else {
+                var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+                fs.writeFile(image_path, base64Data, 'base64', function(err) {
+                    //console.log(err);
+                    m.poster = 'img/uploads/' + name + '.jpeg';
+                    m.save();
+                    fs.close(fd);
                 });
-                fs.close(fd);
-            });
-            // res.status(200).send(movie);
-        }
-    });
+            }
+        });
+    } else {
+        m.save();
+    }
+    res.status(200).send(m);
+    // var m = new MovieModel(req.body);
+    // var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
+    // var name = m.id;
+    // var image_path = path + name + '.jpeg';
+    // var image = fs.open(image_path, 'w', function(err, fd) {
+    //     if (err) {
+    //         res.status(500).send("Sorry, unable to save image at this time (" 
+    //             +err.message+ ")" );
+    //     } else {
+    //         var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+    //         fs.writeFile(image_path, base64Data, 'base64', function(err) {
+    //             console.log(err);
+    //             m.poster = 'img/uploads/' + name + '.jpeg';
+    //             m.save(null,{ 
+    //                 wait : true, 
+    //                 success : function (model, response) {
+    //                     console.log('success',model);
+    //                     //consider navigating to movie page
+    //                     splat.utils.showNotice('success','operation complete');
+    //                     splat.app.navigate('#', {replace:true, trigger:true});
+    //                 },
+    //                 fail: function(model, response) {
+    //                     console.log('fail',model);
+    //                     splat.utils.showNotice('danger','could not save');
+    //                 }
+    //             });
+    //             fs.close(fd);
+    //         });
+    //         // res.status(200).send(movie);
+    //     }
+    // });
 
-    console.log('in addMovie');
-    console.log(req.body);
+    // console.log('in addMovie');
+    // console.log(req.body);
 
     //likely need a callback function here
     //m.save();
@@ -134,7 +157,7 @@ exports.editMovie = function(req,res) {
     // console.log(res.body);
     MovieModel.findById(req.params.id, function(err, movie) {
         var m = new MovieModel(movie);
-        console.log(m,movie);
+        // console.log(m,movie);
 
         if (err) {
             res.status(500).send("Sorry, unable to retrieve movie at this time (" 
@@ -149,13 +172,13 @@ exports.editMovie = function(req,res) {
                 if (err) {
                     res.status(500).send("Sorry, unable to save image at this time (" 
                         +err.message+ ")" );
-                } else if (image) {
+                } else {
                     fs.unlink(image_path);
                     var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
                     fs.writeFile(image_path, base64Data, 'base64', function(err) {
                         //console.log(err);
                         m.set('poster', 'img/uploads/' + name + '.jpeg');
-                        m.save();
+                        //m.save();
                     });
                 } 
                 
@@ -168,8 +191,11 @@ exports.editMovie = function(req,res) {
                 // });
                 // fs.close(fd);
                 
+                fs.close(fd);
+                
             });
-            // res.status(200).send(movie);
+            //res.status(200).send(movie);
+            m.save();
         }
     });
     

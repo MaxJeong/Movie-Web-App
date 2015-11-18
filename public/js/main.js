@@ -27,7 +27,7 @@ splat.AppRouter = Backbone.Router.extend({
         this.headerView = new splat.Header();  
         // insert the rendered Header view element into the document DOM
         $('.header').html(this.headerView.render().el);
-        //create collection and retreive values
+        //create collection and retrieve values
     },
 
     //load home view, and select the nav bar
