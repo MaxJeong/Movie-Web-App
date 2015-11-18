@@ -69,6 +69,7 @@ app.use(methodOverride());
 app.get('/', splat.api);
 
 // Retrieve a single movie by its id attribute
+// app.get('/index.html#movies/:id', splat.getMovie);
 app.get('/movies/:id', splat.getMovie);
 app.get('/movies/', splat.getMovies);
 app.post('/movies/', splat.addMovie);
@@ -79,7 +80,7 @@ app.get('/movies/:id/reviews', splat.getReviews);
 // app.get('/:movieId/reviews', splat.getReviews);
 // app.get('/movieId/reviews', splat.getReviews);
 // app.get('movieId/reviews/', splat.getReviews);
-app.get('/reviews', splat.getReviewsNoID);
+// app.get('/reviews', splat.getReviewsNoID);
 
 // ADD CODE to support other routes listed on assignment handout
 

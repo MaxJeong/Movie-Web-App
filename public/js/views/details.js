@@ -75,6 +75,7 @@ splat.Details = Backbone.View.extend({
 			console.log(this.newMovie.attributes);
 			console.log(self.newMovie);
 			console.log('saving!');
+			console.log(this.newMovie)
 			this.newMovie.save(null,{ 
             wait : true, 
             success : function (model,response) {

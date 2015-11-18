@@ -7,17 +7,18 @@ var splat = splat || {};
 // note View-name (Home) matches name of template file Home.html
 splat.ReviewThumb = Backbone.View.extend({
 
-	events: {
-		"click #reviewsave ": "reviewSave"
-	},
+	// events: {
+	// 	"click #reviewsave ": "reviewSave"
+	// },
 
-	reviewSave:function(event) {
-		var review = this.createReview;
+	// reviewSave:function(event) {
+	// 	var review = this.createReview;
 
-		var collection = splat.collection;
+	// 	var collection = splat.collection;
 
-		collection.create(review);
+	// 	collection.create(review);
 
+<<<<<<< HEAD
 		// success: function (model, response) {
 	 //        //splat.utils.showNotice('success','operation complete');
 	 //        //splat.app.navigate('#', {replace:true, trigger:true});
@@ -26,9 +27,19 @@ splat.ReviewThumb = Backbone.View.extend({
 	 //        //console.log('fail',model);
 	 //        //splat.utils.showNotice('danger','could not save');
 	 //    }
+=======
+	// 	// success : function (model, response) {
+	//  //        //splat.utils.showNotice('success','operation complete');
+	//  //        //splat.app.navigate('#', {replace:true, trigger:true});
+	//  //    },
+	//  //    fail: function(model, response) {
+	//  //        //console.log('fail',model);
+	//  //        //splat.utils.showNotice('danger','could not save');
+	//  //    }
+>>>>>>> 6526ff1978af181d066e62602f65d4c8c06c564d
 
-	    location.reload();
-	},
+	//     location.reload();
+	// },
 
 	// ReviewsView object listens to reviews
 	// collection for “sync” events, calling
