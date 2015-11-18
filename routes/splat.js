@@ -110,7 +110,7 @@ exports.addMovie = function(req, res) {
     } else {
         m.save();
     }
-    res.status(200).send(m);
+    // res.status(200).send(m);
     // var m = new MovieModel(req.body);
     // var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
     // var name = m.id;
@@ -177,7 +177,7 @@ exports.editMovie = function(req,res) {
                     var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
                     fs.writeFile(image_path, base64Data, 'base64', function(err) {
                         //console.log(err);
-                        m.set('poster', 'img/uploads/' + name + '.jpeg');
+                        m.poster = 'img/uploads/' + name + '.jpeg';
                         //m.save();
                     });
                 } 
@@ -195,8 +195,9 @@ exports.editMovie = function(req,res) {
                 
             });
             //res.status(200).send(movie);
-            m.save();
+            
         }
+        m.save();
     });
     
 };

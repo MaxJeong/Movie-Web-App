@@ -18,14 +18,14 @@ splat.ReviewThumb = Backbone.View.extend({
 
 		collection.create(review);
 
-		success : function (model, response) {
-	        //splat.utils.showNotice('success','operation complete');
-	        //splat.app.navigate('#', {replace:true, trigger:true});
-	    },
-	    fail: function(model, response) {
-	        //console.log('fail',model);
-	        //splat.utils.showNotice('danger','could not save');
-	    }
+		// success: function (model, response) {
+	 //        //splat.utils.showNotice('success','operation complete');
+	 //        //splat.app.navigate('#', {replace:true, trigger:true});
+	 //    },
+	 //    fail: function(model, response) {
+	 //        //console.log('fail',model);
+	 //        //splat.utils.showNotice('danger','could not save');
+	 //    }
 
 	    location.reload();
 	},
