@@ -40,7 +40,7 @@ exports.getReviews = function(req, res) {
 
 
     console.log("in reviews");
-    console.log('looking for',req);
+    console.log('looking for',req.params);
 
     ReviewModel.find( {movieId:req.params.id} ,function(err, review) {
         

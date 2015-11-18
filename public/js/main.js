@@ -21,8 +21,9 @@ splat.AppRouter = Backbone.Router.extend({
     initialize: function() {
         splat.collection = new splat.Movies();
         splat.collection.fetch();
-        splat.reviews = new splat.Reviews();
-        splat.reviews.fetch();
+        // splat.reviews = new splat.Reviews();
+        // splat.reviews.fetch();
+
         // instantiate a Header view
         this.headerView = new splat.Header();  
         // insert the rendered Header view element into the document DOM
@@ -101,37 +102,61 @@ splat.AppRouter = Backbone.Router.extend({
     edit:function(id){
         //edit is same as details,but with filled in values
         // console.log(id);
+    
+        var my_collection = new splat.Movies();
+        var rev = my_collection.fetch();
+        var self = this;
+        
         this.details();
-        var k;
-        var select;
-        var current = splat.collection.get(id);
-        // console.log(splat);
-        // console.log(splat.collection);
-        // console.log(current);
+
+        rev.done(function(){
+            var k;
+            var select;
+            var current = splat.collection.get(id);
+            // console.log(splat);
+            console.log(splat.collection);
+            // console.log(current);
+
+            
+            for (k in current.attributes){
+                // console.log(current.attributes[k]);
+
+                //select input fields based on model
+                select = "input[name='"+ k+ "'][type='text']";
+                //insert values into field
+                $(select).val(current.attributes[k]);            
+            }
+            $('#displayimg').attr('src',current.attributes.poster);
+            // console.log(current.attributes.poster);
+
+            // //keep a reference to model in detailsView
+            self.detailsView.newMovie = current;
+            self.detailsView.isNew = false;
+
+        });
+
 
         
-        for (k in current.attributes){
-            // console.log(current.attributes[k]);
-
-            //select input fields based on model
-            select = "input[name='"+ k+ "'][type='text']";
-            //insert values into field
-            $(select).val(current.attributes[k]);            
-        }
-        $('#displayimg').attr('src',current.attributes.poster);
-        // console.log(current.attributes.poster);
-
-        // //keep a reference to model in detailsView
-        this.detailsView.newMovie = current;
-        this.detailsView.isNew = false;
         
     },
 
     review:function(id){
         // console.log(splat.collection);
+        //check if movie has review item
+        console.log(id);
+
+        var reviews = new splat.Reviews(id);
+        reviews.fetch();
+        console.log(reviews);
+        //get it, then send to view for processing
+
+
+
+
         if (!this.reviewView) {
             this.reviewView = new splat.ReviewThumb();
         };
+        this.reviewView.reviews = reviews;
 
         // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
         // names.map(function(name){
