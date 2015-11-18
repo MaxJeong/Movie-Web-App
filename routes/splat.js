@@ -58,6 +58,7 @@ exports.getReviews = function(req, res) {
 
 // retrieve an individual movie model, using it's id as a DB key
 exports.getMovie = function(req, res) {
+    console.log(req.params.id);
     MovieModel.findById(req.params.id, function(err, movie) {
         if (err) {
             res.status(500).send("Sorry, unable to retrieve movie at this time (" 
@@ -72,7 +73,7 @@ exports.getMovie = function(req, res) {
 
 //get all movies 
 exports.getMovies = function(req, res) {
-    // console.log('Hello!');
+    console.log("MOVIES",req.params);
     // console.log(req);
     // console.log(res);
     
@@ -150,52 +151,70 @@ exports.addMovie = function(req, res) {
     //m.save();
     
 };
+// exports.editMovie = function(req, res) {
+//     var id = req.body._id;
+//     console.log(req.body);
+//     delete req.body._id;
+//     MovieModel.findByIdAndUpdate(id, { $set: req.body}, function(err, movie) {
+//         if (err) {
+//             console.log(err.message);
+//             res.status(500).send(err.message);
+//         }
+//         else {
+//             console.log("successfully saved");
+//             res.send(movie);
+//         }
+//     });
+// }
 
 exports.editMovie = function(req,res) {
     console.log('in editMovie');
-    console.log(req.params);
+    console.log(req.body);
+    delete req.body._id;
     // console.log(res.body);
-    MovieModel.findById(req.params.id, function(err, movie) {
+    MovieModel.findByIdAndUpdate(req.params.id,req.body, function(err, movie) {
         var m = new MovieModel(movie);
         // console.log(m,movie);
-
+        // m.director = 'aaaaaaaaaaaa';
+        console.log(m);
         if (err) {
             res.status(500).send("Sorry, unable to retrieve movie at this time (" 
                 +err.message+ ")" );
         } else if (!movie) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
-            var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
-            var name = m.id;
-            var image_path = path + name + '.jpeg';
-            var image = fs.open(image_path, 'w', function(err, fd) {
-                if (err) {
-                    res.status(500).send("Sorry, unable to save image at this time (" 
-                        +err.message+ ")" );
-                } else {
-                    fs.unlink(image_path);
-                    var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
-                    fs.writeFile(image_path, base64Data, 'base64', function(err) {
-                        //console.log(err);
-                        m.set('poster', 'img/uploads/' + name + '.jpeg');
-                        //m.save();
-                    });
-                } 
+            // var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
+            // var name = m.id;
+            // var image_path = path + name + '.jpeg';
+            // var image = fs.open(image_path, 'w', function(err, fd) {
+            //     if (err) {
+            //         res.status(500).send("Sorry, unable to save image at this time (" 
+            //             +err.message+ ")" );
+            //     } else {
+            //         fs.unlink(image_path);
+            //         var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+            //         fs.writeFile(image_path, base64Data, 'base64', function(err) {
+            //             //console.log(err);
+            //             m.set('poster', 'img/uploads/' + name + '.jpeg');
+            //             //m.save();
+            //         });
+            //     } 
                 
-                // m.save(function(err, movie) {
-                //     if (err) {
-                //         res.status(500).send("Sorry, unable to save movie at this time");
-                //     } else {
-                //         res.status(200).send(movie);
-                //     }
-                // });
-                // fs.close(fd);
+            //     // m.save(function(err, movie) {
+            //     //     if (err) {
+            //     //         res.status(500).send("Sorry, unable to save movie at this time");
+            //     //     } else {
+            //     //         res.status(200).send(movie);
+            //     //     }
+            //     // });
+            //     // fs.close(fd);
                 
-                fs.close(fd);
+            //     fs.close(fd);
                 
+            // });
+            m.save(function(){
+                res.status(200).send(m);
             });
-            //res.status(200).send(movie);
-            m.save();
         }
     });
     
