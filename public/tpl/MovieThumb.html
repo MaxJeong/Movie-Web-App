@@ -7,16 +7,29 @@
             <!-- fallback -->
             Danger zone!
         </video>
-
-        <div class="movie-desc">
-          <b>Title</b>:<%= title %> <br/>
-          <b>Directed by</b>:<%= director %> <br/>
-          <b>Starring</b>:<%= starring %> <br/>
-          <b>Genre</b>:<%= genre %> <br/>
-          <!-- ADD-CODE -->
-        </div>
-
       </a>
+
+        <div class = "col-lg-2 col-md-3 col-sm-4 col-xs-6">
+          <a href="#movies/<%= _id %>/reviews" class="plain">
+
+            <img src="../img/rotten.gif" name="swatch" height = "42" width = "42">
+          </a>
+            <p class = "swatchReview">0%</p>
+            <p class = "swatchReview"> Review </p>
+
+        </div>
+        <a href="#movies/<%= _id %>" class="plain">
+          <div class="movie-desc">
+            <b>Title</b>:<%= title %> <br/>
+            <b>Directed by</b>:<%= director %> <br/>
+            <b>Starring</b>:<%= starring %> <br/>
+            <b>Genre</b>:<%= genre %> <br/>
+            <!-- ADD-CODE -->
+          </div>
+        </a>
+
+
+
     </div>
   </div>
 </div>
