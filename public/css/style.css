@@ -134,3 +134,11 @@ h1.about-h1 {
 #orderForm {
 	color: black;
 }
+
+.swatchReview{
+	position: relative;
+	bottom: 30px;
+	text-align: center;
+
+
+}

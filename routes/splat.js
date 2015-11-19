@@ -266,7 +266,7 @@ exports.deleteMovie = function(req,res) {
                     movie.remove(function(err, movie2) {
                         console.log("this is err",err);
                         if (err) {
-                            res.status(500).send("Sorry, unable to save movie at this time");
+                            res.status(500).send(movie2 + "Sorry, unable to save movie at this time");
                         } else {
                             res.status(200).send(movie2);
                         }
