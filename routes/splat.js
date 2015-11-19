@@ -278,6 +278,42 @@ exports.deleteMovie = function(req,res) {
     });
 };
 
+// exports.playMovie = function(req, res) {
+//     // compute absolute file-system video path from __dirname and URL with id
+//     var file = // ADD CODE
+
+//     // get HTTP request "range" header, and parse it to get starting byte position
+//     var range = req.headers // ADD CODE to access range header
+//     var start = // ADD CODE to compute starting byte position
+
+//     // get a file-stats object for the requested video file, including its size
+//     fs.stat(file, function(err, stats) {
+//         // set end position from range header or default to video file size
+//     var end = // ADD CODE
+//         // set chunksize to be the difference between end and start values +1
+
+//         // send HTTP "partial-content" status (206) together with
+//     // HTML5-compatible response-headers describing video being sent
+//         res.writeHead(206, {
+//         // ADD CODE - see tutorial 7 classroom slide #22
+//         });
+
+//         // create ReadStream object, specifying start, end values computed
+//     // above to read range of bytes rather than entire file
+//         var stream = fs.createReadStream(file, { start: start, end: end })
+//         // when ReadStream is open
+//         .on("open", function() {
+//           // use stream pipe() method to send the HTTP response object,
+//       // with flow automatically managed so destination is not overwhelmed
+//             // ADD CODE
+//         // when error receiving data from stream, send error back to client.
+//         // stream is auto closed
+//         }).on("error", function(err) {
+//             // ADD CODE
+//         });
+//     });
+// };
+
 // console.log(exports.editMovie);
 // NOTE, you would use this module only if you chose to implement
 // image upload using Blobs with the HTML5 API.  If instead your

@@ -13,14 +13,28 @@ splat.ReviewThumb = Backbone.View.extend({
 
 	reviewSave:function(event) {
 		var collection = splat.collection;
-
 		var self = this;
-
 		var input = {};
+		var num = 0.0;
+
+		var name = $('input[class="freshOrRotten"]').attr('name');
+		var id = $('input[class="freshOrRotten"]').attr('id');
+		if (id == 'fresh') {
+			num = num + 1.0;
+		} else {
+			num = num + 0.0;
+		}
+		input[name] = num;
+		console.log(name);
+		console.log(num);
+		console.log(input);
 
 		var name = $('textarea[type="text"]').attr('name');
 		var val = $('textarea[type="text"]').val();
 		input[name] = val;
+		console.log(name);
+		console.log(val);
+		console.log(input);
 
 		//get all the inputs with text type
 		$('input[type="text"]').each(function(item){
@@ -45,47 +59,12 @@ splat.ReviewThumb = Backbone.View.extend({
         wait: true, 
             success: function(model,response) {
                 console.log('success',model);
-                //splat.utils.showNotice('success','operation complete');
-                //consider navigating to movie page
-                //splat.app.navigate('#', {replace:true, trigger:true});
             },
             fail: function(model, response) {
             	console.log('fail',model);
-            	//splat.utils.showNotice('danger','could not save');
-				//console.log('fail',model);
             }
 		});
 	},
-
-	// reviewSave:function(event) {
-	// 	var review = this.createReview;
-
-	// 	var collection = splat.collection;
-
-	// 	collection.create(review);
-
-	// 	success: function (model, response) {
-	//         //splat.utils.showNotice('success','operation complete');
-	//         //splat.app.navigate('#', {replace:true, trigger:true});
-	//     },
-	//     fail: function(model, response) {
-	//         //console.log('fail',model);
-	//         //splat.utils.showNotice('danger','could not save');
-	//     }
-
-	//     location.reload();
-	// },
-
-	// ReviewsView object listens to reviews
-	// collection for “sync” events, calling
-	// showScore() when event occurs
-
-	// createReview:function() {
-	// 	reviewText = $('.reviewText').val();
-	// 	reviewName = $('.reviewName').val();
-	// 	reviewAffil = $('.reviewAffil').val();
-	// 	movieId = movie.id;
-	// },
 
     // render the View
     render: function () {
