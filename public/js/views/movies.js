@@ -8,29 +8,15 @@ var splat = splat || {};
 splat.MovieThumb = Backbone.View.extend({
 
 	events: {
-		"click input[name='sortOrderTitle']" : "sortTitle",
-		"click input[name='sortOrderDirector']" : "sortDirector",
-        "mouseover a[id='ordering']" : "showMenu", 
-        "mouseover div[id='orderDiv']" : "showMenu",
-        "mouseleave a[id='ordering']" : "hideMenu",
-        "mouseleave div[id='orderDiv']" : "hideMenu",
         "change input[type='radio']" : "sortOrder" 
+    },
+
+    initialize: function (options) {
+        this.listenTo(Backbone, 'orderevent', this.render);
     },
 
     // render the View
     render: function () {
-
-    	this.collection.comparator = function(movie) {
-        	return movie.get('title'); // ADD CODE to select comparator field
-		};
-		// sort collection before rendering it - implicitly uses comparator
-		this.collection.sort();
-
-		this.collection.comparator = function(movie) {
-		    return movie.get('director'); // ADD CODE to select comparator field
-		};
-		// sort collection before rendering it - implicitly uses comparator
-		this.collection.sort();
     	// comparator function on collection is the basis for comparing movie
 		// models
 
@@ -41,6 +27,12 @@ splat.MovieThumb = Backbone.View.extend({
 		// this.collection.each(function(model){
 		// 	console.log(model.toJSON());
 		// })
+
+		this.collection.comparator = function(movie) {
+            return movie.get(splat.order); // ADD CODE to select comparator field
+        };
+ 		// sort collection before rendering it - implicitly uses comparator
+        this.collection.sort();
 
 		//loads template(needed for non name matching templates)
 		var movieThumbLoad = $.get('tpl/MovieThumb.html');

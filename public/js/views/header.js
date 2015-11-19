@@ -30,7 +30,7 @@ splat.Header = Backbone.View.extend({
         event.stopPropagation();
         splat.order = event.target.value;  // set app-level order field
         Backbone.trigger('orderevent', event);  // trigger event for other views
-        //$('form[id="orderForm"]').removeClass('open');  // close the dropdown menu
+        $('form[id="orderForm"]').removeClass('open');  // close the dropdown menu
     },
 
     // render the View

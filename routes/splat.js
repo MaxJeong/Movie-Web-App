@@ -122,13 +122,13 @@ exports.addMovie = function(req, res) {
     } else {
         //callback needed for client to execute sucess callback
         m.save(function(err, movie2) {
-                console.log("this is err",err);
-                if (err) {
-                    res.status(500).send("Sorry, unable to save movie at this time");
-                } else {
-                    res.status(200).send(movie2);
-                }
-            });
+            console.log("this is err",err);
+            if (err) {
+                res.status(500).send("Sorry, unable to save movie at this time");
+            } else {
+                res.status(200).send(movie2);
+            }
+        });
     }
     //res.status(200).send(m);
     // var m = new MovieModel(req.body);
@@ -191,7 +191,7 @@ exports.editMovie = function(req,res) {
     console.log(req.body);
     delete req.body._id;
     // console.log(res.body);
-    MovieModel.findByIdAndUpdate(req.params.id,req.body, function(err, movie) {
+    MovieModel.findByIdAndUpdate(req.params.id, req.body, function(err, movie) {
         console.log("this is movie",movie);
         console.log("this is err",err);
         if (err) {
@@ -259,8 +259,6 @@ exports.deleteMovie = function(req,res) {
                 if (err) {
                     res.status(500).send("Sorry, unable to remove image at this time (" 
                         +err.message+ ")" + movie);
-
-
                 } else if (image) {
                     fs.unlink(image_path);
                     fs.close(fd);
