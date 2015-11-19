@@ -76,10 +76,10 @@ splat.AppRouter = Backbone.Router.extend({
         //console.log(my_model);
         //console.log(my_collection);
         
-        if (!this.moviesView) {
+        // if (!this.moviesView) {
             //why is it nessary to supply the collection to the constructor
             this.moviesView = new splat.MovieThumb({collection:splat.collection});
-        };
+        // };
         //highlights item in headerView
         this.headerView.selectMenuItem('.browse-menu');
         $('#content').html(this.moviesView.render().el);

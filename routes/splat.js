@@ -120,7 +120,15 @@ exports.addMovie = function(req, res) {
             }
         });
     } else {
-        m.save();
+        //callback needed for client to execute sucess callback
+        m.save(function(err, movie2) {
+                console.log("this is err",err);
+                if (err) {
+                    res.status(500).send("Sorry, unable to save movie at this time");
+                } else {
+                    res.status(200).send(movie2);
+                }
+            });
     }
     //res.status(200).send(m);
     // var m = new MovieModel(req.body);
@@ -184,12 +192,10 @@ exports.editMovie = function(req,res) {
     delete req.body._id;
     // console.log(res.body);
     MovieModel.findByIdAndUpdate(req.params.id,req.body, function(err, movie) {
-        var m = new MovieModel(movie);
-        // console.log(m,movie);
-        // m.director = 'aaaaaaaaaaaa';
-        console.log(m);
+        console.log("this is movie",movie);
+        console.log("this is err",err);
         if (err) {
-            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+            res.status(505).send("Sorry, unable to retrieve movie at this time (" 
                 +err.message+ ")" );
         } else if (!movie) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
@@ -203,19 +209,20 @@ exports.editMovie = function(req,res) {
             //             +err.message+ ")" );
             //     } else {
             //         fs.unlink(image_path);
-            //         var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
-            //         fs.writeFile(image_path, base64Data, 'base64', function(err) {
+                    // var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+                    // fs.writeFile(image_path, base64Data, 'base64', function(err) {
             //             //console.log(err);
             //             m.set('poster', 'img/uploads/' + name + '.jpeg');
             //             //m.save();
             //         });
             //     } 
-
-            m.save(function(err, movie) {
+            //callback needed for client to execute sucess callback
+            movie.save(function(err, movie2) {
+                console.log("this is err",err);
                 if (err) {
                     res.status(500).send("Sorry, unable to save movie at this time");
                 } else {
-                    res.status(200).send(movie);
+                    res.status(200).send(movie2);
                 }
             });
             // fs.close(fd);
@@ -227,7 +234,7 @@ exports.editMovie = function(req,res) {
             // });
 
         }
-        m.save();
+        // movie.save();
     });
     
 };
@@ -235,9 +242,9 @@ exports.editMovie = function(req,res) {
 exports.deleteMovie = function(req,res) {
     console.log("in delete");
     MovieModel.findById(req.params.id, function(err, movie) {
-        console.log(m);
+        // console.log(m);
         console.log(movie);
-        var m = new MovieModel(movie);
+        // var m = new MovieModel(movie);
         if (err) {
             res.status(500).send("Sorry, unable to retrieve movie at this time (" 
                 +err.message+ ")" );
@@ -245,19 +252,29 @@ exports.deleteMovie = function(req,res) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
             var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
-            var name = m.id;
+            var name = movie.id;
             var image_path = path + name + '.jpeg';
             var image = fs.open(image_path, 'w', function(err, fd) {
+                console.log("this is fd",err);
                 if (err) {
                     res.status(500).send("Sorry, unable to remove image at this time (" 
-                        +err.message+ ")" );
+                        +err.message+ ")" + movie);
+
+
                 } else if (image) {
                     fs.unlink(image_path);
                     fs.close(fd);
+                    //callback needed for client to execute sucess callback
+                    movie.remove(function(err, movie2) {
+                        console.log("this is err",err);
+                        if (err) {
+                            res.status(500).send("Sorry, unable to save movie at this time");
+                        } else {
+                            res.status(200).send(movie2);
+                        }
+                    });
                 } 
             });
-
-            m.remove();
             // res.status(200).send(movie);
         }
     });

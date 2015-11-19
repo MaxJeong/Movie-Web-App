@@ -24,6 +24,9 @@ splat.Header = Backbone.View.extend({
     },
 
     sortOrder: function(event) {
+        console.log("change in sort order");
+        // console.log(event);
+        
         event.stopPropagation();
         splat.order = event.target.value;  // set app-level order field
         Backbone.trigger('orderevent', event);  // trigger event for other views
