@@ -38,7 +38,6 @@ exports.getReviews = function(req, res) {
     // review.movieId = req.params.id;
     // review.save();
 
-
     console.log("in reviews");
     console.log('looking for',req.params);
 
@@ -58,6 +57,7 @@ exports.getReviews = function(req, res) {
 
 // retrieve an individual movie model, using it's id as a DB key
 exports.getMovie = function(req, res) {
+    console.log("in get movie");
     console.log(req.params.id);
     MovieModel.findById(req.params.id, function(err, movie) {
         if (err) {
@@ -87,8 +87,19 @@ exports.getMovies = function(req, res) {
     });
 };
 
+exports.addReview = function(req, res) {
+    console.log("in add review");
+    console.log(req.body);
+    console.log(req.params.id);
+    var r = new ReviewModel(req.body);
+    r.movieId = req.params.id;
+    console.log(r);
+    r.save();
+}
+
 //add single movie
 exports.addMovie = function(req, res) {
+    console.log("in add movie");
     var m = new MovieModel(req.body);
     if (m.poster != "img/default.png") {
         var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/';
@@ -111,7 +122,7 @@ exports.addMovie = function(req, res) {
     } else {
         m.save();
     }
-    // res.status(200).send(m);
+    //res.status(200).send(m);
     // var m = new MovieModel(req.body);
     // var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
     // var name = m.id;
@@ -215,8 +226,6 @@ exports.editMovie = function(req,res) {
             //     res.status(200).send(m);
             // });
 
-                
-
         }
         m.save();
     });
@@ -224,6 +233,7 @@ exports.editMovie = function(req,res) {
 };
 
 exports.deleteMovie = function(req,res) {
+    console.log("in delete");
     MovieModel.findById(req.params.id, function(err, movie) {
         console.log(m);
         console.log(movie);
@@ -311,8 +321,7 @@ var ReviewSchema = new mongoose.Schema({
     reviewText: { type: String, required: false },
     reviewName: { type: String, required: false },
     reviewAffil: { type: String, required: false },
-    movieId: { type: String, required: false }
-    
+    movieId: { type: String, required: false }  
 });
 
 // Constraints
@@ -321,4 +330,4 @@ MovieSchema.index({title: 0, director: 2}, {unique: true, dropDups: true});
 
 // Models
 var MovieModel = mongoose.model('Movie', MovieSchema);
-var ReviewModel = mongoose.model('Review',ReviewSchema);
+var ReviewModel = mongoose.model('Review', ReviewSchema);

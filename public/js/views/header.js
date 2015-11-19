@@ -7,6 +7,29 @@ var splat = splat || {};
 // note View-name (Home) matches name of template file Home.html
 splat.Header = Backbone.View.extend({
 
+    events: { 
+        "mouseover a[id='ordering']" : "showMenu", 
+        "mouseover div[id='orderDiv']" : "showMenu",
+        "mouseleave a[id='ordering']" : "hideMenu",
+        "mouseleave div[id='orderDiv']" : "hideMenu",
+        "change input[type='radio']" : "sortOrder" 
+    },
+
+    showMenu: function(event) {
+        $('.dropdown-menu').show();
+    },
+
+    hideMenu: function(event) {
+        $('.dropdown-menu').hide();
+    },
+
+    sortOrder: function(event) {
+        event.stopPropagation();
+        splat.order = event.target.value;  // set app-level order field
+        Backbone.trigger('orderevent', event);  // trigger event for other views
+        //$('form[id="orderForm"]').removeClass('open');  // close the dropdown menu
+    },
+
     // render the View
     render: function () {
 	// set the view element ($el) HTML content using its template

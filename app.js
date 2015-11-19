@@ -76,6 +76,7 @@ app.post('/movies/', splat.addMovie);
 // console.log("in app.js",splat.editMovie);
 
 app.get('/movies/:id/reviews', splat.getReviews);
+app.post('/movies/:id/reviews', splat.addReview);
 // app.get('/movies/movieId/reviews', splat.getReviews);
 // app.get('/:movieId/reviews', splat.getReviews);
 // app.get('/movieId/reviews', splat.getReviews);
@@ -86,7 +87,6 @@ app.get('/movies/:id/reviews', splat.getReviews);
 
 app.put('/movies/:id', splat.editMovie);
 app.delete('/movies/:id', splat.deleteMovie);
-
 
 // location of app's static content ... may need to ADD CODE
 app.use(express.static(__dirname + "/public"));

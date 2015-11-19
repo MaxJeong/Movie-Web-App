@@ -150,13 +150,14 @@ splat.AppRouter = Backbone.Router.extend({
         console.log(reviews);
         //get it, then send to view for processing
 
-
-
-
         if (!this.reviewView) {
             this.reviewView = new splat.ReviewThumb();
         };
         this.reviewView.reviews = reviews;
+
+        var review = new splat.Review();
+        review.url = '/movies/' + id + '/reviews';
+        this.reviewView.review = review;
 
         // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
         // names.map(function(name){

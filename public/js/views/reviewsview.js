@@ -7,9 +7,55 @@ var splat = splat || {};
 // note View-name (Home) matches name of template file Home.html
 splat.ReviewThumb = Backbone.View.extend({
 
-	// events: {
-	// 	"click #reviewsave ": "reviewSave"
-	// },
+	events: {
+		"click #reviewsave ": "reviewSave"
+	},
+
+	reviewSave:function(event) {
+		var collection = splat.collection;
+
+		var self = this;
+
+		var input = {};
+
+		var name = $('textarea[type="text"]').attr('name');
+		var val = $('textarea[type="text"]').val();
+		input[name] = val;
+
+		//get all the inputs with text type
+		$('input[type="text"]').each(function(item){
+			console.log("in review save func")
+			var name = $(this).attr('name');
+			var val = $(this).val();
+			console.log(name);
+			console.log(val);
+			
+			//javascript will interpet keys litteraly,so 
+			//get around it by below notation
+			input[name] = val;
+			console.log(input[name]);
+			console.log(input);
+
+			// set takes in dictionary,thus why we created input
+			console.log(self.review);
+			self.review.set(input);
+		});
+
+		collection.create(this.review, { 
+        wait: true, 
+            success: function(model,response) {
+                console.log('success',model);
+                //splat.utils.showNotice('success','operation complete');
+                //consider navigating to movie page
+                //splat.app.navigate('#', {replace:true, trigger:true});
+            },
+            fail: function(model, response) {
+            	console.log('fail',model);
+            	//splat.utils.showNotice('danger','could not save');
+				//console.log('fail',model);
+            }
+		});
+	},
 
 	// reviewSave:function(event) {
 	// 	var review = this.createReview;
@@ -18,25 +64,14 @@ splat.ReviewThumb = Backbone.View.extend({
 
 	// 	collection.create(review);
 
-<<<<<<< HEAD
-		// success: function (model, response) {
-	 //        //splat.utils.showNotice('success','operation complete');
-	 //        //splat.app.navigate('#', {replace:true, trigger:true});
-	 //    },
-	 //    fail: function(model, response) {
-	 //        //console.log('fail',model);
-	 //        //splat.utils.showNotice('danger','could not save');
-	 //    }
-=======
-	// 	// success : function (model, response) {
-	//  //        //splat.utils.showNotice('success','operation complete');
-	//  //        //splat.app.navigate('#', {replace:true, trigger:true});
-	//  //    },
-	//  //    fail: function(model, response) {
-	//  //        //console.log('fail',model);
-	//  //        //splat.utils.showNotice('danger','could not save');
-	//  //    }
->>>>>>> 6526ff1978af181d066e62602f65d4c8c06c564d
+	// 	success: function (model, response) {
+	//         //splat.utils.showNotice('success','operation complete');
+	//         //splat.app.navigate('#', {replace:true, trigger:true});
+	//     },
+	//     fail: function(model, response) {
+	//         //console.log('fail',model);
+	//         //splat.utils.showNotice('danger','could not save');
+	//     }
 
 	//     location.reload();
 	// },
@@ -44,15 +79,13 @@ splat.ReviewThumb = Backbone.View.extend({
 	// ReviewsView object listens to reviews
 	// collection for “sync” events, calling
 	// showScore() when event occurs
-	//this.listenTo(this.reviews, "sync", this.showScore);
-	//this.listenTo(this.reviews, "sync", this.renderReviews);
 
-	createReview:function() {
-		reviewText = $('.reviewText').val();
-		reviewName = $('.reviewName').val();
-		reviewAffil = $('.reviewAffil').val();
-		movieId = movie.id;
-	},
+	// createReview:function() {
+	// 	reviewText = $('.reviewText').val();
+	// 	reviewName = $('.reviewName').val();
+	// 	reviewAffil = $('.reviewAffil').val();
+	// 	movieId = movie.id;
+	// },
 
     // render the View
     render: function () {
