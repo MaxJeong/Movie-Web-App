@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../doc-style.css" />
   <script src="../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../", thisFile = "courses/courses/cscc09f15/wuaddiso/cscc09//js/main.js", defaultSidebar = true;
+    var relativeDir = "../", thisFile = "courses/courses/cscc09f15/jeongse9//js/main.js", defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
 </head>
@@ -84,7 +84,8 @@
         <span class="s2">&quot;about&quot;</span><span class="o">:</span> <span class="s2">&quot;about&quot;</span><span class="p">,</span>
         <span class="s2">&quot;movies&quot;</span><span class="o">:</span> <span class="s2">&quot;movies&quot;</span><span class="p">,</span>
         <span class="s2">&quot;movies/add&quot;</span><span class="o">:</span> <span class="s2">&quot;details&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;movies/:id&quot;</span><span class="o">:</span> <span class="s2">&quot;edit&quot;</span>
+        <span class="s2">&quot;movies/:id&quot;</span><span class="o">:</span> <span class="s2">&quot;edit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;movies/:id/reviews&quot;</span><span class="o">:</span> <span class="s2">&quot;review&quot;</span>
     <span class="p">},</span>
 
 
@@ -100,6 +101,8 @@
         </td>
         <td class="code highlight"><div class="highlight"><pre>
     <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">Movies</span><span class="p">();</span>
+        <span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">.</span><span class="nx">fetch</span><span class="p">();</span>
 
 </pre></div>
         </td>
@@ -108,6 +111,20 @@
         <td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>splat.reviews = new splat.Reviews();
+splat.reviews.fetch();</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
 </div>
 <p>instantiate a Header view</p>
         </td>
@@ -120,7 +137,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
 </div>
 <p>insert the rendered Header view element into the document DOM</p>
         </td>
@@ -133,13 +150,11 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
 </div>
-<p>create collection and retreive values</p>
+<p>create collection and retrieve values</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-        <span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">Movies</span><span class="p">();</span>
-        <span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">.</span><span class="nx">fetch</span><span class="p">();</span>
     <span class="p">},</span>
 
 
@@ -149,7 +164,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
 </div>
 <p>load home view, and select the nav bar</p>
         </td>
@@ -162,7 +177,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
 </div>
 <p>If the Home view doesn't exist, instantiate one</p>
         </td>
@@ -178,7 +193,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>highlights item in headerView</p>
         </td>
@@ -191,7 +206,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>insert the rendered Home view element into the document DOM</p>
         </td>
@@ -206,7 +221,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>load about and select about button</p>
         </td>
@@ -219,7 +234,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>check if already created</p>
         </td>
@@ -234,7 +249,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>highlights item in headerView        </p>
         </td>
@@ -247,7 +262,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>insert the rendered Home view element into the document DOM</p>
         </td>
@@ -261,7 +276,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>loads movie collection view</p>
         </td>
@@ -274,7 +289,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>var my_model = new splat.Movie();</p>
         </td>
@@ -291,7 +306,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>only using to old code,fyi</p>
         </td>
@@ -306,7 +321,7 @@
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>generating test models for use
 var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
@@ -319,21 +334,6 @@ console.log(my_collection);</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
         
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">moviesView</span><span class="p">)</span> <span class="p">{</span>
-
-</pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
-</div>
-<p>why is it nessary to supply the collection to the constructor</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>
-            <span class="k">this</span><span class="p">.</span><span class="nx">moviesView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">MovieThumb</span><span class="p">({</span><span class="nx">collection</span><span class="o">:</span><span class="nx">my_collection</span><span class="p">});</span>
-        <span class="p">};</span>
 
 </pre></div>
         </td>
@@ -343,7 +343,22 @@ console.log(my_collection);</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
-<p>highlights item in headerView</p>
+<p>if (!this.moviesView) {
+why is it nessary to supply the collection to the constructor</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">this</span><span class="p">.</span><span class="nx">moviesView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">MovieThumb</span><span class="p">({</span><span class="nx">collection</span><span class="o">:</span><span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">});</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>};
+highlights item in headerView</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
         <span class="k">this</span><span class="p">.</span><span class="nx">headerView</span><span class="p">.</span><span class="nx">selectMenuItem</span><span class="p">(</span><span class="s1">&#39;.browse-menu&#39;</span><span class="p">);</span>
@@ -357,13 +372,24 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>load up a movie details page</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
     <span class="nx">details</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>console.log(splat.collection);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">detailsView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">Details</span><span class="p">();</span>
         <span class="p">};</span>
@@ -374,7 +400,7 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>events detach after first use,need to reattch</p>
         </td>
@@ -392,7 +418,7 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>like the details page, but for already existing movies</p>
         </td>
@@ -405,28 +431,23 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
-<p>edit is same as details,but with filled in values</p>
+<p>edit is same as details,but with filled in values
+console.log(id);</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
+    
+        <span class="kd">var</span> <span class="nx">my_collection</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">Movies</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">rev</span> <span class="o">=</span> <span class="nx">my_collection</span><span class="p">.</span><span class="nx">fetch</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+        
         <span class="k">this</span><span class="p">.</span><span class="nx">details</span><span class="p">();</span>
 
-</pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
-</div>
-<p>console.log(id);</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>
-        <span class="kd">var</span> <span class="nx">k</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">select</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">){</span>
+        <span class="nx">rev</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">k</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">select</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 
 </pre></div>
         </td>
@@ -434,7 +455,34 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>console.log(splat);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">splat</span><span class="p">.</span><span class="nx">collection</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>console.log(current);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+            <span class="k">for</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">){</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>console.log(current.attributes[k]);</p>
         </td>
@@ -447,12 +495,12 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>select input fields based on model</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-            <span class="nx">select</span> <span class="o">=</span> <span class="s2">&quot;input[name=&#39;&quot;</span><span class="o">+</span> <span class="nx">k</span><span class="o">+</span> <span class="s2">&quot;&#39;][type=&#39;text&#39;]&quot;</span><span class="p">;</span>
+                <span class="nx">select</span> <span class="o">=</span> <span class="s2">&quot;input[name=&#39;&quot;</span><span class="o">+</span> <span class="nx">k</span><span class="o">+</span> <span class="s2">&quot;&#39;][type=&#39;text&#39;]&quot;</span><span class="p">;</span>
 
 </pre></div>
         </td>
@@ -460,15 +508,26 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>insert values into field</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-            <span class="nx">$</span><span class="p">(</span><span class="nx">select</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>            
-        <span class="p">}</span>
-        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#displayimg&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">,</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">poster</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">poster</span><span class="p">);</span>
+                <span class="nx">$</span><span class="p">(</span><span class="nx">select</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>            
+            <span class="p">}</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#displayimg&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">,</span><span class="nx">current</span><span class="p">.</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">poster</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>console.log(current.attributes.poster);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
 
 
 </pre></div>
@@ -477,15 +536,79 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
-<p>keep a reference to model in detailsView</p>
+<p>//keep a reference to model in detailsView</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-        <span class="k">this</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">.</span><span class="nx">newMovie</span> <span class="o">=</span> <span class="nx">current</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">.</span><span class="nx">isNew</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">.</span><span class="nx">newMovie</span> <span class="o">=</span> <span class="nx">current</span><span class="p">;</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">detailsView</span><span class="p">.</span><span class="nx">isNew</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+        <span class="p">});</span>
+    <span class="p">},</span>
+
+    <span class="nx">review</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>console.log(splat.collection);
+check if movie has review item</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">reviews</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">Reviews</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+        <span class="nx">reviews</span><span class="p">.</span><span class="nx">fetch</span><span class="p">();</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reviews</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>get it, then send to view for processing</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">reviewView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">ReviewThumb</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">reviewView</span><span class="p">.</span><span class="nx">reviews</span> <span class="o">=</span> <span class="nx">reviews</span><span class="p">;</span>
+
+        <span class="kd">var</span> <span class="nx">review</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">Review</span><span class="p">();</span>
+        <span class="nx">review</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;/movies/&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;/reviews&#39;</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">reviewView</span><span class="p">.</span><span class="nx">review</span> <span class="o">=</span> <span class="nx">review</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
+names.map(function(name){
+    var testModel = new splat.Reviews({reviewName:name});
+    splat.reviews.create(testModel);
+});
+console.log(my_model);
+console.log(my_collection);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
         
+        <span class="k">this</span><span class="p">.</span><span class="nx">headerView</span><span class="p">.</span><span class="nx">selectMenuItem</span><span class="p">(</span><span class="s1">&#39;.details-menu&#39;</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">reviewView</span><span class="p">.</span><span class="nx">render</span><span class="p">().</span><span class="nx">el</span><span class="p">);</span>
     <span class="p">}</span>
+
 
 
 <span class="p">});</span>
@@ -497,7 +620,7 @@ console.log(my_collection);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>Load HTML templates for Home, Header, About views, and when
 template loading is complete, instantiate a Backbone router

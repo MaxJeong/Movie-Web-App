@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../../doc-style.css" />
   <script src="../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../", thisFile = "courses/courses/cscc09f15/wuaddiso/cscc09//js/models/movie.js", defaultSidebar = true;
+    var relativeDir = "../../", thisFile = "courses/courses/cscc09f15/jeongse9//js/models/movie.js", defaultSidebar = true;
   </script>
   <script src="../../doc-script.js"></script>
 </head>
@@ -52,21 +52,6 @@
         <td class="code highlight"><div class="highlight"><pre>
     <span class="nx">idAttribute</span><span class="o">:</span> <span class="s2">&quot;_id&quot;</span><span class="p">,</span>
 
-    <span class="nx">defaults</span><span class="o">:</span> <span class="p">{</span>
-  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="nx">release</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nx">director</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="nx">starring</span><span class="o">:</span> <span class="p">[],</span>
-  <span class="nx">rating</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="nx">duration</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nx">genre</span><span class="o">:</span> <span class="p">[],</span>
-  <span class="nx">synopsis</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="nx">freshTotal</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-  <span class="nx">freshVotes</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-  <span class="nx">trailer</span><span class="o">:</span> <span class="s2">&quot;mpv/default.mp4&quot;</span><span class="p">,</span>
-  <span class="nx">poster</span><span class="o">:</span> <span class="s2">&quot;img/default.png&quot;</span><span class="p">,</span>
-  <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
-
 </pre></div>
         </td>
       </tr>
@@ -75,9 +60,24 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
 </div>
-<p>other model attributes</p>
+<p>url: "<a href='http://mathlab.utsc.utoronto.ca:41302/movies'>http://mathlab.utsc.utoronto.ca:41302/movies</a>",</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
+
+    <span class="nx">defaults</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nx">release</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nx">director</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nx">starring</span><span class="o">:</span> <span class="p">[],</span>
+    <span class="nx">rating</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nx">duration</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nx">genre</span><span class="o">:</span> <span class="p">[],</span>
+    <span class="nx">synopsis</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nx">freshTotal</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="nx">freshVotes</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="nx">trailer</span><span class="o">:</span> <span class="s2">&quot;mpv/default.mp4&quot;</span><span class="p">,</span>
+    <span class="nx">poster</span><span class="o">:</span> <span class="s2">&quot;img/default.png&quot;</span><span class="p">,</span>
+    <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
     <span class="p">},</span>
 
     <span class="nx">validateCheck</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">){</span>

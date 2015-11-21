@@ -139,6 +139,11 @@ h1.about-h1 {
 	position: relative;
 	bottom: 30px;
 	text-align: center;
+}
 
-
+.wrapper {
+	flex-wrap: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }

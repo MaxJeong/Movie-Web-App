@@ -34,9 +34,6 @@ exports.getReviewsNoID = function(req, res) {
 };
 
 exports.getReviews = function(req, res) {
-    // var review = new ReviewModel({reviewName:'addison'});
-    // review.movieId = req.params.id;
-    // review.save();
 
     console.log("in reviews");
     console.log('looking for',req.params);
@@ -74,8 +71,6 @@ exports.getMovie = function(req, res) {
 //get all movies 
 exports.getMovies = function(req, res) {
     console.log("MOVIES",req.params);
-    // console.log(req);
-    // console.log(res);
     
     MovieModel.find(function(error, movies) {
         if (!error) {
@@ -89,20 +84,18 @@ exports.getMovies = function(req, res) {
 
 exports.addReview = function(req, res) {
     console.log("in add review");
-    console.log(req.body);
-    console.log(req.params.id);
     var r = new ReviewModel(req.body);
     r.movieId = req.params.id;
-    console.log(r);
+    console.log(req.params);
     r.save();
-}
+};
 
 //add single movie
 exports.addMovie = function(req, res) {
     console.log("in add movie");
     var m = new MovieModel(req.body);
     if (m.poster != "img/default.png") {
-        var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/';
+        var path = __dirname + '/../public/img/uploads/';
         var name = m.id;
         var image_path = path + name + '.jpeg';
         var image = fs.open(image_path, 'w', function(err, fd) {
@@ -112,15 +105,20 @@ exports.addMovie = function(req, res) {
             } else {
                 var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
                 fs.writeFile(image_path, base64Data, 'base64', function(err) {
-                    //console.log(err);
                     m.poster = 'img/uploads/' + name + '.jpeg';
-                    m.save();
+                    m.save(function(err, movie2) {
+                        console.log("this is err",err);
+                        if (err) {
+                            res.status(500).send("Sorry, unable to save movie at this time");
+                        } else {
+                            res.status(200).send(movie2);
+                        }
+                    });
                     fs.close(fd);
                 });
             }
         });
     } else {
-        //callback needed for client to execute sucess callback
         m.save(function(err, movie2) {
             console.log("this is err",err);
             if (err) {
@@ -130,61 +128,7 @@ exports.addMovie = function(req, res) {
             }
         });
     }
-    //res.status(200).send(m);
-    // var m = new MovieModel(req.body);
-    // var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
-    // var name = m.id;
-    // var image_path = path + name + '.jpeg';
-    // var image = fs.open(image_path, 'w', function(err, fd) {
-    //     if (err) {
-    //         res.status(500).send("Sorry, unable to save image at this time (" 
-    //             +err.message+ ")" );
-    //     } else {
-    //         var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
-    //         fs.writeFile(image_path, base64Data, 'base64', function(err) {
-    //             console.log(err);
-    //             m.poster = 'img/uploads/' + name + '.jpeg';
-    //             m.save(null,{ 
-    //                 wait : true, 
-    //                 success : function (model, response) {
-    //                     console.log('success',model);
-    //                     //consider navigating to movie page
-    //                     splat.utils.showNotice('success','operation complete');
-    //                     splat.app.navigate('#', {replace:true, trigger:true});
-    //                 },
-    //                 fail: function(model, response) {
-    //                     console.log('fail',model);
-    //                     splat.utils.showNotice('danger','could not save');
-    //                 }
-    //             });
-    //             fs.close(fd);
-    //         });
-    //         // res.status(200).send(movie);
-    //     }
-    // });
-
-    // console.log('in addMovie');
-    // console.log(req.body);
-
-    //likely need a callback function here
-    //m.save();
-    
 };
-// exports.editMovie = function(req, res) {
-//     var id = req.body._id;
-//     console.log(req.body);
-//     delete req.body._id;
-//     MovieModel.findByIdAndUpdate(id, { $set: req.body}, function(err, movie) {
-//         if (err) {
-//             console.log(err.message);
-//             res.status(500).send(err.message);
-//         }
-//         else {
-//             console.log("successfully saved");
-//             res.send(movie);
-//         }
-//     });
-// }
 
 exports.editMovie = function(req,res) {
     console.log('in editMovie');
@@ -200,43 +144,42 @@ exports.editMovie = function(req,res) {
         } else if (!movie) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
-            // var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
-            // var name = m.id;
-            // var image_path = path + name + '.jpeg';
-            // var image = fs.open(image_path, 'w', function(err, fd) {
-            //     if (err) {
-            //         res.status(500).send("Sorry, unable to save image at this time (" 
-            //             +err.message+ ")" );
-            //     } else {
-            //         fs.unlink(image_path);
-                    // var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
-                    // fs.writeFile(image_path, base64Data, 'base64', function(err) {
-            //             //console.log(err);
-            //             m.set('poster', 'img/uploads/' + name + '.jpeg');
-            //             //m.save();
-            //         });
-            //     } 
-            //callback needed for client to execute sucess callback
-            movie.save(function(err, movie2) {
-                console.log("this is err",err);
-                if (err) {
-                    res.status(500).send("Sorry, unable to save movie at this time");
-                } else {
-                    res.status(200).send(movie2);
-                }
-            });
-            // fs.close(fd);
-                
-                
-            // // });
-            // m.save(function(){
-            //     res.status(200).send(m);
-            // });
-
+            if (movie.poster != "img/default.png") {
+                var path = __dirname + '/../public/img/uploads/';
+                var name = movie.id;
+                var image_path = path + name + '.jpeg';
+                var image = fs.open(image_path, 'w', function(err, fd) {
+                    if (err) {
+                        res.status(500).send("Sorry, unable to save image at this time (" 
+                            +err.message+ ")" );
+                    } else {
+                        fs.unlink(image_path);
+                        var base64Data = req.body.poster.replace(/^data:image\/jpeg;base64,/, "");
+                        fs.writeFile(image_path, base64Data, 'base64', function(err) {
+                            movie.poster = 'img/uploads/' + name + '.jpeg';
+                            movie.save(function(err, movie2) {
+                                console.log("this is err",err);
+                                if (err) {
+                                    res.status(500).send("Sorry, unable to save movie at this time");
+                                } else {
+                                    res.status(200).send(movie2);
+                                }
+                            });
+                        });
+                    }
+                });
+            } else {
+                movie.save(function(err, movie2) {
+                    console.log("this is err",err);
+                    if (err) {
+                        res.status(500).send("Sorry, unable to save movie at this time");
+                    } else {
+                        res.status(200).send(movie2);
+                    }
+                });
+            }
         }
-        // movie.save();
     });
-    
 };
 
 exports.deleteMovie = function(req,res) {
@@ -251,98 +194,17 @@ exports.deleteMovie = function(req,res) {
         } else if (!movie) {
             res.status(400).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
-            var path = '/cmshome/jeongse9/cscc09f15_space/public/img/uploads/'
-            var name = movie.id;
-            var image_path = path + name + '.jpeg';
-            var image = fs.open(image_path, 'w', function(err, fd) {
-                console.log("this is fd",err);
+            movie.remove(function(err, movie2) {
+                console.log("this is err",err);
                 if (err) {
-                    res.status(500).send("Sorry, unable to remove image at this time (" 
-                        +err.message+ ")" + movie);
-                } else if (image) {
-                    fs.unlink(image_path);
-                    fs.close(fd);
-                    //callback needed for client to execute sucess callback
-                    movie.remove(function(err, movie2) {
-                        console.log("this is err",err);
-                        if (err) {
-                            res.status(500).send(movie2 + "Sorry, unable to save movie at this time");
-                        } else {
-                            res.status(200).send(movie2);
-                        }
-                    });
-                } 
+                    res.status(500).send(movie2 + "Sorry, unable to save movie at this time");
+                } else {
+                    res.status(200).send(movie2);
+                }
             });
-            // res.status(200).send(movie);
         }
     });
 };
-
-// exports.playMovie = function(req, res) {
-//     // compute absolute file-system video path from __dirname and URL with id
-//     var file = // ADD CODE
-
-//     // get HTTP request "range" header, and parse it to get starting byte position
-//     var range = req.headers // ADD CODE to access range header
-//     var start = // ADD CODE to compute starting byte position
-
-//     // get a file-stats object for the requested video file, including its size
-//     fs.stat(file, function(err, stats) {
-//         // set end position from range header or default to video file size
-//     var end = // ADD CODE
-//         // set chunksize to be the difference between end and start values +1
-
-//         // send HTTP "partial-content" status (206) together with
-//     // HTML5-compatible response-headers describing video being sent
-//         res.writeHead(206, {
-//         // ADD CODE - see tutorial 7 classroom slide #22
-//         });
-
-//         // create ReadStream object, specifying start, end values computed
-//     // above to read range of bytes rather than entire file
-//         var stream = fs.createReadStream(file, { start: start, end: end })
-//         // when ReadStream is open
-//         .on("open", function() {
-//           // use stream pipe() method to send the HTTP response object,
-//       // with flow automatically managed so destination is not overwhelmed
-//             // ADD CODE
-//         // when error receiving data from stream, send error back to client.
-//         // stream is auto closed
-//         }).on("error", function(err) {
-//             // ADD CODE
-//         });
-//     });
-// };
-
-// console.log(exports.editMovie);
-// NOTE, you would use this module only if you chose to implement
-// image upload using Blobs with the HTML5 API.  If instead your
-// server saves images directly from your model's poster value,
-// you do NOT need this route handler
-
-// upload an image file; returns image file-path on server
-/*
-exports.uploadImage = function(req, res) {
-    // req.files is an object, attribute "file" is the HTML-input name attr
-    var filePath = req.files. ...   // ADD CODE to get file path
-        fileType = req.files. ...   // ADD CODE to get MIME type
-        // extract the MIME suffix for the user-selected file
-        suffix = // ADD CODE
-        // imageURL is used as the value of a movie-model poster field 
-    // id parameter is the movie's "id" attribute as a string value
-        imageURL = 'img/uploads/' + req.params.id + suffix,
-        // rename the image file to match the imageURL
-        newPath = __dirname + '/../public/' + imageURL;
-    fs.rename(filePath, newPath, function(err) {
-        if (!err) {
-            res.status(200).send(imageURL);
-        } else {
-            res.status(500).send("Sorry, unable to upload poster image at this time (" 
-                +err.message+ ")" );
-    }
-    });
-};
-*/
 
 var mongoose = require('mongoose'); // MongoDB integration
 

@@ -8,33 +8,40 @@ var splat = splat || {};
 splat.ReviewThumb = Backbone.View.extend({
 
 	events: {
-		"click #reviewsave ": "reviewSave"
+		"click #reviewsave": "reviewSave",
+		"click .freshOrRotten": "freshSave"
+	},
+
+	freshSave:function(save) {
+		var self = this;
+		self.input = {};
+
+		var current = event.target;
+
+		if (current.id == 'fresh') {
+			self.input[current.name] = current.value;
+		} else if (current.id == 'rotten') {
+			self.input[current.name] = current.value;
+		}
+		console.log(self.review);
+		console.log(self.review.freshness);
+		console.log(self.input);
 	},
 
 	reviewSave:function(event) {
 		var collection = splat.collection;
 		var self = this;
-		var input = {};
-		var num = 0.0;
-
-		var name = $('input[class="freshOrRotten"]').attr('name');
-		var id = $('input[class="freshOrRotten"]').attr('id');
-		if (id == 'fresh') {
-			num = num + 1.0;
-		} else {
-			num = num + 0.0;
+		// var input = {};
+		if (!self.input){
+			self.input = {};
 		}
-		input[name] = num;
-		console.log(name);
-		console.log(num);
-		console.log(input);
 
 		var name = $('textarea[type="text"]').attr('name');
 		var val = $('textarea[type="text"]').val();
-		input[name] = val;
-		console.log(name);
-		console.log(val);
-		console.log(input);
+		self.input[name] = val;
+		// console.log(name);
+		// console.log(val);
+		console.log(self.input);
 
 		//get all the inputs with text type
 		$('input[type="text"]').each(function(item){
@@ -46,14 +53,16 @@ splat.ReviewThumb = Backbone.View.extend({
 			
 			//javascript will interpet keys litteraly,so 
 			//get around it by below notation
-			input[name] = val;
-			console.log(input[name]);
-			console.log(input);
+			self.input[name] = val;
+			console.log(self.input[name]);
+			console.log(self.input);
 
-			// set takes in dictionary,thus why we created input
+			// set takes in dictionary,thus why we created self.input
 			console.log(self.review);
-			self.review.set(input);
+			self.review.set(self.input);
 		});
+
+		console.log(self.input);
 
 		collection.create(this.review, { 
         wait: true, 
@@ -64,6 +73,11 @@ splat.ReviewThumb = Backbone.View.extend({
             	console.log('fail',model);
             }
 		});
+
+		// console.log(this.movie);
+		// console.log(splat.collection);
+		// console.log(splat.collection.get(id));
+		// console.log(splat.collection.fetch());
 	},
 
     // render the View

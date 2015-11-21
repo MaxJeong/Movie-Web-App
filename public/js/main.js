@@ -117,7 +117,6 @@ splat.AppRouter = Backbone.Router.extend({
             console.log(splat.collection);
             // console.log(current);
 
-            
             for (k in current.attributes){
                 // console.log(current.attributes[k]);
 
@@ -134,10 +133,6 @@ splat.AppRouter = Backbone.Router.extend({
             self.detailsView.isNew = false;
 
         });
-
-
-        
-        
     },
 
     review:function(id){
@@ -150,9 +145,7 @@ splat.AppRouter = Backbone.Router.extend({
         console.log(reviews);
         //get it, then send to view for processing
 
-        if (!this.reviewView) {
-            this.reviewView = new splat.ReviewThumb();
-        };
+        this.reviewView = new splat.ReviewThumb();
         this.reviewView.reviews = reviews;
 
         var review = new splat.Review();

@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../../doc-style.css" />
   <script src="../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../", thisFile = "courses/courses/cscc09f15/wuaddiso/cscc09//js/views/details.js", defaultSidebar = true;
+    var relativeDir = "../../", thisFile = "courses/courses/cscc09f15/jeongse9//js/views/details.js", defaultSidebar = true;
   </script>
   <script src="../../doc-script.js"></script>
 </head>
@@ -274,7 +274,11 @@ splat.collection.add(newMovie);</p>
      
     <span class="p">});</span>
     <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">newMovie</span><span class="p">.</span><span class="nx">attributes</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">newMovie</span><span class="p">);</span>
       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;saving!&#39;</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">newMovie</span><span class="p">);</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">newMovie</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kc">null</span><span class="p">,{</span> 
             <span class="nx">wait</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span> 
             <span class="nx">success</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">model</span><span class="p">,</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
@@ -300,8 +304,19 @@ splat.collection.add(newMovie);</p>
             <span class="p">}</span>
           <span class="p">});</span>
     <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">newMovie</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">isNew</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>this.newMovie = null;
+this.isNew = null;</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
       
   <span class="p">},</span>
 
@@ -312,7 +327,7 @@ splat.collection.add(newMovie);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>delete model in collection, prompt user to double check,
 return to browse view when done</p>
@@ -326,7 +341,7 @@ return to browse view when done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>check if model is associated with this view</p>
         </td>
@@ -339,7 +354,7 @@ return to browse view when done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>if it doesn't exist already
 return</p>
@@ -360,7 +375,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>consider navigating to movie page</p>
         </td>
@@ -384,7 +399,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>updates local model</p>
         </td>
@@ -392,10 +407,32 @@ return</p>
   <span class="nx">update</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">);</span>
     
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">));</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>console.log(item);
+console.log(item.attr('id'));</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
     <span class="nx">splat</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">hideValidationNotice</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">));</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>console.log(item.attr('name'));</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
 
     <span class="nx">splat</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">showNotice</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span><span class="s1">&#39;Remember to click Save Changes Button&#39;</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">newMovie</span><span class="p">.</span><span class="nx">validateCheck</span><span class="p">(</span><span class="nx">item</span><span class="p">))</span> <span class="p">{</span>
@@ -406,7 +443,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>console.log('IS VALID');</p>
         </td>
@@ -426,7 +463,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>console.log('IS NOTs VALID');</p>
         </td>
@@ -468,7 +505,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>error handling for part 3</p>
         </td>
@@ -481,7 +518,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>console.log(item);</p>
         </td>
@@ -497,7 +534,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>render the View</p>
         </td>
@@ -510,7 +547,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>set the view element ($el) HTML content using its template</p>
         </td>
@@ -527,7 +564,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>console.log('success',model);</p>
         </td>
@@ -540,7 +577,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>consider navigating to movie page</p>
         </td>
@@ -559,7 +596,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>initalize model</p>
         </td>
@@ -579,7 +616,7 @@ return</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>Read pictureFile from filesystem, resulting in
 DataURL (base64 representation of image data). 
@@ -596,7 +633,7 @@ Use as model poster attrib. and image src attrib.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <p>callback for when read operation is finished
 console.log('in imageRead');
@@ -611,7 +648,7 @@ console.log(pictureFile,type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <p>insert image on load here</p>
         </td>
@@ -624,7 +661,7 @@ console.log(pictureFile,type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>// image.src = sourceImg; </p>
         </td>
@@ -638,7 +675,7 @@ console.log(pictureFile,type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>// reader.result is image data in base64 format
 // targetImgElt.src = reader.result;</p>
@@ -655,7 +692,7 @@ console.log(pictureFile,type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <p>// console.log(targetImgElt);
 // self.newMovie.set('poster', reader.result);</p>
@@ -669,7 +706,7 @@ console.log(pictureFile,type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>// console.log(self.newMovie);
 console.log(reader.result);</p>
@@ -687,7 +724,7 @@ console.log(reader.result);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>image upload done in save-handler, to avoid 
 multiple-upload cost if user reselects image</p>
@@ -701,7 +738,7 @@ multiple-upload cost if user reselects image</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>set object attribute for image uploader
 console.log('in selectImage');
@@ -716,7 +753,7 @@ console.log(event);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
 </div>
 <p>if the file type is image, read it
 console.log('selectImage',this.pictureFile.type);</p>
@@ -735,7 +772,7 @@ console.log('selectImage',this.pictureFile.type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>else display error notification</p>
         </td>
@@ -757,7 +794,7 @@ console.log('selectImage',this.pictureFile.type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
 </div>
 <p>Read image file and display in img tag</p>
         </td>
@@ -774,7 +811,7 @@ console.log('selectImage',this.pictureFile.type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>else display notification error</p>
         </td>
@@ -795,7 +832,7 @@ console.log('selectImage',this.pictureFile.type);</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>Resize sourceImg, returning result as a DataURL value. Type, 
 quality are optional params for image-type and quality setting</p>
@@ -817,7 +854,7 @@ quality are optional params for image-type and quality setting</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>image.height = image.height // ADD CODE to scale height
 image.width = image.width // ADD CODE to scale width</p>
