@@ -14,9 +14,9 @@
 
       <div id="nav-collapse" class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-left">
-                <li id="orderdrop" class="browse-menu dropdown">
-                    <a id="ordering" href="#movies" >Browse Movies</a>
-                    <div class="dropdown-menu" id="orderDiv">
+                <li class="browse-menu dropdown">
+                    <a id="ordering" name='order' href="#movies" >Browse Movies</a>
+                    <div class="dropdown-menu" id="orderDiv" name='order'>
                         <form id="orderForm">
                             <fieldset>
                                 <h4>Sort Order</h4>
@@ -34,7 +34,40 @@
                     <a href="#movies/add">Add Movie</a>
                 </li>
             </ul>
+
             <ul class="nav navbar-nav pull-right">
+
+                <li  class="browse-menu dropdown">
+                    <a id="signUpLink" name="signUp" href="#movies" >Sign Up</a>
+                    <div class="dropdown-menu" id="signUpDiv" name = "signUp">
+                        <form id="signUpForm">
+                            <fieldset>
+                                <input type="text" name="user">
+                                <input type="text" name="email">
+                                <input type="text" name="pass1">
+                                <input type="text" name="pass2">
+                               
+                            </fieldset>
+                        </form>
+                    </div>
+                </li>
+
+                <li  class="browse-menu dropdown">
+                    <a id="signInLink" name = "signIn" href="#movies" >Sign In</a>
+                    <div class="dropdown-menu" id="signInDiv" name="signIn">
+                        <form id="signInForm">
+                            <fieldset>
+                                <input type="text" name="user">
+                                <input type="text" name="pass1">
+                                <input type='checkbox' name="remember"> Remember Me
+                                
+                               
+                            </fieldset>
+                        </form>
+                    </div>
+                </li>
+
+
                 <!-- adjust the link to change its behavior -->
                 <li class="about-menu">
                     <a href="#about">About</a>

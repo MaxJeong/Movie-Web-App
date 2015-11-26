@@ -12,14 +12,38 @@ splat.Header = Backbone.View.extend({
         "mouseover div[id='orderDiv']" : "showMenu",
         "mouseleave a[id='ordering']" : "hideMenu",
         "mouseleave div[id='orderDiv']" : "hideMenu",
+
+        "mouseover a[id='signUpLink']" : "showMenu", 
+        "mouseover div[id='signUpDiv']" : "showMenu",
+        "mouseleave a[id='signUpLink']" : "hideMenu",
+        "mouseleave div[id='signUpDiv']" : "hideMenu",
+
+        "mouseover a[id='signInLink']" : "showMenu", 
+        "mouseover div[id='signInDiv']" : "showMenu",
+        "mouseleave a[id='signInLink']" : "hideMenu",
+        "mouseleave div[id='signInDiv']" : "hideMenu",
+
+
+
+
         "change input[type='radio']" : "sortOrder" 
     },
 
     showMenu: function(event) {
+        // event.stopPropagation();
+        // console.log(event);
+        // var select ='#'+ event.target.name + 'Div';
+        // console.log(event);
+        // $(select).delay(1000).show();
         $('.dropdown-menu').show();
     },
 
     hideMenu: function(event) {
+        // event.stopPropagation();
+        // console.log(event);
+        // var select ='#'+ event.target.name + 'Div';
+        // console.log(event);
+        // $(select).delay(1000).hide();
         $('.dropdown-menu').hide();
     },
 
