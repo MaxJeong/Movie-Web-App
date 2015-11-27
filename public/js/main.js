@@ -1,177 +1,152 @@
-// catch simple errors
-"use strict";
+'use strict';
 
-// declare splat-app namespace if it doesn't already exist
-var splat = splat || {};
-
-// Define Backbone router
+var splat =  splat || {};
+ 
 splat.AppRouter = Backbone.Router.extend({
 
-    // Map "URL paths" to "router functions"
     routes: {
         "": "home",
-        "about": "about",
-        "movies": "movies",
-        "movies/add": "details",
-        "movies/:id": "edit",
-        "movies/:id/reviews": "review"
+	"about": "about",
+        "movies": "browse",
+	"movies/add": "addMovie",
+        "movies/:id": "editMovie",
+        "movies/:id/reviews": "reviewMovie",
+	"*default": "defaultRoute"
     },
 
-    // When an instance of an AppRouter is declared, create a Header view
+    defaultRoute: function() {
+	this.home();
+    },
+
     initialize: function() {
-        splat.collection = new splat.Movies();
-        splat.collection.fetch();
-        // splat.reviews = new splat.Reviews();
-        // splat.reviews.fetch();
-
-        // instantiate a Header view
-        this.headerView = new splat.Header();  
-        // insert the rendered Header view element into the document DOM
+	splat.order = "title";   // default movies collection ordering
+        this.movies = new splat.Movies();  // Movies collection
+	// create a jQuery promise to gate access to the fetched collection
+        this.moviesLoaded = this.movies.fetch();
+        this.headerView = new splat.Header();
         $('.header').html(this.headerView.render().el);
-        //create collection and retrieve values
     },
 
-    //load home view, and select the nav bar
     home: function() {
-	// If the Home view doesn't exist, instantiate one
         if (!this.homeView) {
             this.homeView = new splat.Home();
         };
-
-        //highlights item in headerView
-        this.headerView.selectMenuItem('.home-menu');
-	    // insert the rendered Home view element into the document DOM
-        $('#content').html(this.homeView.render().el);
+        splat.app.showView('#content', this.homeView);
+	// hilite "Splat!" in header
+        this.headerView.selectMenuItem('home-menu'); 
     },
 
-    //load about and select about button
     about: function() {
-        //check if already created
         if (!this.aboutView) {
             this.aboutView = new splat.About();
         };
-        //highlights item in headerView        
-        this.headerView.selectMenuItem('.about-menu');
-    // insert the rendered Home view element into the document DOM
-        $('#content').html(this.aboutView.render().el);
+        splat.app.showView('#content', this.aboutView);
+        // hilite "About" in header
+        this.headerView.selectMenuItem('about-menu');
     },
-    // loads movie collection view
-    movies: function() {
-        // var my_model = new splat.Movie();
-        if (!splat.collection){
-            var my_collection = new splat.Movies();
-            my_collection.fetch();
-            console.log("failed to load from global instance of collection");
-        }else{
-            //only using to old code,fyi
-            var my_collection = splat.collection;
+
+    browse: function() {
+	var self = this;
+        this.moviesBrowse = this.movies.fetch();
+	this.moviesBrowse.done(function() {
+	    splat.moviesView = new splat.MoviesView({collection:self.movies});
+            splat.app.showView('#content', splat.moviesView);
+	});
+        this.headerView.selectMenuItem('browse-menu'); 
+    },
+
+    editMovie: function(id) {
+	var self = this;
+	// async update collection in case another user has made a change
+        this.editFetch = this.movies.fetch();
+	this.editFetch.done(function() {
+	    self.movieView(id);
+	});
+	// no menu item active at this point
+	this.headerView.selectMenuItem();
+    },
+
+    movieView: function(id) {
+        var movieModel = this.movies.get(id);  // get model from collection
+        // display error if invalid id is provided
+        if (!movieModel) {
+            splat.utils.showAlert('Error',
+		"can't find this movie (perhaps deleted?)", 'alert-danger');
+        } else {
+            var detailsView = new splat.Details({model: movieModel});
+            splat.app.showView('#content', detailsView);
         }
-       
-        //generating test models for use
-        // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
-        // names.map(function(name){
-        //    var testModel = new splat.Movie({title:name});
-        //    my_collection.create(testModel);
-        // });
-        //console.log(my_model);
-        //console.log(my_collection);
-        
-        // if (!this.moviesView) {
-            //why is it nessary to supply the collection to the constructor
-            this.moviesView = new splat.MovieThumb({collection:splat.collection});
-        // };
-        //highlights item in headerView
-        this.headerView.selectMenuItem('.browse-menu');
-        $('#content').html(this.moviesView.render().el);
     },
 
-    //load up a movie details page
-    details: function() {
-        // console.log(splat.collection);
-        if (!this.detailsView) {
-            this.detailsView = new splat.Details();
-        };
-        //events detach after first use,need to reattch
-        this.detailsView.delegateEvents();
-
-        this.headerView.selectMenuItem('.details-menu');
-        $('#content').html(this.detailsView.render().el);
+    addMovie: function() {
+        var movie = new splat.Movie();  // create new Movie
+	// Details expects movie to have a collection
+	movie.collection = this.movies; 
+	this.moviesLoaded.done(function() {
+            var detailsView = new splat.Details({model: movie});
+            splat.app.showView('#content', detailsView);
+	});
+        this.headerView.selectMenuItem('add-menu');  // Add menu item active
     },
 
-    //like the details page, but for already existing movies
-    edit:function(id){
-        //edit is same as details,but with filled in values
-        // console.log(id);
-    
-        var my_collection = new splat.Movies();
-        var rev = my_collection.fetch();
-        var self = this;
-        
-        this.details();
-
-        rev.done(function(){
-            var k;
-            var select;
-            var current = splat.collection.get(id);
-            // console.log(splat);
-            console.log(splat.collection);
-            // console.log(current);
-
-            for (k in current.attributes){
-                // console.log(current.attributes[k]);
-
-                //select input fields based on model
-                select = "input[name='"+ k+ "'][type='text']";
-                //insert values into field
-                $(select).val(current.attributes[k]);            
+    reviewMovie: function(id) {
+	var self = this;
+        // id identifies the movie whose reviews are to be displayed.
+        // Newly-added movies don't yet have an id value nor reviews.
+	this.moviesLoaded.done(function() {
+            if (id) {
+ 		// get model from collection
+                var movieModel = self.movies.get(id);
+	        movieModel.reviews.fetch({
+		    silent:true,
+		    success: function(coll, resp) {
+	    	        self.reviewsView = new splat.ReviewsView(
+                	    { model: movieModel,
+                              collection: coll
+                        });
+                        splat.app.showView('#content', self.reviewsView);
+		    }
+	        });
+            } else {
+                self.$('#reviews').html('<h3>No Reviews Yet</h3>');
             }
-            $('#displayimg').attr('src',current.attributes.poster);
-            // console.log(current.attributes.poster);
-
-            // //keep a reference to model in detailsView
-            self.detailsView.newMovie = current;
-            self.detailsView.isNew = false;
-
-        });
+	});
     },
 
-    review:function(id){
-        // console.log(splat.collection);
-        //check if movie has review item
-        console.log(id);
-
-        var reviews = new splat.Reviews(id);
-        reviews.fetch();
-        console.log(reviews);
-        //get it, then send to view for processing
-
-        this.reviewView = new splat.ReviewThumb();
-        this.reviewView.reviews = reviews;
-
-        var review = new splat.Review();
-        review.url = '/movies/' + id + '/reviews';
-        this.reviewView.review = review;
-
-        // var names = ["Alpha", "Beta", "Charlie", "Delta", "Epsilon"];
-        // names.map(function(name){
-        //     var testModel = new splat.Reviews({reviewName:name});
-        //     splat.reviews.create(testModel);
-        // });
-        //console.log(my_model);
-        //console.log(my_collection);
-        
-        this.headerView.selectMenuItem('.details-menu');
-        $('#content').html(this.reviewView.render().el);
+    /* showView invokes close() on the currentView before replacing it
+       with the new view, in order to avoid memory leaks and ghost views.
+       Note that for composite views (views with subviews), must make sure
+       to close “child” views when the parent is closed.  The parent view
+       should keep track of its child views so it can call their respective
+       close() methods when its own close() method is invoked. The
+       beforeClose() method (explained above) of the parent View is a good
+       place to close child Views. */
+    showView: function(selector, view) {
+        if (this.currentView) {
+            this.currentView.close();
+	}
+        $(selector).html(view.render().el);
+        return this.currentView;
     }
-
-
 
 });
 
-// Load HTML templates for Home, Header, About views, and when
-// template loading is complete, instantiate a Backbone router
-// with history.
-splat.utils.loadTemplates(['Home', 'Header', 'About', 'Details'], function() {
+Backbone.View.prototype.close = function () {
+    /* When closing a view, give it a chance to perform it's own custom
+     * onClose processing, e.g. handle subview closes, then remove the
+     * view from the DOM and unbind events from it.  Based on approach 
+     * suggested by D. Bailey (author of Marionette) */
+    if (this.onClose) {
+        this.onClose();
+    }
+    this.remove();
+    this.unbind();  // implied by remove() in BB 1.0.0 and later
+
+};
+
+splat.utils.loadTemplates(['Home', 'Header', 'About', 'MovieThumb',
+	'Details', 'MovieForm', 'MovieImg', 'Reviewer', 'ReviewsView',
+	'Signup', 'Signin'], function() {
     splat.app = new splat.AppRouter();
     Backbone.history.start();
 });

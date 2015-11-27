@@ -1,7 +1,5 @@
-// catch simple errors
 "use strict";
 
-// declare splat-app namespace, if it doesn't already exist
 var splat = splat || {};
 
 splat.utils = {
@@ -9,94 +7,114 @@ splat.utils = {
     // Asynchronously load templates located in separate .html files using
     // jQuery "deferred" mechanism, an implementation of Promises.  Note we
     // depend on template file names matching corresponding View file names,
-    // e.g. Home.html and home.js which defines Backbone View "Home".
-    /*
-     * @param {[String]} views:  filenames of templates to be loaded
-     * @param {function} callback:  callback function invoked when file is loaded
-     */
+    // e.g. HomeView.html and home.js which defines Backbone View HomeView.
     loadTemplates: function(views, callback) {
 
-	// Array of deferred actions to keep track of template load status
         var deferreds = [];
 
-	// Process each template-file in views array
-        /*
-         * @param {[integer]} index:  position of view template within views array
-         * @param {[String]} view:  root name (w/o .html) of view template file
-         */
         $.each(views, function(index, view) {
-	    // If an associated Backbone view is defined, set its template function
-            if (splat[view]) {
-
-		// Push task of retrieving template file into deferred array.
-		// Task performs "get" request to load the template, then passes
-		// resulting template data to anonymous function to process it.
-	        /*
-	         * @param {String} data:  HTML from template file as String
-	         */
+            if (splat[view]) {  // splat[view] is defined as a Backbone View
                 deferreds.push($.get('tpl/' + view + '.html', function(data) {
-	    	    // Set template function on associated Backbone view.
+		    // splat[view].prototype.template is a template function
                     splat[view].prototype.template = _.template(data);
                 }));
-
-	    // No Backbone view file is defined; cannot set template function.
             } else {
-                console.log(view + " not found");
+		// if you see this alert when loading your app, it usually
+		// means you've got a syntax error in the named Backbone View
+                alert(view + " not found");
             }
         });
-
-	// When all deferred template-loads have completed,
-	// invoke callback function.
+	// all the deferreds have completed, now invoke the callback (function)
         $.when.apply(null, deferreds).done(callback);
     },
 
-    showNotice:function(alertType, message){
-        var legal = ['danger','success','info'];
-
-        var notify = $("#notification");
-
-        console.log(notify);
-        if ($.inArray(alertType,legal) && message){
-            var alert = 'alert-'+alertType;
-            console.log(alert);
-            notify.html(message);
-            notify.removeClass();
-            notify.addClass(alert);
-            notify.show();
-            notify.fadeOut(5000);
-            
-            console.log('notification set');
-        }else{
-            console.log('improper status');
+    displayValidationErrors: function(messages) {
+        for (var key in messages) {
+            if (messages.hasOwnProperty(key)) {
+                this.addValidationError(key, messages[key]);
+            }
         }
-
-    },
-    
-    hideNotice:function(){
-
+	this.showAlert('Error!', 'Fix validation errors and try again',
+                                                        'alert-danger');
     },
 
-    //item is jquery object, msg is string
-    showValidationNotice:function(item,msg){
-        //item append, dive with 'msg'
-        console.log(item.parent());
-        console.log(item);
-        var name = item.attr('name') + 'valid';
-        var super_msg = $.parseHTML("<div id = "+name +" class= 'error' >" +msg+"</div>");
-        $(item.parent()).addClass('color-change');
-        $(item).addClass('border-change');
-        console.log(item.parent());
-        console.log(item);
-        item.parent().append(super_msg);
+    addValidationError: function(field, message) {
+        if (field === "synopsis") {
+            var formGroup = $("textarea").parent();
+        } else {
+            var formGroup = $("input[name='" + field + "']").parent();
+        };
+        formGroup.addClass('has-error');  // was 'error' in Bootstrap 2
+        $('.help-block', formGroup).html(message);
     },
 
-    hideValidationNotice:function(item){
-        var name = '#' + item.attr('name') + 'valid';
-        // console.log('name',name);
-        // console.log('jquery',$(name));
-        $(item.parent()).removeClass('color-change');
-        $(item).removeClass('border-change');
-        $(name).remove();
+    removeValidationError: function(field) {
+        if (field === "synopsis") {
+            var formGroup = $("textarea").parent();
+        } else {
+            var formGroup = $("input[name='" + field + "']").parent();
+        };
+        formGroup.removeClass('has-error');  // was 'error' in Bootstrap 2
+        $('.help-block', formGroup).html('');
     },
+
+    showAlert: function(title, text, klass) {
+        $('.alert').removeClass("alert-danger alert-warning alert-success alert-info");
+        $('.alert').addClass(klass);
+        $('.alert').html('<strong>' + title + '</strong> ' + text);
+        $('.alert').stop(true,true).show().fadeOut(5000);
+    },
+
+    hideAlert: function() {
+        $('.alert').stop(true,true).hide();
+    },
+
+    // update header to reflect user's authentication state
+    requestFailed: function(resp) {
+	if (resp.responseText.indexOf('"status":403') > -1) {
+            splat.utils.showAlert('Error',
+		 'Please Sign-In to complete this action', 'alert-danger');
+            $('#greet').html('Sign In');
+            $('#logoutUser').html('');
+            $('.btn.logout').css("display","none");
+            $('.btn.login').css("display","block");
+            $('[class*="signin"]').css("display","block");
+            $('#logindrop').removeClass('open');
+            $('#addMovie').hide();  // unauth'd users can't add movies
+        } else {
+	    splat.utils.showAlert('Error',  resp.responseText, 'alert-danger');
+	}
+    },
+
+    // upload an image file using the HTML5 file API
+    /**
+     *  @param id   movie id the image is associated with
+     *  @param userid  the userid who posted the movie model for this image
+     *  @param file  the image data file in blob format
+     *  @param callbackSuccess  on success, invoke this function
+     */
+    uploadFile: function (id, userid, file, callbackSuccess) {
+        var self = this;
+	// FormData is part of the HTML5 file API
+        var data = new FormData();
+        data.append('file', file);
+        data.append('userid', userid);
+        $.ajax({
+            url: '/movies/' +id+ '/image',
+            type: 'POST',
+            data: data,
+            processData: false,  // tell jQuery not to process the data
+            cache: false,
+	    /* tell jQuery to not add Content-Type header, else MIME
+	     * multipart boundary string will be omitted */
+            contentType: false 
+        })
+        .done(function (res) {
+            callbackSuccess(res);
+        })
+        .fail(function (err) {
+            self.showAlert('Error!', err.responseText, 'alert-danger');
+        });
+    }
 
 };

@@ -1,17 +1,13 @@
-// app.js Node.js server
-
-"use strict;"   // flag JS errors 
+"use strict";
 
 /* Module dependencies:
  *
  * require() loads a nodejs "module" - basically a file.  Anything
  * exported from that file (with "exports") can now be dotted off
  * the value returned by require(), in this case e.g. splat.api
- * The convention is use the same name for variable and module.
  */
-var http = require('http'),   // ADD CODE
-    // NOTE, use the version of "express" linked to the assignment handout
-    express = require("express"),   // ADD CODE
+var http = require("http"),
+    express = require("express"),
     fs = require("fs"),
     path = require("path"),
     url = require("url"),
@@ -23,80 +19,118 @@ var http = require('http'),   // ADD CODE
     methodOverride = require("method-override"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
-    basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth
+    basicAuth = require("basic-auth-connect"),  // add for HTTP auth
 
     // config is an object module, that defines app-config attribues,
-    // such as "port", DB parameters
+    // such as "port"
     config = require("./config"),
-    splat = require('./routes/splat.js');  // route handlers ... ADD CODE
+    splat = require('./routes/splat.js');  // route handlers
 
-var app = express();  // Create Express app server
+// middleware check that req is associated with an authenticated session
+function isAuthd(req, res, next) {
+    // A3 ADD CODE BLOCK
+        return next();
+};
 
-// Configure app server
+// middleware check that the session-userid matches the userid passed
+// in the request body, e.g. when deleting or updating a model
+function hasPermission(req, res, next) {
+    // A3 ADD CODE BLOCK
+        return next();
+};
 
-// use PORT environment variable, or local config file value
+// Create Express app-server
+var app = express();   
+
+// use PORT enviro variable, or local config-file value
 app.set('port', process.env.PORT || config.port);
 
 // activate basic HTTP authentication (to protect your solution files)
-// REPLACE username/password, but DO NOT use your utorid credentials!!
-app.use(basicAuth('max', 'addison'));
+app.use(basicAuth(config.basicAuthUser, config.basicAuthPass));  
 
-// change param value to control level of logging  ... ADD CODE
-//app.use(logger('dev'));  // 'default', 'short', 'tiny', 'dev'
+// change param to control level of logging
+app.use(logger(config.env));  /* 'default', 'short', 'tiny', 'dev' */
 
 // use compression (gzip) to reduce size of HTTP responses
 app.use(compression());
 
-// parse HTTP request body
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({
-        extended: true
+	extended: true, limit: '5mb'
 }));
 
-// set file-upload directory for poster images
 app.use(multer({dest: __dirname + '/public/img/uploads/'}));
+
+// Session config, based on Express.session, values taken from config.js
+app.use(session({
+	name: 'splat.sess',
+	secret: config.sessionSecret,  // A3 ADD CODE
+	rolling: true,  // reset session timer on every client access
+	cookie: { maxAge:config.sessionTimeout,  // A3 ADD CODE
+		  // maxAge: null,  // no-expire session-cookies for testing
+		  httpOnly: true },
+	saveUninitialized: false,
+	resave: false
+}));
 
 // checks req.body for HTTP method overrides
 app.use(methodOverride());
 
-// App routes (RESTful API) - handler implementation resides in routes/splat.js
 
-// Perform route lookup based on HTTP method and URL.
-// Explicit routes go before express.static so that proper
-// handler is invoked rather than static-content processor
+// App routes (API) - implementation resides in routes/splat.js
 
 // Heartbeat test of server API
 app.get('/', splat.api);
 
 // Retrieve a single movie by its id attribute
-// app.get('/index.html#movies/:id', splat.getMovie);
 app.get('/movies/:id', splat.getMovie);
-app.get('/movies/', splat.getMovies);
-app.post('/movies/', splat.addMovie);
-// console.log("in app.js",splat.editMovie);
 
+// Retrieve a collection of all movies
+app.get('/movies', splat.getMovies);
+
+// Create a new movie in the collection
+app.post('/movies', isAuthd, splat.addMovie);
+
+// Update an existing movie in the collection
+app.put('/movies/:id', [isAuthd, hasPermission], splat.editMovie);
+
+// Update review score for existing movie in the collection - not auth'd
+app.patch('/movies/:id', splat.reviewMovie);
+
+// Delete a movie from the collection
+app.delete('/movies/:id', [isAuthd, hasPermission], splat.deleteMovie);
+
+// Retrieve a collection of reviews for movie with given id
 app.get('/movies/:id/reviews', splat.getReviews);
-app.post('/movies/:id/reviews', splat.addReview);
 
-// ADD CODE to support other routes listed on assignment handout
+// Create a new review in the collection
+app.post('/movies/:id/reviews', isAuthd, splat.addReview);
 
-app.put('/movies/:id', splat.editMovie);
-app.delete('/movies/:id', splat.deleteMovie);
+// Video playback request
+app.get('/movies/:id/video', splat.playMovie);
 
-// location of app's static content ... may need to ADD CODE
-app.use(express.static(__dirname + "/public"));
+// User login/logout
+app.put('/user', splat.auth);
 
-// return error details to client - use only during development
+// User signup
+app.post('/user', splat.signup);
+
+// location of static content
+app.use(express.static(__dirname +  "/public"));
+
+// allow browsing of docs directory
+app.use(directory(__dirname +  "/public/docs"));
+
+// display errors in browser during development
 app.use(errorHandler({ dumpExceptions:true, showStack:true }));
 
-// Default-route middleware, in case none of above match
+// Default-route middleware in case none of above match
 app.use(function (req, res) {
-    // ADD CODE
-    res.status(404).send("Invalid URL");
+    res.status(404).send('<h3>File Not Found</h3>');
 });
 
 // Start HTTP server
-http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express server listening on port %d in %s mode",
-            app.get('port'), config.env );
+http.createServer(app).listen(app.get('port'), function (){
+  console.log("Express server listening on port %d in %s mode",
+                app.get('port'), config.env );
 });

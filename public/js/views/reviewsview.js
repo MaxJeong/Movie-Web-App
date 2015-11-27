@@ -1,134 +1,81 @@
-// catch simple errors
 "use strict";
 
-// declare splat-app namespace if it doesn't already exist
-var splat = splat || {};
+var splat =  splat || {};
 
-// note View-name (Home) matches name of template file Home.html
-splat.ReviewThumb = Backbone.View.extend({
+splat.ReviewsView = Backbone.View.extend({
 
-	events: {
-		"click #reviewsave": "reviewSave",
-		"click .freshOrRotten": "freshSave"
-	},
+    initialize: function() {
+        if (!this.review) {  // if review not loaded
+            this.review = new splat.Review();
+	    this.review.set('movieid', this.model.get('_id'));
+	    // could alternatively get id from Backbone.history.getFragment()
+        };
+	this.reviews = this.collection;
+	// when a review is successfully saved (sync'd),
+	// update movie's freshness score and re-render ReviewThumbs subview
+        this.listenTo(this.reviews, "sync", this.showScore);
+        this.listenTo(this.reviews, "sync", this.renderReviews);
+    },
 
-	freshSave:function(save) {
-		var self = this;
-		self.input = {};
-
-		var current = event.target;
-
-		if (current.id == 'fresh') {
-			self.input[current.name] = current.value;
-		} else if (current.id == 'rotten') {
-			self.input[current.name] = current.value;
-		}
-		console.log(self.review);
-		console.log(self.review.freshness);
-		console.log(self.input);
-	},
-
-	reviewSave:function(event) {
-		var collection = splat.collection;
-		var self = this;
-		// var input = {};
-		if (!self.input){
-			self.input = {};
-		}
-
-		var name = $('textarea[type="text"]').attr('name');
-		var val = $('textarea[type="text"]').val();
-		self.input[name] = val;
-		// console.log(name);
-		// console.log(val);
-		console.log(self.input);
-
-		//get all the inputs with text type
-		$('input[type="text"]').each(function(item){
-			console.log("in review save func")
-			var name = $(this).attr('name');
-			var val = $(this).val();
-			console.log(name);
-			console.log(val);
-			
-			//javascript will interpet keys litteraly,so 
-			//get around it by below notation
-			self.input[name] = val;
-			console.log(self.input[name]);
-			console.log(self.input);
-
-			// set takes in dictionary,thus why we created self.input
-			console.log(self.review);
-			self.review.set(self.input);
-		});
-
-		console.log(self.input);
-
-		collection.create(this.review, { 
-        wait: true, 
-            success: function(model,response) {
-                console.log('success',model);
-            },
-            fail: function(model, response) {
-            	console.log('fail',model);
-            }
-		});
-
-		// console.log(this.movie);
-		// console.log(splat.collection);
-		// console.log(splat.collection.get(id));
-		// console.log(splat.collection.fetch());
-	},
-
-    // render the View
     render: function () {
-	// set the view element ($el) HTML content using its template
+	this.renderContent().renderReviewer().renderReviews().showScore();
+	return this;
+    },
 
-	// var template = _.template("<h2>TESTING <%= name %></h2>");
-	// console.log(this.collection);
-	// this.collection.each(function(model){
-	// 	console.log(model.toJSON());
-	// })
-	
-	//loads template(needed for non name matching templates)
-	var reviewThumbLoad = $.get('tpl/ReviewThumb.html');
-	//will need to get access to splat from inside anon. function
-	var self = this;
+    renderContent: function () {
+        this.$el.html(this.template());
+	return this;
+    },
 
-	reviewThumbLoad.done(function(markup) {
-	  	// Now "markup" contains the response to the $.get() request.
-	  	// Turn this markup into a function using Underscore's
-	  	// template() // function.
-	  	// Finally apply the reviewsTemplate shown below to your
-		// reviews collection and the template function you just created.
-	  	var reviewForm = $.get('tpl/Reviewer.html');
-
-	  	//change into easy to work with form
-	  	self.template = _.template(markup);
-
-	  	// console.log(markup, reviewThumbLoad );
-	  	// console.log(self.model.toJSON(),self.template);
-	  	//to store the result to display
-	  	self.display = '';
-	  	reviewForm.done(function(markup) {
-	  		self.display = _.template(markup);
-	  		self.display = self.display();
-	  		console.log(markup);
-	  		console.log(self.display);
-	  		// console.log(splat.reviews);
-		  	self.reviews.each(function(model){
-		  		//add the review model html to display
-		  		self.display = self.display + self.template( model.toJSON());
-		  	});
-		   	self.$el.html( self.display);
-	  	});
-	  	// console.log( self.template(self.model.toJSON()) );
-
-	   	//actually display it
+    renderReviewer: function () {
+	if (this.reviewerview) {
+	    this.reviewerview.remove();
+	};
+        this.reviewerview = new splat.Reviewer({
+	        model:this.review,
+	        collection:this.collection
 	});
+	this.$('#myreview').append(this.reviewerview.render().el);
+	return this;
+    },
 
-	// this.$el.html( template() );
-	return this;    // support method chaining
+    renderReviews: function () {
+	if (this.reviewthumbs) {
+	    this.reviewthumbs.remove();
+	};
+
+        this.reviewthumbs = new splat.ReviewThumbs({ 
+            collection:this.collection
+        });
+        this.$('#reviews').html(this.reviewthumbs.render().el);
+        return this;
+    },
+
+    showScore: function() {
+	var self = this;
+	// fetch movie model to retrieve current freshTotal, freshVotes values
+	this.model.fetch({
+	    success: function(model, response) {
+		if (self.collection.length > 0) {
+		    $.get('tpl/Score.html', function(data) {
+		        var template = _.template(data);
+		        self.$('#scoreView').html(template(self.model.toJSON()));
+		    });
+		} else {
+		    self.$('#scoreCount').html('<span>... no reviews yet</span>');
+		}
+            },
+            error: function(model, err) {
+                splat.utils.requestFailed(err);
+            }
+	});
+    },
+
+    onClose: function() {
+        // before closing view, remove child views
+        if (this.reviewerview) { this.reviewerview.remove() };
+        if (this.reviewthumbs) { this.reviewthumbs.remove() };
+        if (this.scoreview) { this.scoreview.remove() };
     }
 
 });

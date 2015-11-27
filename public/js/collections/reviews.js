@@ -1,12 +1,8 @@
+'use strict';
+
+var splat =  splat || {};
+
 splat.Reviews = Backbone.Collection.extend({
-    // identify collection’s model
     model: splat.Review,
-    // url: '/movies/:id/reviews'
-    
-    // save movie models in localStorage under "splat" namespace
-    // console.log
-    // localStorage: new Backbone.LocalStorage('reviews')
-    initialize: function(id) {
-    	this.url = '/movies/' + id + '/reviews';
-    }
+    url: '/movies/:id/reviews'  // to persist the collection via server API
 });
