@@ -6,12 +6,12 @@ splat.AppRouter = Backbone.Router.extend({
 
     routes: {
         "": "home",
-	"about": "about",
+	    "about": "about",
         "movies": "browse",
-	"movies/add": "addMovie",
+	    "movies/add": "addMovie",
         "movies/:id": "editMovie",
         "movies/:id/reviews": "reviewMovie",
-	"*default": "defaultRoute"
+	    "*default": "defaultRoute"
     },
 
     defaultRoute: function() {

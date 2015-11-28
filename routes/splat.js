@@ -361,25 +361,25 @@ exports.auth = function (req, res) {
     };
     User.findOne({username:username}, function(err, user){
       if (user !== null) {
-      /* A3 ADD CODE BLOCK ... */
-	  var sess = req.session;  // create session
-	  sess.auth = true;
-	  sess.username = username;
-	  sess.userid = user.id;
-	  // set session-timeout, from config file
+          /* A3 ADD CODE BLOCK ... */
+      	  var sess = req.session;  // create session
+      	  sess.auth = true;
+      	  sess.username = username;
+      	  sess.userid = user.id;
+      	  // set session-timeout, from config file
           if (req.body.remember) {
               // if "remember me" selected on signin form,
-	      // extend session to 10*default-session-timeout
-	      // A3 ADD CODE BLOCK
-	  }
+      	      // extend session to 10*default-session-timeout
+      	      // A3 ADD CODE BLOCK
+      	  }
           res.status(200).send({'userid': user.id, 'username': username});
-	  // A3 ADD CODE BLOCK
-      } else if (!err) {  // unrecognized username, but not DB error
-        res.status(403).send('Invalid username-password combination, please try again');
-      } else {  // error response from DB
-        res.status(500).send("Unable to login at this time; please try again later " 
-			+ err.message);
-      }
+    	    // A3 ADD CODE BLOCK
+          } else if (!err) {  // unrecognized username, but not DB error
+            res.status(403).send('Invalid username-password combination, please try again');
+          } else {  // error response from DB
+            res.status(500).send("Unable to login at this time; please try again later " 
+    			+ err.message);
+          }
     });
   } else { // logout request
     req.session.destroy(); // destroy session in the session-store
@@ -388,11 +388,29 @@ exports.auth = function (req, res) {
 };
 
 exports.signup = function(req, res) {
+  console.log("in signup");
   var user = new User(req.body);
     /* A3 ADD CODE BLOCK ... */
     // store the hashed-with-salt password in the DB
-      user.password = 0;  // A3 ADD CODE
+      bcrypt.genSalt(10, function(err, salt) {
+        if (err) {
+          res.status(500).send("Sorry, unable to generate a salt value at this time");
+        } else {
+          bcrypt.hash(user.password, salt, function(err, hash) {
+            if (err) {
+              res.status(500).send("Sorry, unable to hash password at this time");
+            } else {
+              user.hashpass = hash;
+              console.log("hash complete");
+              res.status(200).send({'password': hash});
+            }
+          });
+        }
+      });
+      //user.password = 0;  // A3 ADD CODE
+
       user.save(function (serr, result) {
+        console.log("saving signup");
         if (!serr) {
           req.session.auth = true;
           req.session.username = result.username;

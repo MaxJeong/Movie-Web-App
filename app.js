@@ -20,6 +20,7 @@ var http = require("http"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
     basicAuth = require("basic-auth-connect"),  // add for HTTP auth
+    bcrypt = require("bcrypt"),
 
     // config is an object module, that defines app-config attribues,
     // such as "port"
@@ -49,7 +50,7 @@ app.set('port', process.env.PORT || config.port);
 app.use(basicAuth(config.basicAuthUser, config.basicAuthPass));  
 
 // change param to control level of logging
-app.use(logger(config.env));  /* 'default', 'short', 'tiny', 'dev' */
+// app.use(logger(config.env));  /* 'default', 'short', 'tiny', 'dev' */
 
 // use compression (gzip) to reduce size of HTTP responses
 app.use(compression());
@@ -62,16 +63,16 @@ app.use(bodyParser.urlencoded({
 app.use(multer({dest: __dirname + '/public/img/uploads/'}));
 
 // Session config, based on Express.session, values taken from config.js
-app.use(session({
-	name: 'splat.sess',
-	secret: config.sessionSecret,  // A3 ADD CODE
-	rolling: true,  // reset session timer on every client access
-	cookie: { maxAge:config.sessionTimeout,  // A3 ADD CODE
-		  // maxAge: null,  // no-expire session-cookies for testing
-		  httpOnly: true },
-	saveUninitialized: false,
-	resave: false
-}));
+// app.use(session({
+// 	name: 'splat.sess',
+// 	secret: config.sessionSecret,  // A3 ADD CODE
+// 	rolling: true,  // reset session timer on every client access
+// 	cookie: { maxAge:config.sessionTimeout,  // A3 ADD CODE
+// 		  // maxAge: null,  // no-expire session-cookies for testing
+// 		  httpOnly: true },
+// 	saveUninitialized: false,
+// 	resave: false
+// }));
 
 // checks req.body for HTTP method overrides
 app.use(methodOverride());
@@ -110,10 +111,10 @@ app.post('/movies/:id/reviews', isAuthd, splat.addReview);
 app.get('/movies/:id/video', splat.playMovie);
 
 // User login/logout
-app.put('/user', splat.auth);
+app.put('/auth', splat.auth);
 
 // User signup
-app.post('/user', splat.signup);
+app.post('/auth', splat.signup);
 
 // location of static content
 app.use(express.static(__dirname +  "/public"));
