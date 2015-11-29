@@ -4,5 +4,7 @@ module.exports = {
 	dbpass: '1994',
 	dbname: 'jeongse9',
 	basicAuthUser: 'max',
-	basicAuthPass: 'addison'
+	basicAuthPass: 'addison',
+	env: 'Splat',
+	sessionSecret: 'secret'
 };
