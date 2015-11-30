@@ -129,7 +129,7 @@ app.use(function (req, res) {
     res.status(404).send('<h3>File Not Found</h3>');
 });
 
-// app.method('/route/splat.js', middlewareFunc, splat.handlerFunc);
+// app.method('/routes/splat.js', middlewareFunc, splat.handlerFunc);
 
 // Start HTTP server
 http.createServer(app).listen(app.get('port'), function (){

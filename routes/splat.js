@@ -361,16 +361,20 @@ exports.auth = function (req, res) {
     };
     User.findOne({username:username}, function(err, user){
       if (user !== null) {
-          /* A3 ADD CODE BLOCK ... */
-        var sess = req.session;  // create session
-        sess.auth = true;
-        sess.username = username;
-        sess.userid = user.id;
+        /* A3 ADD CODE BLOCK ... */
+        if (bcrypt.compareSync(password, user.password)) {
+          var sess = req.session;  // create session
+          sess.auth = true;
+          sess.username = username;
+          sess.userid = user.id;
+        } else {
+          res.status(403).send('Password does not match, please try again');
+        }
         // set session-timeout, from config file
         if (req.body.remember) {
-            // if "remember me" selected on signin form,
-            // extend session to 10*default-session-timeout
-            // A3 ADD CODE BLOCK
+          // if "remember me" selected on signin form,
+          // extend session to 10*default-session-timeout
+          // A3 ADD CODE BLOCK
         }
         res.status(200).send({'userid': user.id, 'username': username});
         // A3 ADD CODE BLOCK
@@ -382,6 +386,8 @@ exports.auth = function (req, res) {
       }
     });
   } else { // logout request
+    req.session.auth = false;
+    req.session.username = undefined;
     req.session.destroy(); // destroy session in the session-store
     res.status(200).send({'userid': undefined, 'username': undefined});
   };
