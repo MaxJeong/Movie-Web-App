@@ -15,11 +15,13 @@ var https = require("https"),
     logger = require("morgan"),
     compression = require("compression"),
     session = require("express-session"),
+    csurf = require("csurf"),
     bodyParser = require("body-parser"),
     methodOverride = require("method-override"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
     basicAuth = require("basic-auth-connect"),  // add for HTTP auth
+    ejs = require("ejs"),
 
     // config is an object module, that defines app-config attribues,
     // such as "port"
@@ -30,6 +32,8 @@ var https = require("https"),
         key: fs.readFileSync('key.pem'),  // RSA private-key
         cert: fs.readFileSync('cert.pem')  // RSA public-key certificate
     };
+
+var csurfProtection = csurf();
 
 // middleware check that req is associated with an authenticated session
 function isAuthd(req, res, next) {
@@ -92,13 +96,26 @@ app.use(session({
 	rolling: true,  // reset session timer on every client access
 	cookie: { maxAge:config.sessionTimeout,  // A3 ADD CODE
 		  // maxAge: null,  // no-expire session-cookies for testing
-		  httpOnly: true },
+		  httpOnly: true,
+          secure: true },
 	saveUninitialized: false,
 	resave: false
 }));
 
 // checks req.body for HTTP method overrides
 app.use(methodOverride());
+
+// When client-side requests index.html, perform template substitution on it
+app.get('/index.html', csurfProtection, function(req, res) {
+    console.log('in index');
+    // req.csrfToken() returns a fresh random CSRF token value
+    res.render('index.html', {csrftoken: req.csrfToken()});
+});
+
+// activate csurf
+// app.use(csurf);
+
+app.use(csurfProtection);
 
 // App routes (API) - implementation resides in routes/splat.js
 
@@ -156,4 +173,20 @@ app.use(function (req, res) {
 https.createServer(options, app).listen(app.get('port'), function (){
   console.log("Express server listening on port %d in %s mode",
                 app.get('port'), config.env );
+});
+
+// Setup for rendering csurf token into index.html at app-startup
+app.engine('.html', require('ejs').__express);
+
+app.set('views', __dirname + '/public');
+console.log('before index');
+
+
+app.use(csurf(), function(err, req, res, next) {
+    console.log('in error handling');
+    if (err.code == 'EBADCSRFTOKEN') {
+        res.status(403).send('Bad CSRF token');
+    } else {
+        return next(err);
+    }
 });
