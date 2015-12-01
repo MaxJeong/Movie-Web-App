@@ -30,14 +30,33 @@ var http = require("http"),
 // middleware check that req is associated with an authenticated session
 function isAuthd(req, res, next) {
     // A3 ADD CODE BLOCK
+    console.log('in isAuthd');
+    if (req.session && req.session.auth) {
         return next();
+    } else {
+        res.status(403).send('User is not logged in, please log in with an account');
+    }
 };
 
 // middleware check that the session-userid matches the userid passed
 // in the request body, e.g. when deleting or updating a model
 function hasPermission(req, res, next) {
     // A3 ADD CODE BLOCK
-        return next();
+    splat.Movie.findById(req.params.id, function(err, movie) {
+        if (err) {
+            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+                +err.message+ ")" );
+        } else if (!movie) {
+            res.status(404).send("Sorry, that movie doesn't exist;"
+            + " try reselecting from browse view");
+        } else {
+            if (movie.userid == req.session.userid) {
+                return next();
+            } else {
+                res.status(403).send('Unauthorized user, please log in with an authorized account');
+            }
+        }
+    });
 };
 
 // Create Express app-server
@@ -47,7 +66,7 @@ var app = express();
 app.set('port', process.env.PORT || config.port);
 
 // activate basic HTTP authentication (to protect your solution files)
-app.use(basicAuth(config.basicAuthUser, config.basicAuthPass));  
+//app.use(basicAuth(config.basicAuthUser, config.basicAuthPass));  
 
 // change param to control level of logging
 app.use(logger(config.env));  /* 'default', 'short', 'tiny', 'dev' */
@@ -128,8 +147,6 @@ app.use(errorHandler({ dumpExceptions:true, showStack:true }));
 app.use(function (req, res) {
     res.status(404).send('<h3>File Not Found</h3>');
 });
-
-// app.method('/routes/splat.js', middlewareFunc, splat.handlerFunc);
 
 // Start HTTP server
 http.createServer(app).listen(app.get('port'), function (){

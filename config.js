@@ -6,5 +6,6 @@ module.exports = {
 	basicAuthUser: 'max',
 	basicAuthPass: 'addison',
 	env: 'Splat',
-	sessionSecret: 'secret'
+	sessionSecret: 'secret',
+	sessionTimeout: 1000 * 60 * 60
 };

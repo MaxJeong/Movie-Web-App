@@ -71,6 +71,10 @@ var Movie = mongoose.model('Movie', MovieSchema);
 var User = mongoose.model('User', UserSchema);
 var Review = mongoose.model('Review', ReviewSchema);
 
+// exports variable required to make it visible to other
+// files
+exports.Movie = Movie;
+
 // "exports" is used to make the associated name visible
 // outside this file (in particular to server.js)
 exports.api = function(req, res) {
@@ -342,15 +346,15 @@ exports.playMovie = function(req, res) {
     });
 };
 
-exports.isAuth = function (req, res) {
-console.log('isAuth ', req.session);
-    if (req.session && req.session.auth) {
-            res.send(200, {'userid': req.session.userid,
-                'username': req.session.username});
-    } else {
-            res.status(200).send({'userid': '', 'username': ''});
-    };
-};
+// exports.isAuth = function (req, res) {
+// console.log('isAuth ', req.session);
+//     if (req.session && req.session.auth) {
+//             res.send(200, {'userid': req.session.userid,
+//                 'username': req.session.username});
+//     } else {
+//             res.status(200).send({'userid': '', 'username': ''});
+//     };
+// };
 
 exports.auth = function (req, res) {
   if (req.body.login) {   // login request
@@ -375,6 +379,7 @@ exports.auth = function (req, res) {
           // if "remember me" selected on signin form,
           // extend session to 10*default-session-timeout
           // A3 ADD CODE BLOCK
+          sess.sessionTimeout = 10 * config.sessionTimeout;
         }
         res.status(200).send({'userid': user.id, 'username': username});
         // A3 ADD CODE BLOCK
