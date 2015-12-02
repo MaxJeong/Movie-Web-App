@@ -396,7 +396,7 @@ exports.auth = function (req, res) {
   } else { // logout request
     req.session.auth = false;
     req.session.username = undefined;
-    req.session.destroy(); // destroy session in the session-store
+    //req.session.destroy(); // destroy session in the session-store
     res.status(200).send({'userid': undefined, 'username': undefined});
     // res.status(200).send({});
   };

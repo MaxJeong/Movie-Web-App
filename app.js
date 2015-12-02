@@ -112,7 +112,7 @@ app.get('/index.html', csurfProtection, function(req, res) {
     res.render('index.html', {csrftoken: req.csrfToken()});
 });
 
-app.get('/test/test.html',csurfProtection,function(req, res) {
+app.get('/test/test.html', csurfProtection, function(req, res) {
     res.render('test/test.html',
         {csrftoken: req.csrfToken()});
 });
@@ -127,7 +127,6 @@ app.use(csurfProtection, function(err, req, res, next) {
         return next(err);
     }
 });
-
 
 // App routes (API) - implementation resides in routes/splat.js
 
@@ -192,5 +191,3 @@ app.engine('.html', require('ejs').__express);
 
 app.set('views', __dirname + '/public');
 console.log('before index');
-
-
