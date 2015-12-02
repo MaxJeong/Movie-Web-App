@@ -61,6 +61,8 @@ function hasPermission(req, res, next) {
             if (movie.userid == req.session.userid) {
                 return next();
             } else {
+                console.log(movie.userid);
+                console.log(req.session);
                 res.status(403).send('Unauthorized user, please log in with an authorized account');
             }
         }
@@ -105,6 +107,18 @@ app.use(session({
 // checks req.body for HTTP method overrides
 app.use(methodOverride());
 
+// Setup for rendering csurf token into index.html at app-startup
+app.engine('.html', require('ejs').__express);
+
+app.use(csurfProtection, function(err, req, res, next) {
+    console.log('in error handling');
+    if (err.code == 'EBADCSRFTOKEN') {
+        res.status(403).send('Bad CSRF token');
+    } else {
+        return next(err);
+    }
+});
+
 // When client-side requests index.html, perform template substitution on it
 app.get('/index.html', csurfProtection, function(req, res) {
     console.log('in index');
@@ -115,17 +129,6 @@ app.get('/index.html', csurfProtection, function(req, res) {
 app.get('/test/test.html', csurfProtection, function(req, res) {
     res.render('test/test.html',
         {csrftoken: req.csrfToken()});
-});
-
-app.use(csurfProtection);
-
-app.use(csurfProtection, function(err, req, res, next) {
-    console.log('in error handling');
-    if (err.code == 'EBADCSRFTOKEN') {
-        res.status(403).send('Bad CSRF token');
-    } else {
-        return next(err);
-    }
 });
 
 // App routes (API) - implementation resides in routes/splat.js
@@ -186,8 +189,7 @@ https.createServer(options, app).listen(app.get('port'), function (){
                 app.get('port'), config.env );
 });
 
-// Setup for rendering csurf token into index.html at app-startup
-app.engine('.html', require('ejs').__express);
+
 
 app.set('views', __dirname + '/public');
 console.log('before index');
