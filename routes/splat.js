@@ -149,6 +149,7 @@ exports.addMovie = function (req, res) {
     // set model userid here rather than client, since request must be 
     // server authenticated before the request is handled
     movie.set('userid', req.session.userid);
+    console.log("in addMovie");
     savePoster(movie, function() {
         movie.save(function (err, result) {
             if (!err) {
@@ -165,6 +166,7 @@ exports.addMovie = function (req, res) {
 };
 
 exports.editMovie = function(req, res){
+  console.log("in editMovie");
   Movie.findById(req.params.id, function(findErr, movie){
     // no DB error and found DB entry matching id value
     if (!findErr && movie) {
@@ -191,7 +193,7 @@ exports.editMovie = function(req, res){
         res.status(500).send('Server is unable to process movie update; '
       + 'please try again later ' + findErr.message);
     };
-  })
+  });
 };
 
 exports.reviewMovie = function(req, res) {
@@ -371,6 +373,7 @@ exports.auth = function (req, res) {
           sess.auth = true;
           sess.username = username;
           sess.userid = user.id;
+
         } else {
           res.status(403).send('Password does not match, please try again');
         }
@@ -395,6 +398,7 @@ exports.auth = function (req, res) {
     req.session.username = undefined;
     req.session.destroy(); // destroy session in the session-store
     res.status(200).send({'userid': undefined, 'username': undefined});
+    // res.status(200).send({});
   };
 };
 

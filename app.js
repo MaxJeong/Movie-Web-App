@@ -20,7 +20,7 @@ var https = require("https"),
     methodOverride = require("method-override"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
-    basicAuth = require("basic-auth-connect"),  // add for HTTP auth
+    //basicAuth = require("basic-auth-connect"),  // add for HTTP auth
     ejs = require("ejs"),
 
     // config is an object module, that defines app-config attribues,
@@ -112,10 +112,22 @@ app.get('/index.html', csurfProtection, function(req, res) {
     res.render('index.html', {csrftoken: req.csrfToken()});
 });
 
-// activate csurf
-// app.use(csurf);
+app.get('/test/test.html',csurfProtection,function(req, res) {
+    res.render('test/test.html',
+        {csrftoken: req.csrfToken()});
+});
 
 app.use(csurfProtection);
+
+app.use(csurfProtection, function(err, req, res, next) {
+    console.log('in error handling');
+    if (err.code == 'EBADCSRFTOKEN') {
+        res.status(403).send('Bad CSRF token');
+    } else {
+        return next(err);
+    }
+});
+
 
 // App routes (API) - implementation resides in routes/splat.js
 
@@ -182,11 +194,3 @@ app.set('views', __dirname + '/public');
 console.log('before index');
 
 
-app.use(csurf(), function(err, req, res, next) {
-    console.log('in error handling');
-    if (err.code == 'EBADCSRFTOKEN') {
-        res.status(403).send('Bad CSRF token');
-    } else {
-        return next(err);
-    }
-});
