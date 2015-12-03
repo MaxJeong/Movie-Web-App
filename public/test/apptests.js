@@ -109,7 +109,6 @@ QUnit.module('Pre supplied tests', {
            console.log("in success");
 	    assert.deepEqual( resp, {}, "Signout returns empty response object" );
     	    done1();
-
 	}
     });
     auth.done(function() { 
@@ -349,17 +348,36 @@ QUnit.module('Our own tests', {
 
 
  test("Test adding an already existing movie.", function(assert) {
-    assert.expect( 2 );
     var done1 = assert.async();
     var done2 = assert.async();
-    var movie = new splat.Movie({"__v":0,"_id":"565fa288c2b796e809b0a5e3",
-    "dated":"2015-12-03T02:01:18.725Z","director":"steve","duration":122,
-    "freshTotal":0,"freshVotes":0,"poster":"img/placeholder.png","rating":"G",
-    "released":"2001","synopsis":"lol","title":"QUnit!","trailer":"","userid":
-    "565e3627377da02036bf1ce4","genre":["com"],"starring":["steve"]});  // model
+    var errorCallback = this.spy();
+    var movie = new splat.Movie(
+    {"__v":0,
+    // "_id":"565fa288c2b796e809b0a5e3",
+    "dated":"2015-12-03T02:01:18.725Z",
+    "director":"steve",
+    "duration":122,
+    "freshTotal":0,
+    "freshVotes":0,
+    "poster":"img/placeholder.png",
+    "rating":"G",
+    "released":"2001",
+    "synopsis":"lol",
+    "title":"QUnit!",
+    "trailer":"",
+    "userid":"565e3627377da02036bf1ce4",
+    "genre":["com"],
+    "starring":["steve"]});  // model
     var movies = new splat.Movies();  // collection
+    equal( movies.url, "/movies",
+        "correct URL set for instantiated Movies collection" );
+    // test "add" event callback when movie added to collection
+    var addModelCallback = this.spy();
+    movies.bind( "add", addModelCallback );
     movies.add(movie);
-    console.log('added movie');
+    ok( addModelCallback.called,
+         "add callback triggered by movies collection add()" );
+
     var user = new splat.User({username:"a", password:"a", login: 1});
     var auth = user.save(null, {
         type: 'put',
@@ -370,13 +388,13 @@ QUnit.module('Our own tests', {
             done1();
         }
     });
-    console.log("logged in");
+
     auth.done(function() { 
         movie.save(null, {
             error: function (model, error) {
                 console.log("in saving same movie");
-                assert.equal( error.status, 403,
-                "Saving a movie that already exists returns 403 status");
+                assert.equal( error.status, 500,
+                "Saving a movie that already exists returns 500 status");
                 done2();
         },
         success: function (model, resp) {
@@ -386,7 +404,9 @@ QUnit.module('Our own tests', {
        });
     });
  });
- 
+
+
+
 
  test("Test movie-delete twice triggers an error event while session is authenticated.", function(assert) {
     assert.expect( 3 );
@@ -410,7 +430,6 @@ QUnit.module('Our own tests', {
     console.log('in authenticationn');
     var user = new splat.User({username:"a", password:"a", login: 1});
     var auth = user.save(null, {
-        
         type: 'put',
         success: function (model, resp) {
             assert.equal( resp.username, "a",
@@ -517,6 +536,96 @@ QUnit.module('Our own tests', {
     });
 
    });
+   
+
+
+ test("Test movie-delete succeeds if session is authenticated.", function(assert) {
+    assert.expect( 5 );
+    var done1 = assert.async();
+    var done2 = assert.async();
+    var done3 = assert.async();
+    var errorCallback = this.spy();
+    var movie = new splat.Movie({
+        "__v":0,
+        "dated":"2015-10-21T20:44:27.403Z",
+        "director":"John Cena",
+        "duration":100,
+        "freshTotal":5,
+        "freshVotes":5,
+        "poster":"img/placeholder.png",
+        "rating":"R",
+        "released":"1999",
+        "synopsis":"great thriller",
+        "title":"Hungry Games",
+        "trailer":"http://archive.org",
+        "userid":"54635fe6a1342684065f6960", 
+        "genre":["action"],
+        "starring":["Bruce Willis,Amy Winemouse"]});  // model
+    var movies = new splat.Movies();  // collection
+    // verify Movies-collection URL
+    equal( movies.url, "/movies",
+        "correct URL set for instantiated Movies collection" );
+    // test "add" event callback when movie added to collection
+    var addModelCallback = this.spy();
+    movies.bind( "add", addModelCallback );
+    movies.add(movie);
+    ok( addModelCallback.called,
+         "add callback triggered by movies collection add()" );
+
+    console.log("logging in");
+    // authenticate user with valid credentials
+    var user = new splat.User({username:"a", password:"a", login: 1});
+    var auth = user.save(null, {
+        type: 'put',
+        success: function (model, resp) {
+            assert.equal( resp.username, "a",
+        "Successful login with valid credentials" );
+            done1();
+            console.log('logged in');
+        },
+    });
+    var saveMovie = $.Deferred();
+    auth.done(function() { 
+        console.log("insides auth function");
+        movie.save(null,{
+            success: function (model, resp) {
+                console.log(resp)
+                assert.equal( resp.title, "Hungry Games",
+                "Movie saved successfully" );
+                done2();
+                saveMovie.resolve();
+            },
+            error: function(model, resp) {
+                console.log(model);
+                console.log(resp);
+                console.log("in error");
+            }
+        });
+    });
+
+    $.when(auth,saveMovie).then(function(){
+        console.log('conditions cleared');
+        movie.destroy({
+            wait: true,
+            success: function(model, resp) {
+                console.log('in success');
+                assert.equal( resp.title,
+                    "Hungry Games", "Successfully deleted" );
+                done3();
+            },
+            error: function(model,resp){
+                console.log('in error');
+                console.log(model);
+                console.log(resp);
+
+            }
+        });
+
+    });
+
+  });
+
+ 
 
   // Test sign out and add movie; reject request
   //Already covered
