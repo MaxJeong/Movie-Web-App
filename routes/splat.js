@@ -373,7 +373,6 @@ exports.auth = function (req, res) {
           sess.auth = true;
           sess.username = username;
           sess.userid = user.id;
-
         } else {
           res.status(403).send('Password does not match, please try again');
         }

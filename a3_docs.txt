@@ -1,0 +1,4 @@
+Testing gave us the most trouble because the initial setup was 
+difficult (i.e. getting Alan's test cases to be successful). 
+Writing test cases for a website is the hardest testing we have 
+encountered. 

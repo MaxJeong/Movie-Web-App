@@ -189,7 +189,5 @@ https.createServer(options, app).listen(app.get('port'), function (){
                 app.get('port'), config.env );
 });
 
-
-
 app.set('views', __dirname + '/public');
 console.log('before index');

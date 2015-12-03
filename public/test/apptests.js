@@ -96,7 +96,6 @@ QUnit.jUnitReport = function(report) {
            console.log("in success");
 	    assert.deepEqual( resp, {}, "Signout returns empty response object" );
     	    done1();
-
 	}
     });
     auth.done(function() { 
@@ -167,17 +166,36 @@ QUnit.jUnitReport = function(report) {
  });
 
  test("Test adding an already existing movie.", function(assert) {
-    assert.expect( 2 );
     var done1 = assert.async();
     var done2 = assert.async();
-    var movie = new splat.Movie({"__v":0,"_id":"565fa288c2b796e809b0a5e3",
-    "dated":"2015-12-03T02:01:18.725Z","director":"steve","duration":122,
-    "freshTotal":0,"freshVotes":0,"poster":"img/placeholder.png","rating":"G",
-    "released":"2001","synopsis":"lol","title":"QUnit!","trailer":"","userid":
-    "565e3627377da02036bf1ce4","genre":["com"],"starring":["steve"]});  // model
+    var errorCallback = this.spy();
+    var movie = new splat.Movie(
+    {"__v":0,
+    // "_id":"565fa288c2b796e809b0a5e3",
+    "dated":"2015-12-03T02:01:18.725Z",
+    "director":"steve",
+    "duration":122,
+    "freshTotal":0,
+    "freshVotes":0,
+    "poster":"img/placeholder.png",
+    "rating":"G",
+    "released":"2001",
+    "synopsis":"lol",
+    "title":"QUnit!",
+    "trailer":"",
+    "userid":"565e3627377da02036bf1ce4",
+    "genre":["com"],
+    "starring":["steve"]});  // model
     var movies = new splat.Movies();  // collection
+    equal( movies.url, "/movies",
+        "correct URL set for instantiated Movies collection" );
+    // test "add" event callback when movie added to collection
+    var addModelCallback = this.spy();
+    movies.bind( "add", addModelCallback );
     movies.add(movie);
-    console.log('added movie');
+    ok( addModelCallback.called,
+         "add callback triggered by movies collection add()" );
+
     var user = new splat.User({username:"a", password:"a", login: 1});
     var auth = user.save(null, {
         type: 'put',
@@ -188,13 +206,13 @@ QUnit.jUnitReport = function(report) {
             done1();
         }
     });
-    console.log("logged in");
+
     auth.done(function() { 
         movie.save(null, {
             error: function (model, error) {
                 console.log("in saving same movie");
-                assert.equal( error.status, 403,
-                "Saving a movie that already exists returns 403 status");
+                assert.equal( error.status, 500,
+                "Saving a movie that already exists returns 500 status");
                 done2();
         },
         success: function (model, resp) {
@@ -296,79 +314,133 @@ QUnit.jUnitReport = function(report) {
  //    // });
  //  });
 
- // test("Test movie-delete succeeds if session is authenticated.", function(assert) {
- //    assert.expect( 3 );
- //    var done1 = assert.async();
- //    var done2 = assert.async();
- //    var done3 = assert.async();
- //    var movie = new splat.Movie();  // model
- //    movie.set("_id", "565f73b931d7e084450a673d");
- //    movie.urlRoot = '/movies';
- //    // fetch existing movie model
- //    var movieFetch = movie.fetch({
- //        success: function(movie, resp) {
- //            assert.equal( resp._id, "565f73b931d7e084450a673d",
- //        "Successful movie fetch" );
- //        done1();
- //        },
- //         error: function (model, resp) {
- //               console.log("in error of fetching");
- //               console.log(model);
- //               console.log(resp);
- //            // assert.equal( resp.status, 403,
- //            // "Deleting without authentication returns 403 status code" );
- //            // done2();
- //        }
- //    }
+ test("Test movie-delete succeeds if session is authenticated.", function(assert) {
+    assert.expect( 5 );
+    var done1 = assert.async();
+    var done2 = assert.async();
+    var done3 = assert.async();
+    var errorCallback = this.spy();
+    var movie = new splat.Movie({
+        "__v":0,
+        "dated":"2015-10-21T20:44:27.403Z",
+        "director":"John Cena",
+        "duration":100,
+        "freshTotal":5,
+        "freshVotes":5,
+        "poster":"img/placeholder.png",
+        "rating":"R",
+        "released":"1999",
+        "synopsis":"great thriller",
+        "title":"Hungry Games",
+        "trailer":"http://archive.org",
+        "userid":"54635fe6a1342684065f6960", 
+        "genre":["action"],
+        "starring":["Bruce Willis,Amy Winemouse"]});  // model
+    var movies = new splat.Movies();  // collection
+    // verify Movies-collection URL
+    equal( movies.url, "/movies",
+        "correct URL set for instantiated Movies collection" );
+    // test "add" event callback when movie added to collection
+    var addModelCallback = this.spy();
+    movies.bind( "add", addModelCallback );
+    movies.add(movie);
+    ok( addModelCallback.called,
+         "add callback triggered by movies collection add()" );
 
- //    );
- //    // authenticate user with valid credentials
- //    var user = new splat.User({username:"a", password:"a", login: 1});
- //    var auth = user.save(null, {
- //        type: 'put',
- //        success: function (model, resp) {
- //            assert.equal( resp.username, "a",
- //        "Successful login with valid credentials" );
- //            done2();
- //            console.log('logged in');
- //        },
- //        error: function (model, resp) {
- //               console.log("in error of login?");
- //               console.log(model);
- //               console.log(resp);
- //            // assert.equal( resp.status, 403,
- //            // "Deleting without authentication returns 403 status code" );
- //            // done2();
- //        }
- //    });
- //    $.when(movieFetch, auth).done(function() {
- //        // attempt to update existing movie
- //        movie.destroy( {
+    console.log("creating new user");
+    // authenticate user with valid credentials
+    var user = new splat.User({username:"a", password:"a", login: 1});
+    var auth = user.save(null, {
+        type: 'put',
+        success: function (model, resp) {
+            assert.equal( resp.username, "a",
+        "Successful login with valid credentials" );
+            done1();
+            console.log('logged in');
+        },
+    });
+    var saveMovie = $.Deferred();
+    auth.done(function() { 
+        console.log("insides auth function");
+        movie.save(null,{
+            success: function (model, resp) {
+                console.log(resp)
+                assert.equal( resp.title, "Hungry Games",
+                "Movie saved successfully" );
+                done2();
+                saveMovie.resolve();
+            },
+            error: function(model, resp) {
+                console.log(model);
+                console.log(resp);
+                console.log("in error");
+            }
+        });
+    });
 
- //             data: JSON.stringify({userid: this.model.get('userid')}),
- //             contentType: 'application/json',
- //             wait:true,
+    $.when(auth,saveMovie).then(function(){
+        movie.destroy({
+            wait: true,
+            success: function(model, resp) {
+                assert.equal( resp.responseText,
+                    "movie deleted", "Successfully deleted" );
+                done3();
+            }
+        });
 
- //            success: function (model, resp) {
- //                console.log("in success");
- //               console.log(model);
- //               console.log(resp);
- //                assert.equal( model.attributes.title, "QUnit",
- //                "Delete model update succeeds when logged in" );
- //                done3();
- //            },
- //            error: function (model, resp) {
- //               console.log("in error of destroy");
- //               console.log(model);
- //               console.log(resp);
- //            // assert.equal( resp.status, 403,
- //            // "Deleting without authentication returns 403 status code" );
- //            // done2();
- //            }
- //        }
- //        );
- //    });
- //  });
+    });
+
+    //movie.set("_id", "565f73b931d7e084450a673d");
+    //movie.urlRoot = '/movies';
+    //movie.urlRoot = '/movies';
+    // fetch existing movie model
+    // var movieFetch = movie.fetch({
+    //     success: function(model, resp) {
+    //         assert.equal( model.attributes._id, "565f73b931d7e084450a673d",
+    //     "Successful movie fetch" );
+    //     done1();
+    //     },
+    //     error: function (model, resp) {
+    //         console.log("in error of fetching");
+    //         console.log(model);
+    //         console.log(model.attributes._id);
+    //         console.log(resp);
+    //         console.log(resp.id);
+    //         console.log(resp.attributes._id);
+    //         // assert.equal( resp.status, 403,
+    //         // "Deleting without authentication returns 403 status code" );
+    //         // done2();
+    //     }
+    // });
+
+    // $.when(movieFetch, auth).done(function() {
+    //     // attempt to update existing movie
+    //     movie.destroy( {
+
+    //          data: JSON.stringify({userid: this.model.get('userid')}),
+    //          contentType: 'application/json',
+    //          wait:true,
+
+    //         success: function (model, resp) {
+    //             console.log("in success");
+    //            console.log(model);
+    //            console.log(resp);
+    //             assert.equal( model.attributes.title, "QUnit",
+    //             "Delete model update succeeds when logged in" );
+    //             done3();
+    //         },
+    //         error: function (model, resp) {
+    //            console.log("in error of destroy");
+    //            console.log(model);
+    //            console.log(resp);
+    //         // assert.equal( resp.status, 403,
+    //         // "Deleting without authentication returns 403 status code" );
+    //         // done2();
+    //         }
+    //     }
+    //     );
+    // });
+  });
 
  // test("Test movie-save succeeds if session is authenticated.", function(assert) {
  //    assert.expect( 3 );
