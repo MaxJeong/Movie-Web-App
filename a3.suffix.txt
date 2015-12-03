@@ -1,2 +1,2 @@
-No extra features were added to our website. We were able to 
+Some extra test cases were added. We were able to 
 complete all of the implementations. 
