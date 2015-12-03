@@ -39,7 +39,7 @@ var csurfProtection = csurf();
 function isAuthd(req, res, next) {
     // A3 ADD CODE BLOCK
     console.log('in isAuthd');
-    if (req.session && req.session.auth) {
+    if (req.session.auth) {
         return next();
     } else {
         res.status(403).send('User is not logged in, please log in with an account');

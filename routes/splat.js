@@ -215,37 +215,41 @@ exports.deleteMovie = function(req, res) {
   Movie.findById(req.params.id, function(ferr, movie){
     if (ferr) {  // should have 2 tests, one for ferr and one for !movie
       res.status(404).send("Movie not found; unable to delete");
+      console.log("sent 404 status for delete");
     } else {
         var path = __dirname + '/../public/' + movie.get('poster');
         movie.remove(function(merr){
           if (!merr) {
-      // movie successfully deleted, remove its reviews
-      // a real server would aggregate error status of various
-      // error for response, here we just log errors for Reviews/file
+            // movie successfully deleted, remove its reviews
+            // a real server would aggregate error status of various
+            // error for response, here we just log errors for Reviews/file
             Review.remove({'movieid': req.params.id}, function(rerr,rems) {
                 if (rerr) {
                     console.log('error when removing reviews for movie id: ',
                       req.params.id, rerr);
-    } else {
+                } else {
                     console.log('removed reviews');
-    };
+                };
             });
-      // movie successfully deleted, remove its image file
-      // special case placeholder img (don't remove it)
-      if (movie.get('poster') !== 'img/placeholder.png') {
+            // movie successfully deleted, remove its image file
+            // special case placeholder img (don't remove it)
+            if (movie.get('poster') !== 'img/placeholder.png') {
               fs.unlink(path, function(uerr) {
-    // a real server would take more thorough steps
+                // a real server would take more thorough steps
                 if (uerr) {
                     console.log('Error unlinking ' + path);
-          } else {
+                } else {
                     console.log('Unlinked image ' + path);
                 };
               });
-      };
-            res.status(200).send({"responseText": "movie deleted"});
-    } else {
-            res.status(500).send("Unable to delete movie" + merr);
-    };
+              console.log("sent 200 status for delete");
+              res.status(200).send({"responseText": "movie deleted"});
+              };
+            } 
+            else {
+              console.log("sent 500 status for delete");
+              res.status(500).send("Unable to delete movie" + merr);
+            };
         });
     }
   })
@@ -418,7 +422,9 @@ exports.signup = function(req, res) {
           req.session.userid = result.id;
           res.status(200).send({'username':result.username, 'userid':result.id});
         } else {
-          console.log(serr);
+          // console.log(serr.err);
+          // console.log(serr.err.indexOf("E11000"));
+          // if (serr.err) {
           if (serr.err && serr.err.indexOf("E11000") !== -1) {
             res.status(403).send("Sorry, username '"+user.username+
                 "' is already taken; please choose another username");
